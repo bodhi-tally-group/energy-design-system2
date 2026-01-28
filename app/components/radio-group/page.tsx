@@ -40,10 +40,10 @@ export default function RadioGroupPage() {
                   Basic Radio Group
                 </h2>
                 <div className="max-w-md space-y-4">
-                  <RadioGroup label="Choose an option" name="options">
-                    <RadioItem label="Option 1" value="option1" />
-                    <RadioItem label="Option 2" value="option2" />
-                    <RadioItem label="Option 3" value="option3" />
+                  <RadioGroup label="Choose an option">
+                    <RadioItem label="Option 1" name="options" value="option1" />
+                    <RadioItem label="Option 2" name="options" value="option2" />
+                    <RadioItem label="Option 3" name="options" value="option3" />
                   </RadioGroup>
                 </div>
               </section>
@@ -89,9 +89,9 @@ export default function RadioGroupPage() {
               <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
                 <code>{`import { RadioGroup, RadioItem } from "@/components/RadioGroup/RadioGroup";
 
-<RadioGroup label="Choose an option" name="options">
-  <RadioItem label="Option 1" value="option1" />
-  <RadioItem label="Option 2" value="option2" />
+<RadioGroup label="Choose an option">
+  <RadioItem label="Option 1" name="options" value="option1" />
+  <RadioItem label="Option 2" name="options" value="option2" />
 </RadioGroup>`}</code>
               </pre>
             </section>
