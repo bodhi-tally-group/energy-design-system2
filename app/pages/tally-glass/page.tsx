@@ -375,7 +375,7 @@ export default function TallyGlassPage() {
                       <TabsContent value="load-disagg" className="mt-0">
                         <div className="space-y-4">
                           <div className="flex items-center justify-end gap-1">
-                            <ToggleGroup type="single" value={loadUnit} onValueChange={(v) => v && setLoadUnit(v)}>
+                            <ToggleGroup type="single" value={loadUnit} onValueChange={(v) => { if (typeof v === "string") setLoadUnit(v); }}>
                               <ToggleGroupItem value="dollar" className="rounded-l-md px-2 py-1 text-xs">$</ToggleGroupItem>
                               <ToggleGroupItem value="percent" className="px-2 py-1 text-xs">%</ToggleGroupItem>
                               <ToggleGroupItem value="kwh" className="rounded-r-md px-2 py-1 text-xs">kWh</ToggleGroupItem>
