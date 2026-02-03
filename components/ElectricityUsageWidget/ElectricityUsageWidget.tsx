@@ -1,8 +1,18 @@
 "use client";
 
 import React from "react";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 import { cn } from "@/lib/utils";
-import { DotChart } from "./DotChart";
+import { dataVisualizationColors } from "@/lib/tokens/colors";
+
+const CHART_COLOR = dataVisualizationColors.dataASolid.hex;
 
 export type ElectricityUsageWidgetSize =
   | "x-small"
@@ -63,6 +73,24 @@ const DEFAULT_DOTS: { col: number; row: number; size: number }[] = [
 ];
 
 const DEFAULT_MONTHS = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** Convert dot/bubble data to Recharts area chart data (name, value) per month/col. */
+function dotDataToAreaData(
+  dotData: { col: number; row: number; size: number }[],
+  monthLabels: string[]
+): { name: string; value: number }[] {
+  const cols = monthLabels.length;
+  const byCol = Array.from({ length: cols }, (_, i) =>
+    dotData
+      .filter((d) => d.col === i)
+      .reduce((sum, d) => sum + d.size, 0)
+  );
+  const max = Math.max(...byCol, 0.01);
+  return monthLabels.map((name, i) => ({
+    name,
+    value: Math.round((byCol[i] ?? 0) / max * 100),
+  }));
+}
 
 function ChangeBadge({
   changePercent,
@@ -148,7 +176,7 @@ const ElectricityUsageWidget = React.forwardRef<
     ref
   ) => {
     const baseClasses =
-      "overflow-hidden rounded-2xl border border-border bg-white shadow-sm rounded-tl-[1.25rem] rounded-br-[1.25rem]";
+      "overflow-hidden rounded-2xl border border-border bg-white rounded-tl-[1.25rem] rounded-br-[1.25rem]";
 
     // —— X-Small: title + value + change only, no chart
     if (size === "x-small") {
@@ -202,8 +230,25 @@ const ElectricityUsageWidget = React.forwardRef<
             )}
           </div>
           <div className="relative flex min-w-0 w-[92px] shrink-0 items-center justify-center py-2.5 pr-2 pl-1">
-            <div className="h-[84px] w-[84px] shrink-0 overflow-hidden">
-              <DotChart dotData={dotData} cols={5} rows={3} compact />
+            <div className="h-[84px] w-full min-w-0 overflow-hidden">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={dotDataToAreaData(dotData, (chartMonths.length ? chartMonths : DEFAULT_MONTHS).slice(0, 5))}
+                  margin={{ top: 4, right: 4, bottom: 4, left: 4 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="name" hide />
+                  <YAxis hide domain={[0, "auto"]} />
+                  <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke={CHART_COLOR}
+                    fill={CHART_COLOR}
+                    fillOpacity={0.4}
+                    strokeWidth={1.5}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
@@ -242,7 +287,27 @@ const ElectricityUsageWidget = React.forwardRef<
           </div>
           <div className="min-h-0 flex-1 px-2 pb-2 pt-2">
             <div className="h-full w-full min-h-[80px]">
-              <DotChart dotData={dotData} cols={8} rows={3} />
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={dotDataToAreaData(
+                    dotData,
+                    (chartMonths.length ? chartMonths : DEFAULT_MONTHS).slice(0, 8)
+                  )}
+                  margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="name" stroke="#6B7280" fontSize={10} tickLine={false} />
+                  <YAxis stroke="#6B7280" fontSize={10} tickLine={false} width={24} domain={[0, "auto"]} />
+                  <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke={CHART_COLOR}
+                    fill={CHART_COLOR}
+                    fillOpacity={0.4}
+                    strokeWidth={1.5}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
@@ -267,14 +332,14 @@ const ElectricityUsageWidget = React.forwardRef<
       comparisonText: "Compared to $76,330 last year",
     };
     const months = chartMonths.length ? chartMonths : DEFAULT_MONTHS;
-    const chartRows = size === "x-large" ? 8 : 7;
     const chartCols = months.length;
-    // Scale dot data from small grid (8×3) to large grid (chartCols × chartRows)
+    // Scale dot data from small grid (8×3) to large grid (chartCols columns) for area data
     const scaledDotData = dotData.map((d) => ({
       ...d,
       col: Math.min(Math.round((d.col / 7) * (chartCols - 1)), chartCols - 1),
-      row: Math.min(Math.round((d.row / 2) * (chartRows - 1)), chartRows - 1),
+      row: d.row,
     }));
+    const areaData = dotDataToAreaData(scaledDotData, months);
 
     return (
       <div
@@ -296,7 +361,7 @@ const ElectricityUsageWidget = React.forwardRef<
           {title}
         </h3>
 
-        <div className="grid grid-cols-3 gap-4 border-b border-[#E5E5E7] pb-5 pt-4">
+        <div className="grid grid-cols-3 gap-4 border-b border-border pb-5 pt-4">
           <div>
             <div className="text-sm font-medium text-[#595767]">Weekly</div>
             <div
@@ -357,12 +422,30 @@ const ElectricityUsageWidget = React.forwardRef<
               size === "x-large" ? "h-[180px]" : "h-[140px]"
             )}
           >
-            <DotChart
-              dotData={scaledDotData}
-              cols={chartCols}
-              rows={chartRows}
-              showGrid={true}
-            />
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={areaData}
+                margin={{ top: 16, right: 16, bottom: 0, left: 16 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="name" hide />
+                <YAxis
+                  stroke="#6B7280"
+                  fontSize={12}
+                  tickLine={false}
+                  width={28}
+                  domain={[0, "auto"]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke={CHART_COLOR}
+                  fill={CHART_COLOR}
+                  fillOpacity={0.4}
+                  strokeWidth={2}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
           <div className="mt-2 flex justify-between gap-1 text-xs text-[#595767]">
             {months.map((m, i) => (

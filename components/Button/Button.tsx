@@ -45,10 +45,10 @@ export default function Button({
   };
 
   const sizeStyles = {
-    sm: "px-3 py-1.5 text-sm rounded-md",
-    md: "px-4 py-2 text-base rounded-lg",
-    lg: "px-6 py-3 text-lg rounded-lg",
-    icon: "size-9 p-0 rounded-md",
+    sm: "h-8 min-h-8 px-3 text-xs rounded-md",
+    md: "h-10 min-h-10 px-4 text-sm rounded-lg",
+    lg: "h-12 min-h-12 px-6 text-base rounded-lg",
+    icon: "size-9 min-w-9 min-h-9 p-0 rounded-md",
   };
 
   const widthStyles = fullWidth ? "w-full" : "";

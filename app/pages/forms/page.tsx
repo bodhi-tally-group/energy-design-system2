@@ -59,7 +59,7 @@ export default function FormsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-3xl px-6 py-6">
+      <div className="mx-auto max-w-4xl px-6 py-6">
         <Breadcrumb className="mb-4">
           <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700">
             <BreadcrumbItem>
@@ -86,12 +86,14 @@ export default function FormsPage() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-          Forms
-        </h1>
-        <p className="mb-6 text-sm text-muted-foreground">
-          A simple name and address form built with design system components.
-        </p>
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+            Forms
+          </h1>
+          <p className="mt-1 text-base text-muted-foreground">
+            A simple name and address form built with design system components.
+          </p>
+        </div>
 
         {submitted && (
           <Alert variant="success" className="mb-6">
@@ -104,20 +106,20 @@ export default function FormsPage() {
 
         <Card>
           <form onSubmit={handleSubmit} onReset={handleReset}>
-            <CardHeader>
+            <CardHeader className="space-y-1.5 pb-6">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-lg text-gray-900">Name &amp; address</CardTitle>
+                <CardTitle className="text-xl font-semibold text-gray-900">Name &amp; address</CardTitle>
                 <Badge variant="outline" className="text-xs">Required</Badge>
               </div>
-              <CardDescription>
+              <CardDescription className="text-base">
                 Enter your personal details and mailing address.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
               {/* Name section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-gray-900">Personal details</h3>
+              <section className="space-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-lg font-semibold text-gray-900">Personal details</h2>
                   <Badge variant="secondary" className="text-xs">Name</Badge>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -138,14 +140,14 @@ export default function FormsPage() {
                     required
                   />
                 </div>
-              </div>
+              </section>
 
-              <Separator />
+              <Separator className="my-8" />
 
               {/* Address section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-gray-900">Address</h3>
+              <section className="space-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-lg font-semibold text-gray-900">Address</h2>
                   <Badge variant="info" className="text-xs">Address</Badge>
                 </div>
                 <div className="space-y-4">
@@ -211,10 +213,11 @@ export default function FormsPage() {
                     <option value="US">United States</option>
                   </Select>
                 </div>
-              </div>
+              </section>
 
-              <Separator />
+              <Separator className="my-8" />
 
+              <section className="space-y-4">
               <Textarea
                 name="notes"
                 label="Notes (optional)"
@@ -227,6 +230,7 @@ export default function FormsPage() {
                 label="Save as my default address"
                 helperText="Use this address for future orders."
               />
+              </section>
             </CardContent>
             <CardFooter className="flex flex-wrap gap-3 border-t border-border pt-6">
               <Button type="submit">

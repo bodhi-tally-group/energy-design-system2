@@ -55,15 +55,15 @@ export default function CollapsibleCard({
   return (
     <Card className={cn("overflow-hidden shadow-none", className)}>
       <Collapsible open={open} onOpenChange={setOpen} defaultOpen={defaultOpen}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 py-4 pr-4">
-          <CollapsibleTrigger className="flex flex-1 items-center gap-2 rounded-md text-left font-medium text-foreground hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 px-4 py-4 pr-2">
+          <CollapsibleTrigger className="-mx-2 flex flex-1 items-center gap-2 rounded-lg px-4 py-3 text-left font-medium text-foreground hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
             <Icon name={open ? "expand_less" : "expand_more"} size={20} />
             <CardTitle className="text-base font-semibold">{title}</CardTitle>
           </CollapsibleTrigger>
           {showMenu && (
             <DropdownMenu>
               <DropdownMenuTrigger
-                className="rounded p-1.5 hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="rounded-lg p-2.5 hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 aria-label="Open menu"
               >
                 <Icon name="more_vert" size={20} className="text-muted-foreground" />

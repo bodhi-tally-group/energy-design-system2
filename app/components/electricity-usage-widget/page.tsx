@@ -197,50 +197,6 @@ export default function ElectricityUsageWidgetPage() {
                   </div>
                 </div>
               </section>
-
-              <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
-                  Dashboard grid example
-                </h2>
-                <p className="mb-6 max-w-2xl text-gray-600">
-                  Mix sizes in one dashboard. Same CSV-derived data passed to
-                  each.
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  <ElectricityUsageWidget
-                    size="x-small"
-                    title={shared.title}
-                    value={shared.value}
-                    changePercent={shared.changePercent}
-                  />
-                  <ElectricityUsageWidget
-                    size="small"
-                    title={shared.title}
-                    value={shared.value}
-                    changePercent={shared.changePercent}
-                    secondaryLabel={shared.secondaryLabel}
-                    dotData={shared.dotData.length ? shared.dotData : undefined}
-                  />
-                  <ElectricityUsageWidget
-                    size="medium"
-                    title={shared.title}
-                    value={shared.value}
-                    changePercent={shared.changePercent}
-                    secondaryLabel={shared.secondaryLabel}
-                    dotData={shared.dotData.length ? shared.dotData : undefined}
-                  />
-                  <ElectricityUsageWidget
-                    size="large"
-                    title={shared.title}
-                    value={shared.value}
-                    weekly={shared.weekly}
-                    monthly={shared.monthly}
-                    yearly={shared.yearly}
-                    chartMonths={shared.chartMonths}
-                    dotData={shared.dotData.length ? shared.dotData : undefined}
-                  />
-                </div>
-              </section>
             </>
           )}
 

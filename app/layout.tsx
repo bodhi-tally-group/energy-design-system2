@@ -9,15 +9,6 @@ export const metadata: Metadata = {
 
 const navigationSections = [
   {
-    title: "Pages",
-    items: [
-      { label: "Dashboard", href: "/pages/dashboard" },
-      { label: "Forms", href: "/pages/forms" },
-      { label: "Small Market", href: "/pages/small-market" },
-      { label: "Tally Large Market", href: "/pages/tally-large-market" },
-    ],
-  },
-  {
     title: "Foundation",
     items: [
       { label: "Colours", href: "/foundation/colour" },
@@ -26,6 +17,15 @@ const navigationSections = [
       { label: "Layout Grid", href: "/foundation/layout-grid" },
       { label: "Logo", href: "/foundation/logo" },
       { label: "Typography", href: "/foundation/typography" },
+    ],
+  },
+  {
+    title: "Pages",
+    items: [
+      { label: "Dashboard", href: "/pages/dashboard" },
+      { label: "Forms", href: "/pages/forms" },
+      { label: "Small Market", href: "/pages/small-market" },
+      { label: "Tally Large Market", href: "/pages/tally-large-market" },
     ],
   },
   {
