@@ -25,7 +25,7 @@ const navigationSections = [
     title: "Brands",
     items: [
       { label: "Tally Group", href: "/foundation/brands/tally-group" },
-      { label: "Tally Small Markets", href: "/foundation/brands/tally-small-markets" },
+      { label: "Tally Small Market", href: "/foundation/brands/tally-small-markets" },
       { label: "Tally Large Market", href: "/foundation/brands/tally-large-market" },
       { label: "Tally Sales & Acquisition", href: "/foundation/brands/tally-sales-acquisition" },
       { label: "Tally Digital", href: "/foundation/brands/tally-digital" },
@@ -37,8 +37,10 @@ const navigationSections = [
     items: [
       { label: "Dashboard", href: "/pages/dashboard" },
       { label: "Forms", href: "/pages/forms" },
-      { label: "Small Market", href: "/pages/small-market" },
+      { label: "Tally Small Market", href: "/pages/small-market" },
       { label: "Tally Large Market", href: "/pages/tally-large-market" },
+      { label: "Tally Glass", href: "/pages/tally-glass" },
+      { label: "Tally Orion", href: "/pages/tally-orion" },
     ],
   },
   {

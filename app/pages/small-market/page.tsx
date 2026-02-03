@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -19,6 +20,7 @@ import Input from "@/components/Input/Input";
 import Select from "@/components/Select/Select";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import { Icon } from "@/components/ui/icon";
+import { Avatar, AvatarFallback } from "@/components/Avatar/Avatar";
 import { cn } from "@/lib/utils";
 import {
   Table,
@@ -28,6 +30,17 @@ import {
   TableRow,
   TableCell,
 } from "@/components/Table/Table";
+
+const LEFT_NAV_ITEMS = [
+  { id: "dashboard", label: "Dashboard", icon: "home" },
+  { id: "tasks", label: "Tasks & Exceptions", icon: "notifications" },
+  { id: "market", label: "Market", icon: "store" },
+  { id: "adjustments", label: "Adjustments", icon: "tune" },
+  { id: "metering", label: "Metering Services Registry", icon: "table_chart" },
+  { id: "reports", label: "Reports", icon: "assessment" },
+  { id: "products", label: "Products", icon: "inventory_2" },
+  { id: "maintenance", label: "Maintenance", icon: "build" },
+];
 
 const TAB_CONFIG = [
   { value: "details", label: "Details" },
@@ -112,14 +125,81 @@ function StatusCard({ label, value, icon, variant = "default" }: { label: string
 export default function SmallMarketPage() {
   const [tabValue, setTabValue] = useState("details");
   const [cardOpenState, setCardOpenState] = useState<Record<string, boolean>>(INITIAL_CARD_OPEN);
+  const [activeNavId, setActiveNavId] = useState("dashboard");
 
   const allCardsOpen = DETAILS_CARD_TITLES.every((t) => cardOpenState[t]);
   const expandAll = () => setCardOpenState(() => Object.fromEntries(DETAILS_CARD_TITLES.map((t) => [t, true])));
   const collapseAll = () => setCardOpenState(() => Object.fromEntries(DETAILS_CARD_TITLES.map((t) => [t, false])));
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-[1600px] px-6 py-6">
+    <div className="flex min-h-screen flex-col bg-gray-50">
+      {/* App Bar */}
+      <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border bg-white px-6">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/TallyPlus.svg"
+              alt="Tally+"
+              width={82}
+              height={30}
+              className="h-6 w-auto"
+              priority
+            />
+          </Link>
+          <div className="relative hidden w-80 md:block">
+            <Icon name="search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="search"
+              placeholder="Search"
+              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#2C365D] focus:outline-none focus:ring-1 focus:ring-[#2C365D]"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <button type="button" className="rounded p-2 text-gray-500 hover:bg-gray-100">
+            <Icon name="grid_view" size={20} />
+          </button>
+          <Avatar className="h-9 w-9">
+            <AvatarFallback className="text-xs">SA</AvatarFallback>
+          </Avatar>
+        </div>
+      </header>
+
+      <div className="flex min-w-0 flex-1 overflow-hidden">
+      {/* Left Navigation Bar */}
+      <aside className="flex w-64 shrink-0 flex-col overflow-hidden border-r border-border bg-white">
+        <div className="min-h-0 flex-1 overflow-y-auto">
+        <nav className="flex flex-col p-2">
+          {LEFT_NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setActiveNavId(item.id)}
+              className={cn(
+                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
+                activeNavId === item.id
+                  ? "bg-gray-100 text-gray-900"
+                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+              )}
+            >
+              <Icon
+                name={item.icon as "home"}
+                size={20}
+                className={cn("font-extralight transition-colors", activeNavId === item.id ? "text-gray-900" : "text-gray-500 group-hover:text-gray-900")}
+              />
+              <span className="leading-tight">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+        </div>
+        <div className="shrink-0 border-t border-border p-3">
+          <Image src="/PoweredByTallyBadgeDark.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto" />
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="min-w-0 flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-[1600px] px-6 py-6">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-4">
           <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700">
@@ -488,6 +568,8 @@ export default function SmallMarketPage() {
             </TabsContent>
           ))}
         </Tabs>
+        </div>
+      </div>
       </div>
     </div>
   );

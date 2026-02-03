@@ -14,7 +14,7 @@ const pages = [
     tags: ["Charts", "Tables", "Cards", "Widgets"],
   },
   {
-    title: "Tally+ Small Market",
+    title: "Tally Small Market",
     description: "Tally+ small market customer account page with detailed account information and event timeline",
     href: "/pages/small-market",
     icon: "store",
@@ -33,6 +33,20 @@ const pages = [
     href: "/pages/forms",
     icon: "edit_note",
     tags: ["Inputs", "Validation", "Layout"],
+  },
+  {
+    title: "Tally Glass",
+    description: "Tally Glass page within the Energy Design System",
+    href: "/pages/tally-glass",
+    icon: "precision_manufacturing",
+    tags: ["Tally Glass"],
+  },
+  {
+    title: "Tally Orion",
+    description: "ORION-style CRM/account management with contact details and address tables",
+    href: "/pages/tally-orion",
+    icon: "contact_page",
+    tags: ["Tables", "Tabs", "Contacts"],
   },
 ];
 

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -20,10 +21,26 @@ import {
 import CollapsibleCard from "@/components/CollapsibleCard/CollapsibleCard";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/Card/Card";
 import { Icon } from "@/components/ui/icon";
+import { Avatar, AvatarFallback } from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Input from "@/components/Input/Input";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import { cn } from "@/lib/utils";
+
+const LEFT_NAV_ITEMS = [
+  { id: "home", label: "Home", icon: "dashboard" },
+  { id: "sales", label: "Sales", icon: "trending_up" },
+  { id: "customers", label: "Customers", icon: "group" },
+  { id: "billing", label: "Billing", icon: "receipt" },
+  { id: "payments", label: "Payments", icon: "credit_card" },
+  { id: "market", label: "Market", icon: "store" },
+  { id: "reporting", label: "Reporting", icon: "insights" },
+  { id: "onboarding", label: "Onboarding", icon: "headset_mic" },
+  { id: "audit", label: "Audit", icon: "fact_check" },
+  { id: "products", label: "Products", icon: "inventory_2" },
+  { id: "settings", label: "Settings", icon: "settings" },
+  { id: "file-upload", label: "File Upload", icon: "upload_file" },
+];
 
 const TAB_CONFIG = [
   { value: "overview", label: "Overview" },
@@ -88,6 +105,7 @@ function SnapshotDataCell({ label, primaryValue, secondaryDetail, className }: {
 export default function TallyLargeMarketPage() {
   const [tabValue, setTabValue] = React.useState("overview");
   const [cardOpenState, setCardOpenState] = React.useState<Record<string, boolean>>(INITIAL_CARD_OPEN);
+  const [activeNavId, setActiveNavId] = React.useState("customers");
   const currentTabLabel = TAB_CONFIG.find((t) => t.value === tabValue)?.label ?? "Overview";
 
   const allCardsOpen = OVERVIEW_CARD_TITLES.every((t) => cardOpenState[t]);
@@ -95,8 +113,81 @@ export default function TallyLargeMarketPage() {
   const collapseAll = () => setCardOpenState(() => Object.fromEntries(OVERVIEW_CARD_TITLES.map((t) => [t, false])));
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-[1600px] px-6 py-6">
+    <div className="flex min-h-screen flex-col bg-gray-50">
+      {/* App Bar */}
+      <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border bg-white px-6">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/TallyCIS_Test.svg"
+              alt="Tally CIS"
+              width={82}
+              height={30}
+              className="h-6 w-auto"
+              priority
+            />
+          </Link>
+          <div className="relative hidden w-80 md:block">
+            <Icon name="search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="search"
+              placeholder="Search"
+              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#2C365D] focus:outline-none focus:ring-1 focus:ring-[#2C365D]"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <button type="button" className="rounded p-2 text-gray-500 hover:bg-gray-100">
+            <Icon name="grid_view" size={20} />
+          </button>
+          <Avatar className="h-9 w-9">
+            <AvatarFallback className="text-xs">PA</AvatarFallback>
+          </Avatar>
+        </div>
+      </header>
+
+      <div className="flex min-w-0 flex-1 overflow-hidden">
+        {/* Left Navigation Bar */}
+        <aside className="flex w-64 shrink-0 flex-col overflow-hidden border-r border-border bg-white">
+          <div className="min-h-0 flex-1 overflow-y-auto">
+          <nav className="flex flex-col p-2">
+            {LEFT_NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveNavId(item.id)}
+                className={cn(
+                  "group flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
+                  activeNavId === item.id
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                )}
+              >
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  <Icon
+                    name={item.icon as "dashboard"}
+                    size={20}
+                    className={cn("shrink-0 font-extralight transition-colors", activeNavId === item.id ? "text-gray-900" : "text-gray-500 group-hover:text-gray-900")}
+                  />
+                  <span className="truncate">{item.label}</span>
+                </div>
+                <Icon
+                  name="expand_more"
+                  size={18}
+                  className={cn("shrink-0 font-extralight transition-colors", activeNavId === item.id ? "text-gray-900" : "text-gray-500 group-hover:text-gray-900")}
+                />
+              </button>
+            ))}
+          </nav>
+          </div>
+          <div className="shrink-0 border-t border-border p-3">
+            <Image src="/PoweredByTallyBadgeDark.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto" />
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <div className="min-w-0 flex-1 overflow-y-auto">
+          <div className="mx-auto max-w-[1600px] px-6 py-6">
         <Breadcrumb className="mb-4">
           <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700">
             <BreadcrumbItem>
@@ -350,6 +441,8 @@ export default function TallyLargeMarketPage() {
             </TabsContent>
           ))}
         </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );
