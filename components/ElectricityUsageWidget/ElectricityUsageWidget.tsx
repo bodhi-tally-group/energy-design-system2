@@ -161,7 +161,7 @@ function WidgetChartContent({
   if (chartType === "pie") {
     return (
       <PieChart margin={margin}>
-        <Tooltip {...CHART_TOOLTIP_STYLE} formatter={(value: number, name: string) => [`${value}`, name]} />
+        <Tooltip {...CHART_TOOLTIP_STYLE} formatter={(value, name) => [value != null ? `${value}` : "", name ?? ""]} />
         <Pie
           data={PIE_DATA}
           cx="50%"
@@ -180,14 +180,14 @@ function WidgetChartContent({
   }
 
   if (chartType === "bubble") {
-    const bubbleRadiusRange = compact ? [4, 18] : [8, 32];
+    const bubbleRadiusRange: [number, number] = compact ? [4, 18] : [8, 32];
     return (
       <ScatterChart margin={margin}>
         <Tooltip
           {...CHART_TOOLTIP_STYLE}
-          formatter={(value: number, _n: string, props: { payload?: { x?: number; y?: number; z?: number } }) => {
+          formatter={(value, _n, props: { payload?: { x?: number; y?: number; z?: number } }) => {
             const p = props.payload;
-            return [p ? `x: ${p.x}, y: ${p.y}, z: ${p.z}` : value, "Point"];
+            return [p ? `x: ${p.x}, y: ${p.y}, z: ${p.z}` : (value ?? ""), "Point"];
           }}
         />
         <XAxis dataKey="x" type="number" domain={[0, 100]} hide />
@@ -241,7 +241,7 @@ function WidgetChartContent({
   // area (default)
   return (
     <AreaChart data={areaData} margin={margin}>
-      <Tooltip {...CHART_TOOLTIP_STYLE} formatter={(value: number, name: string) => [value, name ?? "Value"]} />
+      <Tooltip {...CHART_TOOLTIP_STYLE} formatter={(value, name) => [value ?? "", name ?? "Value"]} />
       <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
       <XAxis dataKey="name" hide={!showAxes} stroke="#6B7280" fontSize={fontSize} tickLine={false} />
       <YAxis hide={!showAxes} stroke="#6B7280" fontSize={fontSize} tickLine={false} width={showAxes ? 24 : 0} domain={[0, "auto"]} />
