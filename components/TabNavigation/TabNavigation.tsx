@@ -21,7 +21,7 @@ export default function TabNavigation({
   };
 
   return (
-    <nav className="flex items-center border-b border-gray-200 bg-white">
+    <nav className="flex items-center border-b border-border bg-white">
       <div className="mx-auto flex w-full max-w-full items-center px-6">
         {tabs.map((tab, index) => (
           <div key={tab.id} className="flex items-center">

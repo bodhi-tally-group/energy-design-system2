@@ -23,7 +23,7 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
     return (
       <div
         ref={ref}
-        className={cn("border-b border-[#DEDEE1]", className)}
+        className={cn("border-b border-border", className)}
         {...props}
       />
     );

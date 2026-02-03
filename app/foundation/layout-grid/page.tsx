@@ -52,7 +52,7 @@ export default function LayoutGridPage() {
           </div>
 
           {/* Breakpoints Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Breakpoints
             </h2>
@@ -66,7 +66,7 @@ export default function LayoutGridPage() {
               <code className="rounded bg-gray-200 px-1.5 py-0.5 text-sm font-mono">2xl:</code> for
               larger screens.
             </p>
-            <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+            <div className="overflow-x-auto rounded-lg border border-border bg-white">
               <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
                 <thead>
                   <tr className="bg-gray-50">
@@ -91,7 +91,7 @@ export default function LayoutGridPage() {
           </section>
 
           {/* Container Widths Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Container widths
             </h2>
@@ -100,7 +100,7 @@ export default function LayoutGridPage() {
               max-width per page type; combine with horizontal padding for
               responsive gutters.
             </p>
-            <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+            <div className="overflow-x-auto rounded-lg border border-border bg-white">
               <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
                 <thead>
                   <tr className="bg-gray-50">
@@ -129,7 +129,7 @@ export default function LayoutGridPage() {
           </section>
 
           {/* Grid system Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Grid system
             </h2>
@@ -147,7 +147,7 @@ export default function LayoutGridPage() {
                   {[1, 2, 3].map((n) => (
                     <div
                       key={n}
-                      className="flex h-16 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-sm font-medium text-gray-500"
+                      className="flex h-16 items-center justify-center rounded-lg border-2 border-dashed border-border bg-gray-50 text-sm font-medium text-gray-500"
                     >
                       Col {n}
                     </div>
@@ -162,7 +162,7 @@ export default function LayoutGridPage() {
                   <div className="flex h-16 items-center justify-center rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 font-medium text-gray-700 lg:col-span-4">
                     Sidebar (4/12)
                   </div>
-                  <div className="flex h-16 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 font-medium text-gray-500 lg:col-span-8">
+                  <div className="flex h-16 items-center justify-center rounded-lg border-2 border-dashed border-border bg-gray-50 font-medium text-gray-500 lg:col-span-8">
                     Main (8/12)
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export default function LayoutGridPage() {
                   {[1, 2, 3, 4].map((n) => (
                     <div
                       key={n}
-                      className="flex h-14 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-sm text-gray-500"
+                      className="flex h-14 items-center justify-center rounded-lg border-2 border-dashed border-border bg-gray-50 text-sm text-gray-500"
                     >
                       {n}
                     </div>
@@ -186,7 +186,7 @@ export default function LayoutGridPage() {
           </section>
 
           {/* Spacing scale Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Spacing scale
             </h2>
@@ -194,7 +194,7 @@ export default function LayoutGridPage() {
               Use the 4px-based spacing scale (Tailwind: 1 = 4px) for padding,
               margins, and gaps. Keeps vertical rhythm and alignment consistent.
             </p>
-            <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+            <div className="overflow-x-auto rounded-lg border border-border bg-white">
               <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
                 <thead>
                   <tr className="bg-gray-50">
@@ -217,7 +217,7 @@ export default function LayoutGridPage() {
           </section>
 
           {/* Key layout patterns Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Key layout patterns
             </h2>
@@ -236,7 +236,7 @@ export default function LayoutGridPage() {
                   Forms, articles, and focused content. Use max-w-3xl or
                   max-w-4xl; center with mx-auto.
                 </p>
-                <div className="mx-auto max-w-2xl rounded-lg border border-gray-200 bg-white p-6">
+                <div className="mx-auto max-w-2xl rounded-lg border border-border bg-white p-6">
                   <div className="mx-auto h-12 max-w-md rounded bg-gray-100" />
                   <div className="mx-auto mt-4 h-4 max-w-full rounded bg-gray-100" />
                   <div className="mx-auto mt-2 h-4 max-w-[80%] rounded bg-gray-100" />
@@ -252,7 +252,7 @@ export default function LayoutGridPage() {
                   Use grid-cols-1 lg:grid-cols-12 with col-span-8 and col-span-4,
                   or grid-cols-1 md:grid-cols-2 for equal columns.
                 </p>
-                <div className="rounded-lg border border-gray-200 bg-white p-4">
+                <div className="rounded-lg border border-border bg-white p-4">
                   <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
                     <div className="flex h-20 items-center justify-center rounded bg-gray-100 lg:col-span-8">
                       Main content
@@ -278,7 +278,7 @@ export default function LayoutGridPage() {
                   {[1, 2, 3, 4].map((n) => (
                     <div
                       key={n}
-                      className="flex h-24 flex-col rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+                      className="flex h-24 flex-col rounded-lg border border-border bg-white p-4 shadow-sm"
                     >
                       <div className="h-4 w-1/3 rounded bg-gray-200" />
                       <div className="mt-2 h-3 w-full rounded bg-gray-100" />
@@ -297,7 +297,7 @@ export default function LayoutGridPage() {
                   Background or banner spans full width; inner content uses
                   max-w-7xl (or other container) with px-4 sm:px-6 lg:px-8.
                 </p>
-                <div className="rounded-lg border border-gray-200 bg-gray-100">
+                <div className="rounded-lg border border-border bg-gray-100">
                   <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     <div className="h-10 rounded bg-white/80" />
                   </div>
@@ -307,7 +307,7 @@ export default function LayoutGridPage() {
           </section>
 
           {/* Guidelines / Do's and Don'ts */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Guidelines
             </h2>

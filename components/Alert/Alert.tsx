@@ -14,7 +14,7 @@ export interface AlertDescriptionProps
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = "default", ...props }, ref) => {
     const variantStyles = {
-      default: "bg-gray-50 border-gray-200 text-gray-900",
+      default: "bg-gray-50 border-border text-gray-900",
       success:
         "bg-[#D1FAE5] border-[#008000] text-[#008000]",
       warning:

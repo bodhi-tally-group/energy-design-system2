@@ -149,7 +149,7 @@ export default function IconsPage() {
               {iconCategories.map((category) => (
                 <section
                   key={category.title}
-                  className="border-t border-gray-200 pt-16"
+                  className="border-t border-border pt-16"
                 >
                   <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                     {category.title}
@@ -168,7 +168,7 @@ export default function IconsPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage
               </h2>

@@ -122,7 +122,7 @@ const AlertDialogContent = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-[#DEDEE1] bg-white p-6 shadow-lg sm:rounded-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-white p-6 shadow-lg sm:rounded-lg",
           className
         )}
         {...props}
@@ -229,7 +229,7 @@ const AlertDialogCancel = React.forwardRef<
       ref={ref}
       type="button"
       className={cn(
-        "mt-2 inline-flex h-10 items-center justify-center rounded-md border border-[#DEDEE1] bg-white px-4 py-2 text-sm font-semibold ring-offset-white transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2 sm:mt-0",
+        "mt-2 inline-flex h-10 items-center justify-center rounded-md border border-border bg-white px-4 py-2 text-sm font-semibold ring-offset-white transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2 sm:mt-0",
         className
       )}
       onClick={() => setOpen(false)}

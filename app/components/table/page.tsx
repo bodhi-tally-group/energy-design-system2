@@ -64,7 +64,7 @@ export default function TablePage() {
           {activeTab === "design" && (
             <div className="space-y-16">
               {/* Basic table */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Basic table
                 </h2>
@@ -99,7 +99,7 @@ export default function TablePage() {
               </section>
 
               {/* Striped rows */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Striped rows
                 </h2>
@@ -134,7 +134,7 @@ export default function TablePage() {
               </section>
 
               {/* Compact / dense */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Compact density
                 </h2>
@@ -166,7 +166,7 @@ export default function TablePage() {
               </section>
 
               {/* With footer */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   With footer
                 </h2>
@@ -208,7 +208,7 @@ export default function TablePage() {
               </section>
 
               {/* Sortable-style headers */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Sortable-style headers
                 </h2>
@@ -260,7 +260,7 @@ export default function TablePage() {
               </section>
 
               {/* Bordered / grid */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Bordered grid
                 </h2>
@@ -270,19 +270,19 @@ export default function TablePage() {
                 <div className="rounded-lg border border-border bg-card overflow-hidden">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-b border-[#DEDEE1]">
-                        <TableHead className="border-r border-[#DEDEE1]">ID</TableHead>
-                        <TableHead className="border-r border-[#DEDEE1]">Name</TableHead>
-                        <TableHead className="border-r border-[#DEDEE1]">Status</TableHead>
+                      <TableRow className="border-b border-border">
+                        <TableHead className="border-r border-border">ID</TableHead>
+                        <TableHead className="border-r border-border">Name</TableHead>
+                        <TableHead className="border-r border-border">Status</TableHead>
                         <TableHead className="text-right">Value</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {sampleData.map((row) => (
-                        <TableRow key={row.id} className="border-b border-[#DEDEE1]">
-                          <TableCell className="border-r border-[#DEDEE1] font-medium">{row.id}</TableCell>
-                          <TableCell className="border-r border-[#DEDEE1]">{row.name}</TableCell>
-                          <TableCell className="border-r border-[#DEDEE1]">{row.status}</TableCell>
+                        <TableRow key={row.id} className="border-b border-border">
+                          <TableCell className="border-r border-border font-medium">{row.id}</TableCell>
+                          <TableCell className="border-r border-border">{row.name}</TableCell>
+                          <TableCell className="border-r border-border">{row.status}</TableCell>
                           <TableCell className="text-right">{row.value}</TableCell>
                         </TableRow>
                       ))}
@@ -292,7 +292,7 @@ export default function TablePage() {
               </section>
 
               {/* With row selection */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Row selection
                 </h2>
@@ -307,7 +307,7 @@ export default function TablePage() {
                           <input
                             type="checkbox"
                             aria-label="Select all"
-                            className="h-4 w-4 rounded border-[#DEDEE1] text-[#2C365D] focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2"
+                            className="h-4 w-4 rounded border-border text-[#2C365D] focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2"
                           />
                         </TableHead>
                         <TableHead>Name</TableHead>
@@ -322,7 +322,7 @@ export default function TablePage() {
                             <input
                               type="checkbox"
                               aria-label={`Select ${row.name}`}
-                              className="h-4 w-4 rounded border-[#DEDEE1] text-[#2C365D] focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2"
+                              className="h-4 w-4 rounded border-border text-[#2C365D] focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2"
                             />
                           </TableCell>
                           <TableCell>{row.name}</TableCell>
@@ -340,7 +340,7 @@ export default function TablePage() {
               </section>
 
               {/* Sticky header */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Sticky header
                 </h2>
@@ -353,16 +353,16 @@ export default function TablePage() {
                   <Table disableWrapper className="w-full border-collapse caption-bottom text-sm">
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="sticky top-0 z-10 border-b border-[#DEDEE1] bg-gray-50 shadow-sm">
+                        <TableHead className="sticky top-0 z-10 border-b border-border bg-gray-50 shadow-sm">
                           ID
                         </TableHead>
-                        <TableHead className="sticky top-0 z-10 border-b border-[#DEDEE1] bg-gray-50 shadow-sm">
+                        <TableHead className="sticky top-0 z-10 border-b border-border bg-gray-50 shadow-sm">
                           Name
                         </TableHead>
-                        <TableHead className="sticky top-0 z-10 border-b border-[#DEDEE1] bg-gray-50 shadow-sm">
+                        <TableHead className="sticky top-0 z-10 border-b border-border bg-gray-50 shadow-sm">
                           Status
                         </TableHead>
-                        <TableHead className="sticky top-0 z-10 border-b border-[#DEDEE1] bg-gray-50 text-right shadow-sm">
+                        <TableHead className="sticky top-0 z-10 border-b border-border bg-gray-50 text-right shadow-sm">
                           Value
                         </TableHead>
                       </TableRow>
@@ -384,7 +384,7 @@ export default function TablePage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage
               </h2>

@@ -34,7 +34,7 @@ export default function CheckboxPage() {
 
           {activeTab === "design" && (
             <>
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Basic Checkbox
                 </h2>
@@ -45,7 +45,7 @@ export default function CheckboxPage() {
                 </div>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   With Helper Text
                 </h2>
@@ -60,7 +60,7 @@ export default function CheckboxPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage Examples
               </h2>

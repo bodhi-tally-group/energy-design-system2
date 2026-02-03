@@ -27,7 +27,7 @@ export default function LayoutPage() {
           </div>
 
           {/* Parts of layout – Visual outline */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Parts of layout
             </h2>
@@ -39,7 +39,7 @@ export default function LayoutPage() {
             </p>
 
             {/* Layout wireframe – muted brand/data colours: primary, turquoise, light, info */}
-            <div className="overflow-hidden rounded-lg border-2 border-gray-300 bg-white">
+            <div className="overflow-hidden rounded-lg border-2 border-border bg-white">
               {/* App bar – muted primary (navy #2C365D) */}
               <div className="relative flex h-14 items-center gap-3 border-b border-[#2C365D]/20 bg-[#2C365D]/10 px-4">
                 <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-medium uppercase tracking-wide text-[#2C365D]/70">
@@ -67,7 +67,7 @@ export default function LayoutPage() {
                 </aside>
 
                 {/* Pane – light background (token #F9F9FB) */}
-                <main className="relative min-w-0 flex-1 border-r border-gray-200 bg-[#F9F9FB] p-6">
+                <main className="relative min-w-0 flex-1 border-r border-border bg-[#F9F9FB] p-6">
                   <span className="absolute left-4 top-3 text-xs font-medium uppercase tracking-wide text-gray-500">
                     Pane
                   </span>
@@ -78,8 +78,8 @@ export default function LayoutPage() {
                     <div className="h-4 w-3/4 rounded bg-gray-200/60" aria-hidden />
                   </div>
                   <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div className="h-24 rounded-lg border-2 border-dashed border-gray-300" />
-                    <div className="h-24 rounded-lg border-2 border-dashed border-gray-300" />
+                    <div className="h-24 rounded-lg border-2 border-dashed border-border" />
+                    <div className="h-24 rounded-lg border-2 border-dashed border-border" />
                   </div>
                 </main>
 
@@ -109,7 +109,7 @@ export default function LayoutPage() {
             <p className="mt-10 mb-2 text-sm font-medium text-gray-700">
               2 panes
             </p>
-            <div className="overflow-hidden rounded-lg border-2 border-gray-300 bg-white">
+            <div className="overflow-hidden rounded-lg border-2 border-border bg-white">
               <div className="relative flex h-14 items-center gap-3 border-b border-[#2C365D]/20 bg-[#2C365D]/10 px-4">
                 <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-medium uppercase tracking-wide text-[#2C365D]/70">
                   App bar
@@ -132,7 +132,7 @@ export default function LayoutPage() {
                     <div className="h-8 w-8 rounded bg-[#00D2A2]/15 md:w-full" aria-hidden />
                   </div>
                 </aside>
-                <main className="flex min-w-0 flex-1 flex-col border-r border-gray-200 bg-[#F9F9FB]">
+                <main className="flex min-w-0 flex-1 flex-col border-r border-border bg-[#F9F9FB]">
                   <div className="grid flex-1 grid-cols-2 gap-0 divide-x divide-gray-200">
                     <div className="relative flex flex-col p-4">
                       <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -140,7 +140,7 @@ export default function LayoutPage() {
                       </span>
                       <div className="mt-4 h-4 w-3/4 rounded bg-gray-200/60" aria-hidden />
                       <div className="mt-2 h-4 w-full rounded bg-gray-200/60" aria-hidden />
-                      <div className="mt-2 h-20 rounded border-2 border-dashed border-gray-300" />
+                      <div className="mt-2 h-20 rounded border-2 border-dashed border-border" />
                     </div>
                     <div className="relative flex flex-col p-4">
                       <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -175,7 +175,7 @@ export default function LayoutPage() {
           </section>
 
           {/* App bar */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               App bar
             </h2>
@@ -195,7 +195,7 @@ export default function LayoutPage() {
           </section>
 
           {/* Collapsible navigation */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Collapsible navigation
             </h2>
@@ -216,7 +216,7 @@ export default function LayoutPage() {
           </section>
 
           {/* Pane */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Pane
             </h2>
@@ -236,7 +236,7 @@ export default function LayoutPage() {
           </section>
 
           {/* Control panel */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Control panel
             </h2>

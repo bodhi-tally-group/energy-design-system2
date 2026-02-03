@@ -121,7 +121,7 @@ const PopoverContent = React.forwardRef<
     <div
       ref={contentRef}
       className={cn(
-        "absolute z-50 mt-2 w-72 rounded-md border border-[#DEDEE1] bg-white p-4 shadow-md outline-none",
+        "absolute z-50 mt-2 w-72 rounded-md border border-border bg-white p-4 shadow-md outline-none",
         alignClasses[align],
         className
       )}

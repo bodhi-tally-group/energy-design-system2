@@ -132,8 +132,8 @@ export default function TallyLargeMarketPage() {
         </h1>
 
         <Tabs value={tabValue} onValueChange={setTabValue} className="mb-6">
-          {/* Small screens: single menu with all tabs */}
-          <div className="mb-4 md:hidden">
+          {/* Small screens only: dropdown (hide from md up) */}
+          <div className="mb-4 flex md:hidden">
             <DropdownMenu>
               <DropdownMenuTrigger className="inline-flex h-10 w-full items-center justify-between rounded-lg border border-border bg-gray-100 px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2">
                 <span>{currentTabLabel}</span>
@@ -152,43 +152,47 @@ export default function TallyLargeMarketPage() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          {/* Md to xl: first N tabs + More dropdown */}
-          <TabsList className="mb-4 hidden h-10 flex-nowrap justify-start gap-1 overflow-visible rounded-lg bg-gray-100 p-1 text-gray-600 md:flex xl:hidden">
-            {TABS_VISIBLE_ON_MD.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
-            ))}
-            <DropdownMenu>
-              <div className="relative z-10">
-                <DropdownMenuTrigger
-                  className={cn(
-                    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2",
-                    isTabInMore(tabValue) ? "bg-white text-[#2C365D] shadow-sm" : "text-gray-600 hover:text-gray-900"
-                  )}
-                  aria-label="More tabs"
-                >
-                  More
-                  <Icon name="expand_more" size={18} className="ml-0.5" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="min-w-[12rem] max-h-[min(70vh,20rem)] overflow-y-auto">
-                  {TABS_IN_MORE.map((tab) => (
-                    <DropdownMenuItem
-                      key={tab.value}
-                      onClick={() => setTabValue(tab.value)}
-                      className={cn(tab.value === tabValue && "bg-gray-100 font-medium text-[#2C365D]")}
-                    >
-                      {tab.label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </div>
-            </DropdownMenu>
-          </TabsList>
-          {/* Xl and up: all tabs */}
-          <TabsList className="mb-4 hidden h-10 flex-nowrap justify-start gap-1 overflow-hidden rounded-lg bg-gray-100 p-1 text-gray-600 xl:flex">
-            {TAB_CONFIG.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
-            ))}
-          </TabsList>
+          {/* Md up to just below xl: 5 tabs + More (hidden on small and on xl+) */}
+          <div className="mb-4 hidden md:block xl:hidden">
+            <TabsList className="h-10 flex-nowrap justify-start gap-1 overflow-visible rounded-lg bg-gray-100 p-1 text-gray-600">
+              {TABS_VISIBLE_ON_MD.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
+              ))}
+              <DropdownMenu>
+                <div className="relative z-10">
+                  <DropdownMenuTrigger
+                    className={cn(
+                      "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2",
+                      isTabInMore(tabValue) ? "bg-white text-[#2C365D] shadow-sm" : "text-gray-600 hover:text-gray-900"
+                    )}
+                    aria-label="More tabs"
+                  >
+                    More
+                    <Icon name="expand_more" size={18} className="ml-0.5" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="min-w-[12rem] max-h-[min(70vh,20rem)] overflow-y-auto">
+                    {TABS_IN_MORE.map((tab) => (
+                      <DropdownMenuItem
+                        key={tab.value}
+                        onClick={() => setTabValue(tab.value)}
+                        className={cn(tab.value === tabValue && "bg-gray-100 font-medium text-[#2C365D]")}
+                      >
+                        {tab.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </div>
+              </DropdownMenu>
+            </TabsList>
+          </div>
+          {/* Xl and up only: all tabs (hidden below xl) */}
+          <div className="mb-4 hidden xl:block">
+            <TabsList className="h-10 flex-nowrap justify-start gap-1 overflow-hidden rounded-lg bg-gray-100 p-1 text-gray-600">
+              {TAB_CONFIG.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           <TabsContent value="overview" className="mt-0">
             <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -299,7 +303,7 @@ export default function TallyLargeMarketPage() {
                   <CardHeader className="w-full space-y-0 border-b border-border pb-4">
                     <CardTitle className="text-base font-bold text-gray-900">Interactions</CardTitle>
                     <div className="mt-3 w-full">
-                      <div className="relative flex w-full min-w-0 items-center overflow-visible rounded-lg border border-gray-200 bg-white">
+                      <div className="relative flex w-full min-w-0 items-center overflow-visible rounded-lg border border-border bg-white">
                         <div className="flex shrink-0 items-center py-2 pl-3 pr-4">
                           <Icon name="search" size={20} className="text-gray-500" />
                         </div>
@@ -317,7 +321,7 @@ export default function TallyLargeMarketPage() {
                           <div className="min-w-0 flex-1">
                             <p className="font-semibold text-gray-900">{item.title}</p>
                             <p className="mt-0.5 text-sm text-gray-600">{item.category}</p>
-                            <Button variant="outline" size="sm" className="mt-2 rounded-lg border-gray-200 bg-white font-normal text-gray-900 hover:bg-gray-50">
+                            <Button variant="outline" size="sm" className="mt-2 rounded-lg border-border bg-white font-normal text-gray-900 hover:bg-gray-50">
                               <Icon name="add" size={16} className="mr-1" /> Add
                             </Button>
                           </div>
@@ -326,7 +330,7 @@ export default function TallyLargeMarketPage() {
                             <span className="mt-0.5 text-xs text-gray-500">{item.time}</span>
                           </div>
                         </div>
-                        <div className="flex items-center justify-end gap-2 border-t border-gray-200 pt-2">
+                        <div className="flex items-center justify-end gap-2 border-t border-border pt-2">
                           <span className="text-sm font-medium text-gray-900">2 interactions</span>
                           <span className="rounded bg-[#0074C4] px-2 py-0.5 text-xs font-medium text-white">11223344</span>
                         </div>

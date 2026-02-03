@@ -148,7 +148,7 @@ const ElectricityUsageWidget = React.forwardRef<
     ref
   ) => {
     const baseClasses =
-      "overflow-hidden rounded-2xl border border-[#DEDEE1] bg-white shadow-sm rounded-tl-[1.25rem] rounded-br-[1.25rem]";
+      "overflow-hidden rounded-2xl border border-border bg-white shadow-sm rounded-tl-[1.25rem] rounded-br-[1.25rem]";
 
     // —— X-Small: title + value + change only, no chart
     if (size === "x-small") {

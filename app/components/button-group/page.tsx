@@ -36,7 +36,7 @@ export default function ButtonGroupPage() {
 
           {activeTab === "design" && (
             <>
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Basic Button Group
                 </h2>
@@ -51,7 +51,7 @@ export default function ButtonGroupPage() {
                 </div>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Orientation
                 </h2>
@@ -88,7 +88,7 @@ export default function ButtonGroupPage() {
                 </div>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Nested Groups
                 </h2>
@@ -119,7 +119,7 @@ export default function ButtonGroupPage() {
                 </ButtonGroup>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   With Separator
                 </h2>
@@ -134,7 +134,7 @@ export default function ButtonGroupPage() {
                 </ButtonGroup>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   With Text
                 </h2>
@@ -150,7 +150,7 @@ export default function ButtonGroupPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage Examples
               </h2>

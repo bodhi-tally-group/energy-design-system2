@@ -109,7 +109,7 @@ const Toast = ({
   return (
     <div
       className={cn(
-        "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border border-[#DEDEE1] bg-white p-6 pr-8 shadow-lg transition-all"
+        "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border border-border bg-white p-6 pr-8 shadow-lg transition-all"
       )}
     >
       <div className="grid gap-1">
@@ -149,7 +149,7 @@ const ToastAction = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-[#DEDEE1] bg-transparent px-3 text-sm font-medium ring-offset-white transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2",
+        "inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-border bg-transparent px-3 text-sm font-medium ring-offset-white transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2",
         className
       )}
       {...props}

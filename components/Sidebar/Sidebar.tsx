@@ -17,8 +17,8 @@ interface SidebarProps {
 
 export default function Sidebar({ sections }: SidebarProps) {
   return (
-    <aside className="sticky top-0 h-screen w-64 overflow-y-auto border-r border-gray-200 bg-white">
-      <div className="border-b border-gray-200 px-6 py-4">
+    <aside className="sticky top-0 h-screen w-64 overflow-y-auto border-r border-border bg-white">
+      <div className="border-b border-border px-6 py-4">
         <Header />
       </div>
       <nav className="p-6">

@@ -34,7 +34,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "disabled:cursor-not-allowed disabled:opacity-50",
             error
               ? "border-[#C40000] focus-visible:ring-[#C40000]"
-              : "border-[#DEDEE1]",
+              : "border-border",
             className
           )}
           {...props}

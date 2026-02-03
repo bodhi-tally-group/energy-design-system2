@@ -32,7 +32,7 @@ export default function SkeletonPage() {
           </div>
 
           {activeTab === "design" && (
-            <section className="mb-16 border-t border-gray-200 pt-16 text-left">
+            <section className="mb-16 border-t border-border pt-16 text-left">
               <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                 Variants
               </h2>
@@ -66,7 +66,7 @@ export default function SkeletonPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage
               </h2>

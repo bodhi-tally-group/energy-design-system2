@@ -34,7 +34,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="mt-2 inline-flex w-full items-center justify-between rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-none hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2"
+      className="mt-2 inline-flex w-full items-center justify-between rounded-md border border-border bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-none hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2"
       aria-label="Toggle dark mode"
     >
       <span className="flex items-center gap-2">

@@ -41,7 +41,7 @@ export default function ButtonPage() {
           {activeTab === "design" && (
             <>
               {/* Primary Buttons Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Primary Buttons
                 </h2>
@@ -67,7 +67,7 @@ export default function ButtonPage() {
               </section>
 
               {/* Secondary Buttons Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Secondary Buttons
                 </h2>
@@ -93,7 +93,7 @@ export default function ButtonPage() {
               </section>
 
               {/* Outline Buttons Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Outline Buttons
                 </h2>
@@ -119,7 +119,7 @@ export default function ButtonPage() {
               </section>
 
               {/* Ghost Buttons Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Ghost Buttons
                 </h2>
@@ -145,7 +145,7 @@ export default function ButtonPage() {
               </section>
 
               {/* Semantic Buttons Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Semantic Buttons
                 </h2>
@@ -203,7 +203,7 @@ export default function ButtonPage() {
               </section>
 
               {/* Full Width Buttons Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Full Width Buttons
                 </h2>
@@ -226,7 +226,7 @@ export default function ButtonPage() {
               </section>
 
               {/* Button Sizes Comparison Section */}
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Size Comparison
                 </h2>
@@ -289,7 +289,7 @@ export default function ButtonPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage Examples
               </h2>

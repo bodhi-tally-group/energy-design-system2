@@ -33,7 +33,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             "disabled:cursor-not-allowed disabled:opacity-50",
             error
               ? "border-[#C40000] focus-visible:ring-[#C40000]"
-              : "border-[#DEDEE1]",
+              : "border-border",
             className
           )}
           {...props}

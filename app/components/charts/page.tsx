@@ -151,7 +151,7 @@ export default function ChartsPage() {
           {activeTab === "design" && (
             <div className="space-y-16">
               {/* Line chart */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Line chart
                 </h2>
@@ -194,7 +194,7 @@ export default function ChartsPage() {
               </section>
 
               {/* Bar chart */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Bar chart
                 </h2>
@@ -220,7 +220,7 @@ export default function ChartsPage() {
               </section>
 
               {/* Stacked bar chart */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Stacked bar chart
                 </h2>
@@ -258,7 +258,7 @@ export default function ChartsPage() {
               </section>
 
               {/* Area chart */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Area chart
                 </h2>
@@ -346,7 +346,7 @@ export default function ChartsPage() {
               </section>
 
               {/* Pie chart */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Pie chart
                 </h2>
@@ -382,7 +382,7 @@ export default function ChartsPage() {
               </section>
 
               {/* Chart size variants */}
-              <section className="border-t border-gray-200 pt-16">
+              <section className="border-t border-border pt-16">
                 <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
                   Chart size variants
                 </h2>
@@ -992,7 +992,7 @@ export default function ChartsPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage
               </h2>

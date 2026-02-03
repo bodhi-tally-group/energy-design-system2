@@ -43,7 +43,7 @@ export default function CardPage() {
 
           {activeTab === "design" && (
             <>
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Basic Card
                 </h2>
@@ -62,7 +62,7 @@ export default function CardPage() {
                 </div>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Card with Footer
                 </h2>
@@ -90,7 +90,7 @@ export default function CardPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage Examples
               </h2>

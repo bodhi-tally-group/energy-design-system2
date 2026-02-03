@@ -11,10 +11,10 @@ export default function ColorSwatch({ colorKey, color }: ColorSwatchProps) {
   const colorData = color || colors[colorKey!];
 
   return (
-    <div className="group flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-lg sm:flex-row sm:items-center">
+    <div className="group flex flex-col gap-3 rounded-lg border border-border bg-white p-4 transition-shadow hover:shadow-lg sm:flex-row sm:items-center">
       {/* Color preview square */}
       <div
-        className="h-16 w-16 shrink-0 rounded-lg border border-gray-200"
+        className="h-16 w-16 shrink-0 rounded-lg border border-border"
         style={{ backgroundColor: colorData.hex }}
         aria-label={`Color preview for ${colorData.name}`}
       />

@@ -81,7 +81,7 @@ const TooltipContent = React.forwardRef<
     <div
       ref={contentRef}
       className={cn(
-        "absolute z-50 rounded-md border border-[#DEDEE1] bg-[#2C365D] px-3 py-1.5 text-sm text-white shadow-md animate-in fade-in-0 zoom-in-95",
+        "absolute z-50 rounded-md border border-border bg-[#2C365D] px-3 py-1.5 text-sm text-white shadow-md animate-in fade-in-0 zoom-in-95",
         sideClasses[side],
         className
       )}

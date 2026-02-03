@@ -46,7 +46,7 @@ export default function ColourPage() {
         </div>
 
         {/* Primary UI Palette Section */}
-        <section className="mb-16 border-t border-gray-200 pt-16">
+        <section className="mb-16 border-t border-border pt-16">
           <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
             Primary UI Palette
           </h2>
@@ -58,7 +58,7 @@ export default function ColourPage() {
         </section>
 
         {/* Secondary Colours Section */}
-        <section className="mb-16 border-t border-gray-200 pt-16">
+        <section className="mb-16 border-t border-border pt-16">
           <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
             Secondary Colours
           </h2>
@@ -78,7 +78,7 @@ export default function ColourPage() {
         </section>
 
         {/* Semantic Colours Section */}
-        <section className="mb-16 border-t border-gray-200 pt-16">
+        <section className="mb-16 border-t border-border pt-16">
           <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
             Semantic Colours
           </h2>
@@ -99,7 +99,7 @@ export default function ColourPage() {
         </section>
 
         {/* Data Visualization Colours Section */}
-        <section className="mb-16 border-t border-gray-200 pt-16">
+        <section className="mb-16 border-t border-border pt-16">
           <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
             Data Visualization Colours
           </h2>

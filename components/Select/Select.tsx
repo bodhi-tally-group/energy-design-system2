@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/icon";
 
 export interface SelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
@@ -35,27 +36,35 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             {label}
           </label>
         )}
-        <select
-          id={selectId}
-          ref={ref}
-          className={cn(
-            "flex h-10 w-full rounded-lg border bg-white px-3 py-2 text-sm transition-colors",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            error
-              ? "border-[#C40000] focus-visible:ring-[#C40000]"
-              : "border-[#DEDEE1]",
-            className
-          )}
-          {...props}
-        >
-          {placeholder && (
-            <option value="" disabled>
-              {placeholder}
-            </option>
-          )}
-          {children}
-        </select>
+        <div className="relative">
+          <select
+            id={selectId}
+            ref={ref}
+            className={cn(
+              "flex h-10 w-full appearance-none rounded-lg border bg-white pl-3 pr-10 py-2 text-sm transition-colors",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              error
+                ? "border-[#C40000] focus-visible:ring-[#C40000]"
+                : "border-border",
+              className
+            )}
+            {...props}
+          >
+            {placeholder && (
+              <option value="" disabled>
+                {placeholder}
+              </option>
+            )}
+            {children}
+          </select>
+          <span
+            className="pointer-events-none absolute inset-y-0 right-4 flex items-center justify-center text-gray-500"
+            aria-hidden
+          >
+            <Icon name="expand_more" size={20} />
+          </span>
+        </div>
         {helperText && (
           <p
             className={cn(

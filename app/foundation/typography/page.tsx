@@ -28,7 +28,7 @@ export default function TypographyPage() {
           </div>
 
           {/* Type Scale Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Type Scale
             </h2>
@@ -40,7 +40,7 @@ export default function TypographyPage() {
           </section>
 
           {/* Font Families Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Font Families
             </h2>
@@ -52,7 +52,7 @@ export default function TypographyPage() {
           </section>
 
           {/* Text Styles Section */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
               Text Styles
             </h2>

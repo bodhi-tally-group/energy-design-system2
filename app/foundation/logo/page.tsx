@@ -91,7 +91,7 @@ export default function LogoPage() {
           </div>
 
           {/* Primary logo */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
               Primary logo
             </h2>
@@ -100,13 +100,13 @@ export default function LogoPage() {
               light backgrounds (white or light gray). Never alter the
               proportions, colours, or spacing.
             </p>
-            <div className="flex max-w-2xl min-h-[180px] items-center justify-center rounded-lg border border-gray-200 bg-white p-10">
+            <div className="flex max-w-2xl min-h-[180px] items-center justify-center rounded-lg border border-border bg-white p-10">
               <TallyGroupLogo className="h-14 w-auto" />
             </div>
           </section>
 
           {/* Reversed logo */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
               Reversed logo
             </h2>
@@ -124,7 +124,7 @@ export default function LogoPage() {
           </section>
 
           {/* Clear space */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
               Clear space
             </h2>
@@ -134,8 +134,8 @@ export default function LogoPage() {
               height of the symbol (x). No text, graphics, or other elements
               should appear within this area.
             </p>
-            <div className="relative flex max-w-2xl min-h-[200px] items-center justify-center rounded-lg border border-gray-200 bg-white p-10">
-              <div className="absolute inset-10 border border-dashed border-gray-300 border-opacity-60" />
+            <div className="relative flex max-w-2xl min-h-[200px] items-center justify-center rounded-lg border border-border bg-white p-10">
+              <div className="absolute inset-10 border border-dashed border-border border-opacity-60" />
               <div className="relative">
                 <TallyGroupLogo className="h-14 w-auto" />
               </div>
@@ -146,7 +146,7 @@ export default function LogoPage() {
           </section>
 
           {/* Minimum size */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
               Minimum size
             </h2>
@@ -155,7 +155,7 @@ export default function LogoPage() {
               smaller than these dimensions. For digital: minimum width 160px.
               For print: minimum width 25mm.
             </p>
-            <div className="flex max-w-2xl flex-wrap items-end gap-12 rounded-lg border border-gray-200 bg-white p-8">
+            <div className="flex max-w-2xl flex-wrap items-end gap-12 rounded-lg border border-border bg-white p-8">
               <div>
                 <p className="mb-3 text-xs font-medium uppercase tracking-wide text-gray-500">
                   Minimum (160px wide)
@@ -168,7 +168,7 @@ export default function LogoPage() {
           </section>
 
           {/* Logo misuse */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
               Logo misuse
             </h2>
@@ -211,7 +211,7 @@ export default function LogoPage() {
           </section>
 
           {/* Logo colours */}
-          <section className="mb-16 border-t border-gray-200 pt-16">
+          <section className="mb-16 border-t border-border pt-16">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
               Logo colours
             </h2>
@@ -223,7 +223,7 @@ export default function LogoPage() {
             <div className="flex max-w-2xl flex-wrap gap-8">
               <div className="flex flex-col gap-2">
                 <div
-                  className="h-14 w-28 rounded-lg border border-gray-200"
+                  className="h-14 w-28 rounded-lg border border-border"
                   style={{ backgroundColor: "#2C365D" }}
                 />
                 <span className="text-sm font-medium text-gray-900">
@@ -233,7 +233,7 @@ export default function LogoPage() {
               </div>
               <div className="flex flex-col gap-2">
                 <div
-                  className="h-14 w-28 rounded-lg border border-gray-200"
+                  className="h-14 w-28 rounded-lg border border-border"
                   style={{ backgroundColor: "#4EEECA" }}
                 />
                 <span className="text-sm font-medium text-gray-900">

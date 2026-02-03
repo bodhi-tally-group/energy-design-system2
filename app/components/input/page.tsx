@@ -35,7 +35,7 @@ export default function InputPage() {
 
           {activeTab === "design" && (
             <>
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   Basic Input
                 </h2>
@@ -46,7 +46,7 @@ export default function InputPage() {
                 </div>
               </section>
 
-              <section className="mb-16 border-t border-gray-200 pt-16">
+              <section className="mb-16 border-t border-border pt-16">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
                   States
                 </h2>
@@ -61,7 +61,7 @@ export default function InputPage() {
           )}
 
           {activeTab === "code" && (
-            <section className="border-t border-gray-200 pt-16">
+            <section className="border-t border-border pt-16">
               <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
                 Usage Examples
               </h2>

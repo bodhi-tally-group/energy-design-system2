@@ -274,7 +274,7 @@ export default function SmallMarketPage() {
                         Custom Invoice Message
                       </label>
                       <textarea
-                        className="w-full rounded-lg border border-[#DEDEE1] bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2"
+                        className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2"
                         rows={3}
                         defaultValue="The Australian Government and your State Government require us to provide you with information about energy rebates and concessions."
                       />
