@@ -1,4 +1,5 @@
 import React from "react";
+import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
 export interface BreadcrumbProps
@@ -121,23 +122,17 @@ const BreadcrumbSeparator = ({
     <li
       role="presentation"
       aria-hidden="true"
-      className={cn("[&>svg]:size-3.5", className)}
+      className={cn("flex items-center justify-center text-gray-400", className)}
       {...props}
     >
       {children ?? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="m9 18 6-6" />
-        </svg>
+        <span className="inline-flex h-4 items-center justify-center leading-none">
+          <Icon
+            name="chevron_right"
+            size={16}
+            className="shrink-0 translate-y-px leading-none"
+          />
+        </span>
       )}
     </li>
   );
