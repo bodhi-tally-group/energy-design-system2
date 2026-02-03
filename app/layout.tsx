@@ -19,6 +19,7 @@ const navigationSections = [
       { label: "Logo", href: "/foundation/logo" },
       { label: "Typography", href: "/foundation/typography" },
       { label: "Panes", href: "/foundation/materials" },
+      { label: "Dark Mode", href: "/foundation/dark-mode" },
     ],
   },
   {
@@ -63,6 +64,7 @@ const navigationSections = [
       { label: "Dialog", href: "/components/dialog" },
       { label: "Dropdown Menu", href: "/components/dropdown-menu" },
       { label: "Input", href: "/components/input" },
+      { label: "Navigation Bar", href: "/components/navigation-bar" },
       { label: "Popover", href: "/components/popover" },
       { label: "Progress", href: "/components/progress" },
       { label: "Radio Group", href: "/components/radio-group" },
@@ -106,7 +108,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <div className="fixed right-6 top-6 z-50">
+        <div className="fixed bottom-6 right-6 z-50">
           <ThemeModeSwitch />
         </div>
         <div className="flex">

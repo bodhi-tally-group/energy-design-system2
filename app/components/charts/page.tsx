@@ -129,10 +129,10 @@ export default function ChartsPage() {
         defaultTab="design"
         onTabChange={setActiveTab}
       />
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <p className="max-w-3xl text-lg leading-7 text-gray-600">
+            <p className="max-w-3xl text-lg leading-7 text-gray-600 dark:text-gray-400">
               Charts visualise data with line, bar, area, and pie examples
               inspired by{" "}
               <a
@@ -152,7 +152,7 @@ export default function ChartsPage() {
             <div className="space-y-16">
               {/* Line chart */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Line chart
                 </h2>
                 <p className="mb-6 max-w-2xl text-sm text-gray-600">

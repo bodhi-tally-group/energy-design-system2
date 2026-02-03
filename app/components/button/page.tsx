@@ -25,11 +25,11 @@ export default function ButtonPage() {
         onTabChange={setActiveTab}
       />
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           {/* Page Description */}
           <div className="mb-12">
-            <p className="max-w-3xl text-lg leading-7 text-gray-600">
+            <p className="max-w-3xl text-lg leading-7 text-gray-600 dark:text-gray-400">
               Buttons are interactive elements that trigger actions. They provide
               clear visual feedback and guide users through the interface. Our
               button system includes multiple variants, sizes, and states to
@@ -42,7 +42,7 @@ export default function ButtonPage() {
             <>
               {/* Primary Buttons Section */}
               <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Primary Buttons
                 </h2>
                 <p className="mb-6 max-w-3xl text-base leading-6 text-gray-600">
@@ -68,7 +68,7 @@ export default function ButtonPage() {
 
               {/* Secondary Buttons Section */}
               <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Secondary Buttons
                 </h2>
                 <p className="mb-6 max-w-3xl text-base leading-6 text-gray-600">
@@ -94,7 +94,7 @@ export default function ButtonPage() {
 
               {/* Outline Buttons Section */}
               <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Outline Buttons
                 </h2>
                 <p className="mb-6 max-w-3xl text-base leading-6 text-gray-600">
@@ -120,7 +120,7 @@ export default function ButtonPage() {
 
               {/* Ghost Buttons Section */}
               <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Ghost Buttons
                 </h2>
                 <p className="mb-6 max-w-3xl text-base leading-6 text-gray-600">
@@ -146,7 +146,7 @@ export default function ButtonPage() {
 
               {/* Semantic Buttons Section */}
               <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Semantic Buttons
                 </h2>
                 <p className="mb-6 max-w-3xl text-base leading-6 text-gray-600">
@@ -290,7 +290,7 @@ export default function ButtonPage() {
 
           {activeTab === "code" && (
             <section className="border-t border-border pt-16">
-              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
+              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                 Usage Examples
               </h2>
               <div className="space-y-8">

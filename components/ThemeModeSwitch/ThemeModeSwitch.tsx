@@ -61,7 +61,7 @@ export default function ThemeModeSwitch() {
 
   return (
     <div
-      className="inline-flex items-center rounded-full border border-gray-200/80 bg-gray-50/90 p-px dark:border-gray-600/60 dark:bg-gray-800/50"
+      className="inline-flex items-center rounded-full border border-gray-200/80 bg-gray-50/90 p-1 dark:border-gray-600/60 dark:bg-gray-800/50"
       role="group"
       aria-label="Theme mode"
     >
@@ -75,13 +75,13 @@ export default function ThemeModeSwitch() {
             aria-pressed={isSelected}
             aria-label={label}
             className={cn(
-              "flex h-6 w-6 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2C365D] focus-visible:ring-offset-1 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900",
+              "flex h-7 w-7 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2C365D] focus-visible:ring-offset-1 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900",
               isSelected
                 ? "bg-gray-200/80 text-gray-700 dark:bg-gray-600/60 dark:text-gray-200"
                 : "text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-700/50 dark:hover:text-gray-300"
             )}
           >
-            <Icon name={icon} size={14} className={cn(isSelected && "opacity-100")} />
+            <Icon name={icon} size={16} className={cn(isSelected && "opacity-100")} />
           </button>
         );
       })}

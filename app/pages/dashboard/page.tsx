@@ -174,7 +174,7 @@ function KPICard({
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="mt-2 text-3xl font-bold text-gray-900">{value}</p>
+            <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
             {change && (
               <div className="mt-2 flex items-center gap-1">
                 <Icon
@@ -185,7 +185,7 @@ function KPICard({
                       ? "text-[#008000]"
                       : changeType === "negative"
                       ? "text-[#C40000]"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-gray-400"
                   }
                 />
                 <span
@@ -194,7 +194,7 @@ function KPICard({
                       ? "text-[#008000]"
                       : changeType === "negative"
                       ? "text-[#C40000]"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-gray-400"
                   }`}
                 >
                   {change}
@@ -206,8 +206,8 @@ function KPICard({
               <p className="mt-1 text-sm text-muted-foreground">{description}</p>
             )}
           </div>
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#2C365D]/10">
-            <Icon name={icon} size={24} className="text-[#2C365D]" />
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#2C365D]/10 dark:bg-[#7c8cb8]/20">
+            <Icon name={icon} size={24} className="text-[#2C365D] dark:text-[#7c8cb8]" />
           </div>
         </div>
       </CardContent>
@@ -264,29 +264,35 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto max-w-[1600px] px-6 py-6">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-4">
-          <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700">
+          <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/" className="flex items-center text-gray-700 transition-colors hover:text-gray-900">
-                  <Icon name="home" size={18} />
+                <Link
+                  href="/"
+                  className="flex items-center text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                >
+                  <Icon name="home" size={18} className="text-gray-600 dark:text-gray-400" />
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/pages" className="text-gray-700 transition-colors hover:text-gray-900">
+                <Link
+                  href="/pages"
+                  className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                >
                   Pages
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900">
+              <BreadcrumbPage className="rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900 dark:bg-gray-800 dark:text-gray-100">
                 Dashboard
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -296,7 +302,7 @@ export default function DashboardPage() {
         {/* Page Header */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
               Energy Dashboard
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -319,7 +325,7 @@ export default function DashboardPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsList className="mb-6 h-10 flex-nowrap justify-start gap-1 rounded-lg bg-gray-100 p-1 text-gray-600">
+          <TabsList className="mb-6 h-10 flex-nowrap justify-start gap-1 rounded-lg bg-gray-100 p-1 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="consumption">Consumption</TabsTrigger>
             <TabsTrigger value="costs">Costs</TabsTrigger>
@@ -366,7 +372,7 @@ export default function DashboardPage() {
               {/* Energy Consumption Trend */}
               <Card className="shadow-none lg:col-span-8">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-bold text-gray-900">
+              <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                     Energy Consumption Trend
                   </CardTitle>
                   <CardDescription>
@@ -437,7 +443,7 @@ export default function DashboardPage() {
               {/* Cost Breakdown Pie */}
               <Card className="shadow-none lg:col-span-4">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-bold text-gray-900">
+              <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                     Cost Breakdown
                   </CardTitle>
                   <CardDescription>Current billing period</CardDescription>
@@ -477,9 +483,9 @@ export default function DashboardPage() {
                             className="h-3 w-3 rounded-full"
                             style={{ backgroundColor: item.color }}
                           />
-                          <span className="text-gray-600">{item.name}</span>
+                          <span className="text-gray-600 dark:text-gray-300">{item.name}</span>
                         </div>
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-gray-900 dark:text-gray-100">
                           ${item.value.toLocaleString()}
                         </span>
                       </div>
@@ -496,7 +502,7 @@ export default function DashboardPage() {
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-base font-bold text-gray-900">
+                      <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                         Recent Activity
                       </CardTitle>
                       <CardDescription>Latest transactions and events</CardDescription>
@@ -512,7 +518,7 @@ export default function DashboardPage() {
                 <CardContent className="px-0 pb-0">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-gray-50">
+                      <TableRow className="bg-gray-50 dark:bg-gray-800/60">
                         <TableHead className="pl-6">Transaction</TableHead>
                         <TableHead>Customer</TableHead>
                         <TableHead>Type</TableHead>
@@ -524,7 +530,7 @@ export default function DashboardPage() {
                     <TableBody>
                       {recentActivityData.map((item) => (
                         <TableRow key={item.id}>
-                          <TableCell className="pl-6 font-medium text-gray-900">
+                          <TableCell className="pl-6 font-medium text-gray-900 dark:text-gray-100">
                             {item.id}
                           </TableCell>
                           <TableCell>{item.customer}</TableCell>
@@ -545,7 +551,7 @@ export default function DashboardPage() {
               <Card className="shadow-none lg:col-span-4">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base font-bold text-gray-900">
+                    <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                       Alerts
                     </CardTitle>
                     <Badge variant="outline">{alertsData.length} new</Badge>
@@ -555,17 +561,17 @@ export default function DashboardPage() {
                   {alertsData.map((alert) => (
                     <div
                       key={alert.id}
-                      className="flex gap-3 rounded-lg border border-border bg-gray-50 p-3"
+                      className="flex gap-3 rounded-lg border border-border bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900/40"
                     >
                       <div
                         className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
                           alert.severity === "error"
-                            ? "bg-[#FEE2E2]"
+                            ? "bg-[#FEE2E2] dark:bg-red-500/20"
                             : alert.severity === "warning"
-                            ? "bg-[#FEF3C7]"
+                            ? "bg-[#FEF3C7] dark:bg-amber-500/20"
                             : alert.severity === "success"
-                            ? "bg-[#D1FAE5]"
-                            : "bg-[#DBEAFE]"
+                            ? "bg-[#D1FAE5] dark:bg-emerald-500/20"
+                            : "bg-[#DBEAFE] dark:bg-sky-500/20"
                         }`}
                       >
                         <Icon
@@ -581,17 +587,17 @@ export default function DashboardPage() {
                           size={18}
                           className={
                             alert.severity === "error"
-                              ? "text-[#C40000]"
+                              ? "text-[#C40000] dark:text-red-400"
                               : alert.severity === "warning"
-                              ? "text-[#C53B00]"
+                              ? "text-[#C53B00] dark:text-amber-300"
                               : alert.severity === "success"
-                              ? "text-[#008000]"
-                              : "text-[#0074C4]"
+                              ? "text-[#008000] dark:text-emerald-300"
+                              : "text-[#0074C4] dark:text-sky-300"
                           }
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900">{alert.title}</p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{alert.title}</p>
                         <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
                           {alert.description}
                         </p>
@@ -642,7 +648,7 @@ export default function DashboardPage() {
               {/* Weekly Usage Pattern */}
               <Card className="shadow-none">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-bold text-gray-900">
+                  <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                     Weekly Usage Pattern
                   </CardTitle>
                   <CardDescription>Average daily consumption this week</CardDescription>
@@ -687,7 +693,7 @@ export default function DashboardPage() {
               {/* Consumption by Time of Day */}
               <Card className="shadow-none">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-bold text-gray-900">
+                  <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                     Time-of-Use Distribution
                   </CardTitle>
                   <CardDescription>Consumption by tariff period</CardDescription>
@@ -696,32 +702,32 @@ export default function DashboardPage() {
                   <div className="space-y-6">
                     <div>
                       <div className="mb-2 flex items-center justify-between text-sm">
-                        <span className="font-medium text-gray-900">Peak (2pm - 8pm)</span>
+                        <span className="font-medium text-gray-900 dark:text-gray-100">Peak (2pm - 8pm)</span>
                         <span className="text-muted-foreground">35% - 13,458 kWh</span>
                       </div>
                       <Progress value={35} className="h-3" />
                     </div>
                     <div>
                       <div className="mb-2 flex items-center justify-between text-sm">
-                        <span className="font-medium text-gray-900">Shoulder (7am - 2pm, 8pm - 10pm)</span>
+                        <span className="font-medium text-gray-900 dark:text-gray-100">Shoulder (7am - 2pm, 8pm - 10pm)</span>
                         <span className="text-muted-foreground">23% - 8,844 kWh</span>
                       </div>
                       <Progress value={23} className="h-3" />
                     </div>
                     <div>
                       <div className="mb-2 flex items-center justify-between text-sm">
-                        <span className="font-medium text-gray-900">Off-Peak (10pm - 7am)</span>
+                        <span className="font-medium text-gray-900 dark:text-gray-100">Off-Peak (10pm - 7am)</span>
                         <span className="text-muted-foreground">42% - 16,149 kWh</span>
                       </div>
                       <Progress value={42} className="h-3" />
                     </div>
                   </div>
 
-                  <div className="mt-8 rounded-lg border border-[#D1FAE5] bg-[#D1FAE5]/30 p-4">
+                  <div className="mt-8 rounded-lg border border-[#D1FAE5] bg-[#D1FAE5]/30 p-4 dark:border-emerald-500/40 dark:bg-emerald-500/15">
                     <div className="flex items-start gap-3">
-                      <Icon name="lightbulb" size={20} className="mt-0.5 text-[#008000]" />
+                      <Icon name="lightbulb" size={20} className="mt-0.5 text-[#008000] dark:text-emerald-300" />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">Optimization Tip</p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Optimization Tip</p>
                         <p className="mt-1 text-sm text-muted-foreground">
                           Shifting 10% of peak usage to off-peak hours could save approximately $420/month.
                         </p>
@@ -767,7 +773,7 @@ export default function DashboardPage() {
 
             <Card className="shadow-none">
               <CardHeader className="pb-4">
-                <CardTitle className="text-base font-bold text-gray-900">
+                <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                   Monthly Cost Comparison
                 </CardTitle>
                 <CardDescription>Current year vs previous year</CardDescription>
@@ -841,7 +847,7 @@ export default function DashboardPage() {
           <TabsContent value="compact" className="mt-0 space-y-6">
             {/* Compact KPI Widgets */}
             <div>
-              <h2 className="mb-4 text-lg font-semibold text-gray-900">Key Metrics</h2>
+              <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Key Metrics</h2>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
                 {compactWidgets.map((widget, index) => (
                   <div
@@ -849,11 +855,11 @@ export default function DashboardPage() {
                     className="h-[112px] w-full overflow-hidden rounded-lg border border-border bg-card p-2 shadow-none"
                   >
                     <div className="mb-1 flex items-start justify-between">
-                      <p className="truncate text-[10px] font-medium text-gray-500">
+                      <p className="truncate text-[10px] font-medium text-gray-500 dark:text-gray-400">
                         {widget.title}
                       </p>
                     </div>
-                    <p className="mb-1 truncate text-base font-bold text-gray-900">
+                    <p className="mb-1 truncate text-base font-bold text-gray-900 dark:text-gray-100">
                       {widget.value}
                     </p>
                     <div className="h-[58px] w-full">
@@ -962,7 +968,7 @@ export default function DashboardPage() {
               {/* Energy Consumption - Compact */}
               <Card className="shadow-none">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-bold text-gray-900">
+                  <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
                     Energy Consumption
                   </CardTitle>
                 </CardHeader>
@@ -1026,7 +1032,7 @@ export default function DashboardPage() {
               {/* Cost Breakdown - Compact */}
               <Card className="shadow-none">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-bold text-gray-900">
+                  <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
                     Cost Breakdown
                   </CardTitle>
                 </CardHeader>
@@ -1066,9 +1072,9 @@ export default function DashboardPage() {
                               className="h-2 w-2 rounded-full"
                               style={{ backgroundColor: item.color }}
                             />
-                            <span className="text-gray-600">{item.name}</span>
+                            <span className="text-gray-600 dark:text-gray-300">{item.name}</span>
                           </div>
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-gray-900 dark:text-gray-100">
                             ${(item.value / 1000).toFixed(1)}k
                           </span>
                         </div>
@@ -1083,7 +1089,7 @@ export default function DashboardPage() {
             <Card className="shadow-none">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-bold text-gray-900">
+                  <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
                     Recent Activity
                   </CardTitle>
                   <Link
@@ -1098,7 +1104,7 @@ export default function DashboardPage() {
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-gray-50">
+                      <TableRow className="bg-gray-50 dark:bg-gray-800/60">
                         <TableHead className="pl-6 text-xs">ID</TableHead>
                         <TableHead className="text-xs">Customer</TableHead>
                         <TableHead className="text-xs">Type</TableHead>
@@ -1110,7 +1116,7 @@ export default function DashboardPage() {
                     <TableBody>
                       {recentActivityData.slice(0, 4).map((item) => (
                         <TableRow key={item.id}>
-                          <TableCell className="pl-6 text-xs font-medium text-gray-900">
+                          <TableCell className="pl-6 text-xs font-medium text-gray-900 dark:text-gray-100">
                             {item.id}
                           </TableCell>
                           <TableCell className="text-xs">{item.customer}</TableCell>
@@ -1138,12 +1144,12 @@ export default function DashboardPage() {
                   <div
                     className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
                       alert.severity === "error"
-                        ? "bg-[#FEE2E2]"
+                        ? "bg-[#FEE2E2] dark:bg-red-500/20"
                         : alert.severity === "warning"
-                        ? "bg-[#FEF3C7]"
+                        ? "bg-[#FEF3C7] dark:bg-amber-500/20"
                         : alert.severity === "success"
-                        ? "bg-[#D1FAE5]"
-                        : "bg-[#DBEAFE]"
+                        ? "bg-[#D1FAE5] dark:bg-emerald-500/20"
+                        : "bg-[#DBEAFE] dark:bg-sky-500/20"
                     }`}
                   >
                     <Icon
@@ -1159,17 +1165,17 @@ export default function DashboardPage() {
                       size={14}
                       className={
                         alert.severity === "error"
-                          ? "text-[#C40000]"
+                          ? "text-[#C40000] dark:text-red-400"
                           : alert.severity === "warning"
-                          ? "text-[#C53B00]"
+                          ? "text-[#C53B00] dark:text-amber-300"
                           : alert.severity === "success"
-                          ? "text-[#008000]"
-                          : "text-[#0074C4]"
+                          ? "text-[#008000] dark:text-emerald-300"
+                          : "text-[#0074C4] dark:text-sky-300"
                       }
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-gray-900 line-clamp-1">{alert.title}</p>
+                    <p className="text-xs font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{alert.title}</p>
                     <p className="mt-0.5 text-[10px] text-muted-foreground line-clamp-2">
                       {alert.description}
                     </p>
@@ -1182,7 +1188,7 @@ export default function DashboardPage() {
             {/* Regional Performance - Compact */}
             <Card className="shadow-none">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-bold text-gray-900">
+                <CardTitle className="text-sm font-bold text-gray-900 dark:text-gray-100">
                   Regional Performance
                 </CardTitle>
               </CardHeader>
@@ -1190,7 +1196,7 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {regionPerformanceData.map((region) => (
                     <div key={region.region} className="flex items-center gap-3">
-                      <span className="w-12 text-xs font-medium text-gray-900">{region.region}</span>
+                      <span className="w-12 text-xs font-medium text-gray-900 dark:text-gray-100">{region.region}</span>
                       <div className="relative flex-1">
                         <Progress value={region.actual} max={100} className="h-2" />
                         <div
@@ -1246,7 +1252,7 @@ export default function DashboardPage() {
 
             <Card className="shadow-none">
               <CardHeader className="pb-4">
-                <CardTitle className="text-base font-bold text-gray-900">
+                <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
                   Regional Performance
                 </CardTitle>
                 <CardDescription>Target vs actual performance by region</CardDescription>

@@ -40,10 +40,10 @@ export default function TablePage() {
         defaultTab="design"
         onTabChange={setActiveTab}
       />
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <p className="max-w-3xl text-lg leading-7 text-gray-600">
+            <p className="max-w-3xl text-lg leading-7 text-gray-600 dark:text-gray-400">
               Tables display data in rows and columns. These variations are
               inspired by{" "}
               <a
@@ -65,7 +65,7 @@ export default function TablePage() {
             <div className="space-y-16">
               {/* Basic table */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Basic table
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -100,7 +100,7 @@ export default function TablePage() {
 
               {/* Striped rows */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Striped rows
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -135,7 +135,7 @@ export default function TablePage() {
 
               {/* Compact / dense */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Compact density
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -167,7 +167,7 @@ export default function TablePage() {
 
               {/* With footer */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   With footer
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -209,7 +209,7 @@ export default function TablePage() {
 
               {/* Sortable-style headers */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Sortable-style headers
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -261,7 +261,7 @@ export default function TablePage() {
 
               {/* Bordered / grid */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Bordered grid
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -293,7 +293,7 @@ export default function TablePage() {
 
               {/* With row selection */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Row selection
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -341,7 +341,7 @@ export default function TablePage() {
 
               {/* Sticky header */}
               <section className="border-t border-border pt-16">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Sticky header
                 </h2>
                 <p className="mb-4 max-w-2xl text-sm text-gray-600">
@@ -385,7 +385,7 @@ export default function TablePage() {
 
           {activeTab === "code" && (
             <section className="border-t border-border pt-16">
-              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
+              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                 Usage
               </h2>
               <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">

@@ -27,10 +27,10 @@ export default function AlertPage() {
         onTabChange={setActiveTab}
       />
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <p className="max-w-3xl text-lg leading-7 text-gray-600">
+            <p className="max-w-3xl text-lg leading-7 text-gray-600 dark:text-gray-400">
               Alert components display important messages to users. They provide
               visual feedback for various states and help guide user actions.
             </p>
@@ -39,7 +39,7 @@ export default function AlertPage() {
           {activeTab === "design" && (
             <>
               <section className="mb-16 border-t border-border pt-16">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Variants
                 </h2>
                 <div className="max-w-2xl space-y-4">
@@ -84,7 +84,7 @@ export default function AlertPage() {
 
           {activeTab === "code" && (
             <section className="border-t border-border pt-16">
-              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900">
+              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                 Usage Examples
               </h2>
               <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
