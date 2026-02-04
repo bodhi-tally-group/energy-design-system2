@@ -55,6 +55,13 @@ const pages = [
     icon: "admin_panel_settings",
     tags: ["Dashboard", "Admin", "Tiles"],
   },
+  {
+    title: "S&A Beta",
+    description: "Salesforce-style CRM dashboard with pipeline, leads, opportunities, forecast, and activities",
+    href: "/pages/sales-acquisition-dashboard",
+    icon: "storefront",
+    tags: ["Sales", "CRM", "Pipeline", "Forecast", "Leads"],
+  },
 ];
 
 export default function PagesIndex() {

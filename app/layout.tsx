@@ -13,6 +13,7 @@ const navigationSections = [
     title: "Foundation",
     items: [
       { label: "Colours", href: "/foundation/colour" },
+      { label: "Cursor Rules", href: "/foundation/cursor-rules" },
       { label: "Icons", href: "/foundation/icons" },
       { label: "Layout", href: "/foundation/layout" },
       { label: "Layout Grid", href: "/foundation/layout-grid" },
@@ -43,6 +44,8 @@ const navigationSections = [
       { label: "Tally Glass", href: "/pages/tally-glass" },
       { label: "Tally Orion", href: "/pages/tally-orion" },
       { label: "Tally Acquire", href: "/pages/tally-acquire" },
+      { label: "Beta Test Dashboard", href: "/pages/beta-test-dashboard" },
+      { label: "S&A Beta", href: "/pages/sales-acquisition-dashboard" },
     ],
   },
   {
@@ -52,6 +55,7 @@ const navigationSections = [
       { label: "Alert", href: "/components/alert" },
       { label: "Alert Dialog", href: "/components/alert-dialog" },
       { label: "Aspect Ratio", href: "/components/aspect-ratio" },
+      { label: "App Bar", href: "/components/app-bar" },
       { label: "Avatar", href: "/components/avatar" },
       { label: "Badge", href: "/components/badge" },
       { label: "Breadcrumb", href: "/components/breadcrumb" },
