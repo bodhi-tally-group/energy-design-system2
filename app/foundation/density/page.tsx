@@ -19,6 +19,8 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/Card/Card";
+import Button from "@/components/Button/Button";
+import { Icon } from "@/components/ui/icon";
 
 const MODES: DensityMode[] = ["comfortable", "normal", "compact"];
 
@@ -294,139 +296,97 @@ function DensityExample({ mode }: { mode: DensityMode }) {
     >
       {/* Header */}
       <div className="border-b border-border bg-accent/50 px-4 py-3">
-        <p className="flex items-center gap-2 text-sm font-semibold text-foreground">
-          <span className="material-symbols-outlined text-[18px]">{meta.icon}</span>
+        <p className="flex items-center gap-2 font-semibold text-foreground" style={{ fontSize: "var(--tally-font-size-sm)" }}>
+          <Icon name={meta.icon} size="var(--tally-icon-size-md)" />
           {meta.label}
         </p>
-        <p className="mt-0.5 text-xs text-muted-foreground">{meta.range}</p>
+        <p className="mt-0.5 text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>{meta.range}</p>
       </div>
 
       <div className="space-y-5 p-4">
-        {/* Typography */}
+        {/* Typography — uses density CSS variables automatically */}
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-2 font-semibold uppercase tracking-wider text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
             Typography
           </p>
           <div className="space-y-1">
-            <p style={{ fontSize: tokens.fontSize.xxl, lineHeight: tokens.lineHeight.tight }}>
+            <p className="font-bold text-foreground" style={{ fontSize: "var(--tally-font-size-xxl)", lineHeight: "var(--tally-line-height-tight)" }}>
               Heading XXL
             </p>
-            <p style={{ fontSize: tokens.fontSize.xl, lineHeight: tokens.lineHeight.tight }}>
+            <p className="font-semibold text-foreground" style={{ fontSize: "var(--tally-font-size-xl)", lineHeight: "var(--tally-line-height-tight)" }}>
               Heading XL
             </p>
-            <p style={{ fontSize: tokens.fontSize.lg, lineHeight: tokens.lineHeight.normal }}>
+            <p className="font-medium text-foreground" style={{ fontSize: "var(--tally-font-size-lg)", lineHeight: "var(--tally-line-height-normal)" }}>
               Body Large
             </p>
-            <p style={{ fontSize: tokens.fontSize.base, lineHeight: tokens.lineHeight.normal }}>
+            <p className="text-foreground" style={{ fontSize: "var(--tally-font-size-base)", lineHeight: "var(--tally-line-height-normal)" }}>
               Body Base — The quick brown fox jumps over the lazy dog.
             </p>
-            <p
-              className="text-muted-foreground"
-              style={{ fontSize: tokens.fontSize.sm, lineHeight: tokens.lineHeight.normal }}
-            >
+            <p className="text-muted-foreground" style={{ fontSize: "var(--tally-font-size-sm)", lineHeight: "var(--tally-line-height-normal)" }}>
               Caption Small
             </p>
-            <p
-              className="text-muted-foreground"
-              style={{ fontSize: tokens.fontSize.xs, lineHeight: tokens.lineHeight.normal }}
-            >
+            <p className="text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)", lineHeight: "var(--tally-line-height-normal)" }}>
               Label XS
             </p>
           </div>
         </div>
 
-        {/* Buttons */}
+        {/* Buttons — uses the actual Button component */}
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-2 font-semibold uppercase tracking-wider text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
             Buttons
           </p>
           <div className="flex flex-wrap gap-2">
-            <button
-              className="inline-flex items-center justify-center bg-primary font-medium text-primary-foreground hover:bg-primary/90"
-              style={{
-                padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
-                fontSize: tokens.fontSize.sm,
-                borderRadius: tokens.borderRadius.md,
-              }}
-            >
-              Primary
-            </button>
-            <button
-              className="inline-flex items-center justify-center border border-border bg-background font-medium text-foreground hover:bg-accent"
-              style={{
-                padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
-                fontSize: tokens.fontSize.sm,
-                borderRadius: tokens.borderRadius.md,
-              }}
-            >
-              Secondary
-            </button>
-            <button
-              className="inline-flex items-center justify-center font-medium text-foreground hover:bg-accent"
-              style={{
-                padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-                fontSize: tokens.fontSize.sm,
-                borderRadius: tokens.borderRadius.md,
-              }}
-            >
-              Ghost
-            </button>
+            <Button variant="primary" size="md">Primary</Button>
+            <Button variant="outline" size="md">Secondary</Button>
+            <Button variant="ghost" size="md">Ghost</Button>
           </div>
         </div>
 
-        {/* Card */}
+        {/* Card — uses the actual Card component */}
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-2 font-semibold uppercase tracking-wider text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
             Card
           </p>
-          <div
-            className="border border-border bg-card"
-            style={{
-              padding: tokens.spacing.lg,
-              borderRadius: tokens.borderRadius.lg,
-            }}
-          >
-            <p className="font-semibold text-foreground" style={{ fontSize: tokens.fontSize.lg }}>
-              Energy Usage
-            </p>
-            <p className="text-muted-foreground" style={{ fontSize: tokens.fontSize.sm, marginTop: tokens.spacing.xs }}>
-              Monthly summary for February 2026
-            </p>
-            <div
-              className="mt-2 grid grid-cols-2"
-              style={{ gap: tokens.spacing.md }}
-            >
-              <div className="rounded-md bg-accent/60" style={{ padding: tokens.spacing.md, borderRadius: tokens.borderRadius.sm }}>
-                <p className="text-muted-foreground" style={{ fontSize: tokens.fontSize.xs }}>
-                  Consumption
-                </p>
-                <p className="font-semibold text-foreground" style={{ fontSize: tokens.fontSize.xl }}>
-                  342 kWh
-                </p>
+          <Card density={mode}>
+            <CardHeader>
+              <CardTitle>Energy Usage</CardTitle>
+              <CardDescription>Monthly summary for February 2026</CardDescription>
+            </CardHeader>
+            <CardContent density={mode}>
+              <div className="grid grid-cols-2 gap-density-md">
+                <div className="rounded-density-sm bg-accent/60 p-density-md">
+                  <p className="text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
+                    Consumption
+                  </p>
+                  <p className="font-semibold text-foreground" style={{ fontSize: "var(--tally-font-size-xl)" }}>
+                    342 kWh
+                  </p>
+                </div>
+                <div className="rounded-density-sm bg-accent/60 p-density-md">
+                  <p className="text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
+                    Cost
+                  </p>
+                  <p className="font-semibold text-foreground" style={{ fontSize: "var(--tally-font-size-xl)" }}>
+                    $48.20
+                  </p>
+                </div>
               </div>
-              <div className="rounded-md bg-accent/60" style={{ padding: tokens.spacing.md, borderRadius: tokens.borderRadius.sm }}>
-                <p className="text-muted-foreground" style={{ fontSize: tokens.fontSize.xs }}>
-                  Cost
-                </p>
-                <p className="font-semibold text-foreground" style={{ fontSize: tokens.fontSize.xl }}>
-                  $48.20
-                </p>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Spacing swatch */}
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-2 font-semibold uppercase tracking-wider text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
             Spacing Scale
           </p>
           <div className="flex items-end gap-1.5">
             {(["xs", "sm", "md", "lg", "xl", "xxl"] as const).map((key) => (
               <div key={key} className="flex flex-col items-center gap-1">
                 <div
-                  className="bg-primary/70 rounded-sm"
-                  style={{ width: tokens.spacing[key], height: tokens.spacing[key] }}
+                  className="rounded-sm bg-primary/70"
+                  style={{ width: `var(--tally-spacing-${key})`, height: `var(--tally-spacing-${key})` }}
                 />
                 <span className="text-[9px] text-muted-foreground">{key}</span>
               </div>
@@ -436,18 +396,13 @@ function DensityExample({ mode }: { mode: DensityMode }) {
 
         {/* Icon sizes */}
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="mb-2 font-semibold uppercase tracking-wider text-muted-foreground" style={{ fontSize: "var(--tally-font-size-xs)" }}>
             Icon Sizes
           </p>
           <div className="flex items-end gap-3">
             {(["sm", "md", "lg", "xl"] as const).map((key) => (
               <div key={key} className="flex flex-col items-center gap-1">
-                <span
-                  className="material-symbols-outlined text-foreground"
-                  style={{ fontSize: tokens.iconSize[key] }}
-                >
-                  bolt
-                </span>
+                <Icon name="bolt" size={`var(--tally-icon-size-${key})`} className="text-foreground" />
                 <span className="text-[9px] text-muted-foreground">
                   {key} ({tokens.iconSize[key]})
                 </span>

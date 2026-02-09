@@ -33,6 +33,7 @@ export interface DensityTokenSet {
     xl: string;
     xxl: string;
     "3xl": string;
+    "4xl": string;
   };
   lineHeight: {
     tight: string;
@@ -61,7 +62,7 @@ export const densityTokens: Record<DensityMode, DensityTokenSet> = {
   comfortable: {
     // 4K displays (≥ 2560 px)
     spacing: { xs: "4px", sm: "8px", md: "16px", lg: "24px", xl: "32px", xxl: "48px" },
-    fontSize: { xs: "12px", sm: "14px", base: "16px", lg: "18px", xl: "20px", xxl: "24px", "3xl": "30px" },
+    fontSize: { xs: "12px", sm: "14px", base: "16px", lg: "18px", xl: "20px", xxl: "24px", "3xl": "30px", "4xl": "36px" },
     lineHeight: { tight: "1.25", normal: "1.5", relaxed: "1.75" },
     iconSize: { sm: "16px", md: "20px", lg: "24px", xl: "32px" },
     borderRadius: { sm: "4px", md: "8px", lg: "12px" },
@@ -69,7 +70,7 @@ export const densityTokens: Record<DensityMode, DensityTokenSet> = {
   normal: {
     // Standard displays (1920 px – 2559 px)
     spacing: { xs: "3px", sm: "6px", md: "12px", lg: "16px", xl: "24px", xxl: "32px" },
-    fontSize: { xs: "11px", sm: "13px", base: "14px", lg: "16px", xl: "18px", xxl: "20px", "3xl": "24px" },
+    fontSize: { xs: "11px", sm: "13px", base: "14px", lg: "16px", xl: "18px", xxl: "20px", "3xl": "24px", "4xl": "30px" },
     lineHeight: { tight: "1.2", normal: "1.4", relaxed: "1.6" },
     iconSize: { sm: "14px", md: "18px", lg: "20px", xl: "28px" },
     borderRadius: { sm: "3px", md: "6px", lg: "10px" },
@@ -77,7 +78,7 @@ export const densityTokens: Record<DensityMode, DensityTokenSet> = {
   compact: {
     // Laptops (< 1920 px)
     spacing: { xs: "2px", sm: "4px", md: "8px", lg: "12px", xl: "16px", xxl: "24px" },
-    fontSize: { xs: "10px", sm: "12px", base: "13px", lg: "14px", xl: "16px", xxl: "18px", "3xl": "20px" },
+    fontSize: { xs: "10px", sm: "12px", base: "13px", lg: "14px", xl: "16px", xxl: "18px", "3xl": "20px", "4xl": "24px" },
     lineHeight: { tight: "1.15", normal: "1.35", relaxed: "1.5" },
     iconSize: { sm: "12px", md: "16px", lg: "18px", xl: "24px" },
     borderRadius: { sm: "2px", md: "4px", lg: "8px" },
@@ -168,6 +169,7 @@ export function getDensityCSS(density: DensityMode): Record<string, string> {
     "--tally-font-size-xl": t.fontSize.xl,
     "--tally-font-size-xxl": t.fontSize.xxl,
     "--tally-font-size-3xl": t.fontSize["3xl"],
+    "--tally-font-size-4xl": t.fontSize["4xl"],
     // Line height
     "--tally-line-height-tight": t.lineHeight.tight,
     "--tally-line-height-normal": t.lineHeight.normal,

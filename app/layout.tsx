@@ -48,6 +48,7 @@ const navigationSections = [
       { label: "Tally Small Market", href: "/pages/small-market" },
       { label: "Tally Large Market", href: "/pages/tally-large-market" },
       { label: "Tally Glass", href: "/pages/tally-glass" },
+      { label: "Glass Energy Dashboard", href: "/pages/glass-energy-dashboard" },
       { label: "Tally Orion", href: "/pages/tally-orion" },
       { label: "Tally Acquire", href: "/pages/tally-acquire" },
       { label: "Beta Test Dashboard", href: "/pages/beta-test-dashboard" },

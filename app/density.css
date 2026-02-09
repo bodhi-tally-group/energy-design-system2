@@ -25,6 +25,7 @@
   --tally-font-size-xl: 18px;
   --tally-font-size-xxl: 20px;
   --tally-font-size-3xl: 24px;
+  --tally-font-size-4xl: 30px;
 
   --tally-line-height-tight: 1.2;
   --tally-line-height-normal: 1.4;
@@ -58,6 +59,7 @@
     --tally-font-size-xl: 20px;
     --tally-font-size-xxl: 24px;
     --tally-font-size-3xl: 30px;
+    --tally-font-size-4xl: 36px;
 
     --tally-line-height-tight: 1.25;
     --tally-line-height-normal: 1.5;
@@ -92,6 +94,7 @@
     --tally-font-size-xl: 16px;
     --tally-font-size-xxl: 18px;
     --tally-font-size-3xl: 20px;
+    --tally-font-size-4xl: 24px;
 
     --tally-line-height-tight: 1.15;
     --tally-line-height-normal: 1.35;
@@ -131,6 +134,7 @@
   --font-size-density-xl: var(--tally-font-size-xl);
   --font-size-density-xxl: var(--tally-font-size-xxl);
   --font-size-density-3xl: var(--tally-font-size-3xl);
+  --font-size-density-4xl: var(--tally-font-size-4xl);
 
   /* Border radius: rounded-density-sm … rounded-density-lg */
   --radius-density-sm: var(--tally-radius-sm);

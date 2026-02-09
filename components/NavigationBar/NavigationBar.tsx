@@ -34,6 +34,8 @@ export interface NavTopSection {
   currentEnvironmentId?: string;
   onEnvironmentChange?: (id: string) => void;
   onAddEnvironment?: () => void;
+  /** Direction of the environment flyout. "right" (default) flies out to the right; "dropdown" opens below the button */
+  flyoutDirection?: "right" | "dropdown";
 }
 
 interface NavigationBarProps {
@@ -183,8 +185,10 @@ export default function NavigationBar({
           {topSection.environments && envFlyoutOpen && (
             <div
               className={cn(
-                "absolute left-full top-0 z-50 ml-0 min-w-[200px] rounded-r-lg border border-border bg-white py-2 dark:border-gray-600 dark:bg-gray-800",
-                collapsed ? "left-full" : "left-full"
+                "absolute z-50 min-w-[200px] border border-border bg-white py-2 shadow-lg dark:border-gray-600 dark:bg-gray-800",
+                topSection.flyoutDirection === "dropdown"
+                  ? "left-0 top-full mt-0 w-full rounded-b-lg"
+                  : "left-full top-0 ml-0 rounded-r-lg"
               )}
             >
               <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">

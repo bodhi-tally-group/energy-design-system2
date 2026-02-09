@@ -15,12 +15,46 @@ export interface ButtonProps
   fullWidth?: boolean;
 }
 
+/**
+ * Density-aware size presets.
+ * Padding, font-size, and border-radius adapt via CSS custom properties
+ * so buttons scale automatically with the density system.
+ */
+const densitySizeStyles: Record<
+  NonNullable<ButtonProps["size"]>,
+  React.CSSProperties
+> = {
+  sm: {
+    padding: "var(--tally-spacing-xs) var(--tally-spacing-md)",
+    fontSize: "var(--tally-font-size-xs)",
+    borderRadius: "var(--tally-radius-sm)",
+  },
+  md: {
+    padding: "var(--tally-spacing-sm) var(--tally-spacing-lg)",
+    fontSize: "var(--tally-font-size-sm)",
+    borderRadius: "var(--tally-radius-md)",
+  },
+  lg: {
+    padding: "var(--tally-spacing-md) var(--tally-spacing-xl)",
+    fontSize: "var(--tally-font-size-base)",
+    borderRadius: "var(--tally-radius-md)",
+  },
+  icon: {
+    padding: "var(--tally-spacing-sm)",
+    fontSize: "var(--tally-font-size-sm)",
+    borderRadius: "var(--tally-radius-sm)",
+    width: "var(--tally-icon-size-xl)",
+    height: "var(--tally-icon-size-xl)",
+  },
+};
+
 export default function Button({
   variant = "primary",
   size = "md",
   fullWidth = false,
   className = "",
   disabled,
+  style,
   children,
   ...props
 }: ButtonProps) {
@@ -44,18 +78,12 @@ export default function Button({
     info: "bg-[#0074C4] text-white hover:bg-[#005a9a] focus:ring-[#0074C4]",
   };
 
-  const sizeStyles = {
-    sm: "h-8 min-h-8 px-3 text-xs rounded-md",
-    md: "h-10 min-h-10 px-4 text-sm rounded-lg",
-    lg: "h-12 min-h-12 px-6 text-base rounded-lg",
-    icon: "size-9 min-w-9 min-h-9 p-0 rounded-md",
-  };
-
   const widthStyles = fullWidth ? "w-full" : "";
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyles} ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${widthStyles} ${className}`}
+      style={{ ...densitySizeStyles[size], ...style }}
       disabled={disabled}
       {...props}
     >
@@ -63,4 +91,3 @@ export default function Button({
     </button>
   );
 }
-

@@ -63,6 +63,13 @@ const pages = [
     tags: ["Dashboard", "Admin", "Tiles"],
   },
   {
+    title: "Glass Energy Dashboard",
+    description: "Density-adaptive energy dashboard with charts, KPIs, alerts, and grid status — Tally Glass branding",
+    href: "/pages/glass-energy-dashboard",
+    icon: "energy_savings_leaf",
+    tags: ["Dashboard", "Charts", "Density", "Glass", "KPI"],
+  },
+  {
     title: "S&A Beta",
     description: "Salesforce-style CRM dashboard with pipeline, leads, opportunities, forecast, and activities",
     href: "/pages/sales-acquisition-dashboard",
