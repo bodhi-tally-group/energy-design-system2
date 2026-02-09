@@ -1,9 +1,21 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { type DensityMode, getDensityCSS } from "@/lib/density-tokens";
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+// ── Props ──────────────────────────────────────────────────────────────────
 
-export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Override the auto-detected density.
+   * When omitted the Card adapts automatically via CSS custom properties
+   * that respond to viewport-width media queries (see `app/density.css`).
+   */
+  density?: DensityMode;
+}
+
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  density?: DensityMode;
+}
 
 export interface CardTitleProps
   extends React.HTMLAttributes<HTMLHeadingElement> {}
@@ -11,19 +23,46 @@ export interface CardTitleProps
 export interface CardDescriptionProps
   extends React.HTMLAttributes<HTMLParagraphElement> {}
 
-export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  density?: DensityMode;
+}
 
-export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  density?: DensityMode;
+}
 
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+/** Merge optional density CSS variable overrides with an existing style prop. */
+function densityStyle(
+  density: DensityMode | undefined,
+  style: React.CSSProperties | undefined,
+): React.CSSProperties | undefined {
+  if (!density) return style;
+  const vars = getDensityCSS(density) as unknown as React.CSSProperties;
+  return style ? { ...vars, ...style } : vars;
+}
+
+// ── Components ─────────────────────────────────────────────────────────────
+
+/**
+ * Card — viewport-adaptive container.
+ *
+ * Spacing and radii automatically scale with the density system
+ * (comfortable / normal / compact) via CSS custom properties.
+ *
+ * Pass `density` to lock a specific mode; omit to auto-detect.
+ */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, density, style, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "rounded-lg border border-border bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100",
+          "rounded-density-lg border border-border bg-white text-density-base text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100",
           className
         )}
+        style={densityStyle(density, style)}
         {...props}
       />
     );
@@ -32,11 +71,12 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, density, style, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col space-y-1.5 p-6", className)}
+        className={cn("flex flex-col space-y-density-sm p-density-xl", className)}
+        style={densityStyle(density, style)}
         {...props}
       />
     );
@@ -50,7 +90,7 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
       <h3
         ref={ref}
         className={cn(
-          "text-2xl font-semibold leading-none tracking-tight text-gray-900 dark:text-gray-100",
+          "text-density-xxl font-semibold leading-none tracking-tight text-gray-900 dark:text-gray-100",
           className
         )}
         {...props}
@@ -67,7 +107,7 @@ const CardDescription = React.forwardRef<
   return (
     <p
       ref={ref}
-      className={cn("text-sm text-gray-600 dark:text-gray-400", className)}
+      className={cn("text-density-sm text-gray-600 dark:text-gray-400", className)}
       {...props}
     />
   );
@@ -75,20 +115,26 @@ const CardDescription = React.forwardRef<
 CardDescription.displayName = "CardDescription";
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, density, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+      <div
+        ref={ref}
+        className={cn("p-density-xl pt-0 text-density-base", className)}
+        style={densityStyle(density, style)}
+        {...props}
+      />
     );
   }
 );
 CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, density, style, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn("flex items-center p-6 pt-0", className)}
+        className={cn("flex items-center p-density-xl pt-0", className)}
+        style={densityStyle(density, style)}
         {...props}
       />
     );
@@ -97,4 +143,3 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 CardFooter.displayName = "CardFooter";
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
-

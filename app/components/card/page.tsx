@@ -60,7 +60,7 @@ export default function CardPage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <p className="max-w-3xl text-lg leading-7 text-gray-600 dark:text-gray-400">
+            <p className="max-w-3xl text-density-lg leading-7 text-gray-600 dark:text-gray-400">
               Card components provide a container for grouping related content
               and actions. They help organize information and create visual
               hierarchy.
@@ -70,7 +70,7 @@ export default function CardPage() {
           {activeTab === "design" && (
             <>
               <section className="mb-16 border-t border-border pt-16 dark:border-gray-700">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+                <h2 className="mb-4 text-density-xxl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Basic Card
                 </h2>
                 <div className="max-w-md">
@@ -89,7 +89,7 @@ export default function CardPage() {
               </section>
 
               <section className="mb-16 border-t border-border pt-16 dark:border-gray-700">
-                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+                <h2 className="mb-4 text-density-xxl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Card with Footer
                 </h2>
                 <div className="max-w-md">
@@ -114,10 +114,10 @@ export default function CardPage() {
               </section>
 
               <section className="mb-16 border-t border-border pt-16 dark:border-gray-700">
-                <h2 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+                <h2 className="mb-2 text-density-xxl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   Energy & utility card examples
                 </h2>
-                <p className="mb-6 max-w-3xl text-sm text-gray-600 dark:text-gray-400">
+                <p className="mb-6 max-w-3xl text-density-sm text-gray-600 dark:text-gray-400">
                   Cards for dashboards and apps using energy and utility
                   nomenclature: consumption, tariffs, meter readings, and alerts.
                 </p>
@@ -127,16 +127,16 @@ export default function CardPage() {
                     <CardContent className="px-5 pb-5 pt-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          <p className="text-density-sm font-medium text-gray-600 dark:text-gray-400">
                             Total consumption
                           </p>
-                          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                          <p className="mt-2 text-density-xxl font-bold text-gray-900 dark:text-gray-100">
                             38,450 kWh
                           </p>
-                          <div className="mt-2 flex items-center gap-1 text-sm">
+                          <div className="mt-2 flex items-center gap-1 text-density-sm">
                             <Icon
                               name="trending_up"
-                              size={16}
+                              size="var(--tally-icon-size-sm)"
                               className="text-[#C40000]"
                             />
                             <span className="font-medium text-[#C40000]">
@@ -146,7 +146,7 @@ export default function CardPage() {
                           </div>
                         </div>
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#2C365D]/10 dark:bg-[#2C365D]/20">
-                          <Icon name="bolt" size={20} className="text-[#2C365D]" />
+                          <Icon name="bolt" size="var(--tally-icon-size-md)" className="text-[#2C365D]" />
                         </div>
                       </div>
                     </CardContent>
@@ -157,16 +157,16 @@ export default function CardPage() {
                     <CardContent className="px-5 pb-5 pt-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          <p className="text-density-sm font-medium text-gray-600 dark:text-gray-400">
                             Peak demand
                           </p>
-                          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                          <p className="mt-2 text-density-xxl font-bold text-gray-900 dark:text-gray-100">
                             124 kW
                           </p>
-                          <div className="mt-2 flex items-center gap-1 text-sm">
+                          <div className="mt-2 flex items-center gap-1 text-density-sm">
                             <Icon
                               name="trending_down"
-                              size={16}
+                              size="var(--tally-icon-size-sm)"
                               className="text-[#008000]"
                             />
                             <span className="font-medium text-[#008000]">
@@ -176,7 +176,7 @@ export default function CardPage() {
                           </div>
                         </div>
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#2C365D]/10 dark:bg-[#2C365D]/20">
-                          <Icon name="show_chart" size={20} className="text-[#2C365D]" />
+                          <Icon name="show_chart" size="var(--tally-icon-size-md)" className="text-[#2C365D]" />
                         </div>
                       </div>
                     </CardContent>
@@ -185,13 +185,13 @@ export default function CardPage() {
                   {/* Metric + mini chart: Cost */}
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         Cost this month
                       </CardTitle>
                       <CardDescription>Current billing period</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">$8,245</p>
+                      <p className="text-density-xxl font-bold text-gray-900 dark:text-gray-100">$8,245</p>
                       <div className="mt-3 flex h-12 items-end gap-0.5">
                         {weeklyConsumptionData.map((val, i) => (
                           <div
@@ -202,7 +202,7 @@ export default function CardPage() {
                           />
                         ))}
                       </div>
-                      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                      <p className="mt-2 text-density-xs text-gray-500 dark:text-gray-400">
                         Weekly consumption (kWh)
                       </p>
                     </CardContent>
@@ -211,7 +211,7 @@ export default function CardPage() {
                   {/* Form: Report meter issue */}
                   <Card className="lg:col-span-2">
                     <CardHeader>
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         Report meter issue
                       </CardTitle>
                       <CardDescription>
@@ -247,7 +247,7 @@ export default function CardPage() {
                   {/* Table: Meter readings */}
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         Meter readings
                       </CardTitle>
                       <CardDescription>Recent actual and estimated</CardDescription>
@@ -264,7 +264,7 @@ export default function CardPage() {
                         <TableBody>
                           {meterReadingsData.map((row, i) => (
                             <TableRow key={i} className="dark:border-gray-700">
-                              <TableCell className="text-sm dark:text-gray-300">{row.date}</TableCell>
+                              <TableCell className="text-density-sm dark:text-gray-300">{row.date}</TableCell>
                               <TableCell className="font-medium dark:text-gray-200">{row.reading}</TableCell>
                               <TableCell>
                                 <Badge variant="secondary">{row.status}</Badge>
@@ -279,7 +279,7 @@ export default function CardPage() {
                   {/* List: Account contacts */}
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         People with access
                       </CardTitle>
                       <CardDescription>Contacts for this account</CardDescription>
@@ -292,20 +292,20 @@ export default function CardPage() {
                             className="flex items-center justify-between gap-3"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2C365D]/10 dark:bg-[#2C365D]/20 text-sm font-medium text-[#2C365D] dark:text-[#7c8cb8]">
+                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2C365D]/10 dark:bg-[#2C365D]/20 text-density-sm font-medium text-[#2C365D] dark:text-[#7c8cb8]">
                                 {person.name.split(" ").map((n) => n[0]).join("")}
                               </div>
                               <div>
-                                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                <p className="text-density-sm font-medium text-gray-900 dark:text-gray-100">
                                   {person.name}
                                 </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                <p className="text-density-xs text-gray-500 dark:text-gray-400">
                                   {person.role}
                                 </p>
                               </div>
                             </div>
                             <div className="w-[88px] shrink-0">
-                              <Select className="w-full text-xs" defaultValue="view">
+                              <Select className="w-full text-density-xs" defaultValue="view">
                                 <option value="view">View</option>
                                 <option value="edit">Edit</option>
                                 <option value="remove">Remove</option>
@@ -320,13 +320,13 @@ export default function CardPage() {
                   {/* Info: Current tariff */}
                   <Card className="min-h-[240px]">
                     <CardHeader>
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         Current tariff
                       </CardTitle>
                       <CardDescription>Residential single rate</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <div className="space-y-2 text-sm">
+                      <div className="space-y-2 text-density-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600 dark:text-gray-400">Peak rate</span>
                           <span className="font-medium dark:text-gray-200">28.5¢/kWh</span>
@@ -351,7 +351,7 @@ export default function CardPage() {
                   {/* Chat: Support */}
                   <Card className="flex flex-col row-span-2 min-h-0">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         Support
                       </CardTitle>
                       <CardDescription>
@@ -361,17 +361,17 @@ export default function CardPage() {
                     <CardContent className="pt-0 flex flex-1 flex-col min-h-0 gap-3">
                       <div className="flex-1 min-h-[200px] overflow-y-auto rounded-lg border border-border dark:border-gray-600 bg-gray-50/50 dark:bg-gray-700/30 p-3 space-y-3">
                         <div className="flex justify-start">
-                          <div className="max-w-[85%] rounded-lg rounded-tl-none bg-[#2C365D]/10 dark:bg-[#2C365D]/25 px-3 py-2 text-sm text-gray-900 dark:text-gray-100">
+                          <div className="max-w-[85%] rounded-lg rounded-tl-none bg-[#2C365D]/10 dark:bg-[#2C365D]/25 px-3 py-2 text-density-sm text-gray-900 dark:text-gray-100">
                             Hi, your meter reading for January has been received. Anything else?
                           </div>
                         </div>
                         <div className="flex justify-end">
-                          <div className="max-w-[85%] rounded-lg rounded-tr-none bg-[#2C365D] px-3 py-2 text-sm text-white">
+                          <div className="max-w-[85%] rounded-lg rounded-tr-none bg-[#2C365D] px-3 py-2 text-density-sm text-white">
                             Can I get a copy of my bill?
                           </div>
                         </div>
                         <div className="flex justify-start">
-                          <div className="max-w-[85%] rounded-lg rounded-tl-none bg-[#2C365D]/10 dark:bg-[#2C365D]/25 px-3 py-2 text-sm text-gray-900 dark:text-gray-100">
+                          <div className="max-w-[85%] rounded-lg rounded-tl-none bg-[#2C365D]/10 dark:bg-[#2C365D]/25 px-3 py-2 text-density-sm text-gray-900 dark:text-gray-100">
                             Sure, I’ve sent it to your email. Need help with your tariff?
                           </div>
                         </div>
@@ -391,7 +391,7 @@ export default function CardPage() {
                   {/* Settings: Usage alerts */}
                   <Card className="lg:col-span-2">
                     <CardHeader>
-                      <CardTitle className="text-base font-semibold">
+                      <CardTitle className="text-density-base font-semibold">
                         Usage alerts
                       </CardTitle>
                       <CardDescription>
@@ -402,10 +402,10 @@ export default function CardPage() {
                       <div className="space-y-4">
                         <div className="flex items-center justify-between rounded-lg border border-border dark:border-gray-600 bg-gray-50/50 dark:bg-gray-700/30 px-4 py-3">
                           <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            <p className="text-density-sm font-medium text-gray-900 dark:text-gray-100">
                               High usage alert
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-density-xs text-gray-500 dark:text-gray-400">
                               When consumption exceeds 80% of last month
                             </p>
                           </div>
@@ -413,10 +413,10 @@ export default function CardPage() {
                         </div>
                         <div className="flex items-center justify-between rounded-lg border border-border dark:border-gray-600 bg-gray-50/50 dark:bg-gray-700/30 px-4 py-3">
                           <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            <p className="text-density-sm font-medium text-gray-900 dark:text-gray-100">
                               Budget alert
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-density-xs text-gray-500 dark:text-gray-400">
                               When estimated cost reaches your budget
                             </p>
                           </div>
@@ -424,10 +424,10 @@ export default function CardPage() {
                         </div>
                         <div className="flex items-center justify-between rounded-lg border border-border dark:border-gray-600 bg-gray-50/50 dark:bg-gray-700/30 px-4 py-3">
                           <div>
-                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            <p className="text-density-sm font-medium text-gray-900 dark:text-gray-100">
                               Outage notifications
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-density-xs text-gray-500 dark:text-gray-400">
                               Planned and unplanned supply interruptions
                             </p>
                           </div>
@@ -443,15 +443,15 @@ export default function CardPage() {
 
           {activeTab === "code" && (
             <section className="border-t border-border pt-16 dark:border-gray-700">
-              <h2 className="mb-6 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+              <h2 className="mb-6 text-density-xxl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                 Usage Examples
               </h2>
               <div className="space-y-8">
                 <div>
-                  <h3 className="mb-3 text-lg font-medium text-gray-900">
+                  <h3 className="mb-3 text-density-lg font-medium text-gray-900">
                     Basic Card
                   </h3>
-                  <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
+                  <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-density-sm text-gray-100">
                     <code>{`import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/Card/Card";
 
 <Card>

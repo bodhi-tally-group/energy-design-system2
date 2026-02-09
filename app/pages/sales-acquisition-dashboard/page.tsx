@@ -194,31 +194,31 @@ function KPICard({
       <CardContent className="p-6 pt-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+            <p className="text-density-sm font-medium text-muted-foreground">{title}</p>
+            <p className="mt-2 font-bold leading-tight text-gray-900 dark:text-gray-100" style={{ fontSize: 'var(--tally-font-size-3xl)' }}>{value}</p>
             {change && (
               <div className="mt-2 flex items-center gap-1">
                 <Icon
                   name={changeType === "positive" ? "trending_up" : changeType === "negative" ? "trending_down" : "trending_flat"}
-                  size={16}
+                  size="var(--tally-icon-size-sm)"
                   className={
                     changeType === "positive" ? "text-[#008000]" : changeType === "negative" ? "text-[#C40000]" : "text-gray-500 dark:text-gray-400"
                   }
                 />
                 <span
-                  className={`text-sm font-medium ${
+                  className={`text-density-sm font-medium ${
                     changeType === "positive" ? "text-[#008000]" : changeType === "negative" ? "text-[#C40000]" : "text-gray-500 dark:text-gray-400"
                   }`}
                 >
                   {change}
                 </span>
-                <span className="text-sm text-muted-foreground">vs last month</span>
+                <span className="text-density-sm text-muted-foreground">vs last month</span>
               </div>
             )}
-            {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
+            {description && <p className="mt-1 text-density-sm text-muted-foreground">{description}</p>}
           </div>
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#2C365D]/10 dark:bg-[#7c8cb8]/20">
-            <Icon name={icon as "home"} size={24} className="text-[#2C365D] dark:text-[#7c8cb8]" />
+          <div className="flex shrink-0 items-center justify-center rounded-density-md bg-[#2C365D]/10 p-density-md dark:bg-[#7c8cb8]/20">
+            <Icon name={icon as "home"} size="var(--tally-icon-size-lg)" className="text-[#2C365D] dark:text-[#7c8cb8]" />
           </div>
         </div>
       </CardContent>
@@ -308,13 +308,13 @@ export default function SalesAcquisitionDashboardPage() {
           <div className="relative hidden w-full max-w-md md:block">
             <Icon
               name="search"
-              size={20}
+              size="var(--tally-icon-size-md)"
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
             />
             <input
               type="search"
               placeholder="Search leads, opportunities, accounts..."
-              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#2C365D] focus:outline-none focus:ring-1 focus:ring-[#2C365D] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-density-sm text-gray-900 placeholder:text-gray-500 focus:border-[#2C365D] focus:outline-none focus:ring-1 focus:ring-[#2C365D] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
             />
           </div>
         </div>
@@ -324,9 +324,9 @@ export default function SalesAcquisitionDashboardPage() {
             type="button"
             className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/80 dark:hover:text-gray-100"
           >
-            <Icon name="notifications" size={20} />
+            <Icon name="notifications" size="var(--tally-icon-size-md)" />
           </button>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2C365D] text-sm font-medium text-white dark:bg-[#7c8cb8]">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2C365D] text-density-sm font-medium text-white dark:bg-[#7c8cb8]">
             SA
           </div>
         </div>
@@ -343,7 +343,7 @@ export default function SalesAcquisitionDashboardPage() {
                   type="button"
                   onClick={() => setActiveNavId(item.id)}
                   className={cn(
-                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
+                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-density-sm font-medium transition-colors",
                     activeNavId === item.id
                       ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
@@ -351,7 +351,7 @@ export default function SalesAcquisitionDashboardPage() {
                 >
                   <Icon
                     name={item.icon as "home"}
-                    size={20}
+                    size="var(--tally-icon-size-md)"
                     className={cn(
                       "transition-colors",
                       activeNavId === item.id ? "text-[#2C365D] dark:text-[#7c8cb8]" : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
@@ -363,13 +363,13 @@ export default function SalesAcquisitionDashboardPage() {
             </nav>
           </div>
 
-          <div className="space-y-2 border-t border-border p-3 text-xs text-muted-foreground dark:border-gray-800">
+          <div className="space-y-2 border-t border-border p-3 text-density-xs text-muted-foreground dark:border-gray-800">
             <button
               type="button"
-              className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+              className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-density-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
             >
               <span className="flex items-center gap-2">
-                <Icon name="description" size={16} className="text-gray-500 dark:text-gray-400" />
+                <Icon name="description" size="var(--tally-icon-size-sm)" className="text-gray-500 dark:text-gray-400" />
                 Documentation
               </span>
             </button>
@@ -392,11 +392,11 @@ export default function SalesAcquisitionDashboardPage() {
           <div className="mx-auto max-w-[1600px] px-6 py-6">
             {/* Breadcrumb */}
             <Breadcrumb className="mb-4">
-              <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
+              <BreadcrumbList className="items-center gap-1.5 text-density-sm text-gray-700 dark:text-gray-300">
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
                     <Link href="/" className="flex items-center text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-                      <Icon name="home" size={18} className="text-gray-600 dark:text-gray-400" />
+                      <Icon name="home" size="var(--tally-icon-size-md)" className="text-gray-600 dark:text-gray-400" />
                     </Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -420,10 +420,10 @@ export default function SalesAcquisitionDashboardPage() {
             {/* Page Header */}
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                <h1 className="text-density-xxl font-bold tracking-tight text-gray-900 dark:text-gray-100">
                   S&A Beta
                 </h1>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-density-sm text-muted-foreground">
                   Pipeline, leads, opportunities, and performance metrics
                 </p>
               </div>
@@ -436,9 +436,9 @@ export default function SalesAcquisitionDashboardPage() {
                 </Select>
                 <Link
                   href="#"
-                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-[#2C365D] px-4 py-2 text-sm font-medium text-white hover:bg-[#2C365D]/90 dark:bg-[#7c8cb8] dark:hover:bg-[#7c8cb8]/90"
+                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-[#2C365D] px-4 py-2 text-density-sm font-medium text-white hover:bg-[#2C365D]/90 dark:bg-[#7c8cb8] dark:hover:bg-[#7c8cb8]/90"
                 >
-                  <Icon name="add" size={18} />
+                  <Icon name="add" size="var(--tally-icon-size-md)" />
                   New Lead
                 </Link>
               </div>
@@ -492,7 +492,7 @@ export default function SalesAcquisitionDashboardPage() {
                   {/* Revenue Trend */}
                   <Card className="shadow-none lg:col-span-8">
                     <CardHeader className="pb-4">
-                      <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                      <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                         Revenue vs Forecast
                       </CardTitle>
                       <CardDescription>Monthly revenue compared to forecast</CardDescription>
@@ -542,7 +542,7 @@ export default function SalesAcquisitionDashboardPage() {
                   {/* Pipeline Funnel */}
                   <Card className="shadow-none lg:col-span-4">
                     <CardHeader className="pb-4">
-                      <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                      <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                         Pipeline by Stage
                       </CardTitle>
                       <CardDescription>Deals and value by stage</CardDescription>
@@ -551,7 +551,7 @@ export default function SalesAcquisitionDashboardPage() {
                       <div className="space-y-4">
                         {pipelineStagesData.map((stage) => (
                           <div key={stage.stage}>
-                            <div className="mb-1.5 flex items-center justify-between text-sm">
+                            <div className="mb-1.5 flex items-center justify-between text-density-sm">
                               <span className="font-medium text-gray-900 dark:text-gray-100">{stage.stage}</span>
                               <span className="text-muted-foreground">
                                 {stage.count} deals · {stage.value > 0 ? `$${(stage.value / 1000).toFixed(0)}k` : "—"}
@@ -572,12 +572,12 @@ export default function SalesAcquisitionDashboardPage() {
                     <CardHeader className="pb-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                          <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                             Recent Leads
                           </CardTitle>
                           <CardDescription>Latest lead activity</CardDescription>
                         </div>
-                        <Link href="#" className="text-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]">
+                        <Link href="#" className="text-density-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]">
                           View all
                         </Link>
                       </div>
@@ -617,7 +617,7 @@ export default function SalesAcquisitionDashboardPage() {
                     {/* Top Performers */}
                     <Card className="shadow-none">
                       <CardHeader className="pb-4">
-                        <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                        <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                           Top Performers
                         </CardTitle>
                         <CardDescription>This month</CardDescription>
@@ -629,12 +629,12 @@ export default function SalesAcquisitionDashboardPage() {
                               key={performer.name}
                               className="flex items-center gap-3 rounded-lg border border-border p-3 dark:border-gray-700"
                             >
-                              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2C365D]/10 text-sm font-bold text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]">
+                              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2C365D]/10 text-density-sm font-bold text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]">
                                 {performer.rank}
                               </div>
                               <div className="min-w-0 flex-1">
                                 <p className="font-medium text-gray-900 dark:text-gray-100">{performer.name}</p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-density-xs text-muted-foreground">
                                   {performer.deals} deals · {performer.value}
                                 </p>
                               </div>
@@ -648,10 +648,10 @@ export default function SalesAcquisitionDashboardPage() {
                     <Card className="shadow-none">
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                          <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                             Upcoming Activities
                           </CardTitle>
-                          <Link href="#" className="text-xs font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]">
+                          <Link href="#" className="text-density-xs font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]">
                             View all
                           </Link>
                         </div>
@@ -664,11 +664,11 @@ export default function SalesAcquisitionDashboardPage() {
                               className="flex gap-3 rounded-lg border border-border p-3 dark:border-gray-700"
                             >
                               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2C365D]/10 dark:bg-[#7c8cb8]/20">
-                                <Icon name={getActivityIcon(activity.type) as "call"} size={16} className="text-[#2C365D] dark:text-[#7c8cb8]" />
+                                <Icon name={getActivityIcon(activity.type) as "call"} size="var(--tally-icon-size-sm)" className="text-[#2C365D] dark:text-[#7c8cb8]" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{activity.subject}</p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-density-sm font-medium text-gray-900 dark:text-gray-100">{activity.subject}</p>
+                                <p className="text-density-xs text-muted-foreground">
                                   {activity.due} · {activity.assignee}
                                 </p>
                               </div>
@@ -688,7 +688,7 @@ export default function SalesAcquisitionDashboardPage() {
                   {/* Pipeline Funnel Chart */}
                   <Card className="shadow-none lg:col-span-6">
                     <CardHeader className="pb-4">
-                      <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                      <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                         Pipeline Funnel
                       </CardTitle>
                       <CardDescription>Deal count and value by stage</CardDescription>
@@ -725,7 +725,7 @@ export default function SalesAcquisitionDashboardPage() {
                   {/* Stage Distribution Pie */}
                   <Card className="shadow-none lg:col-span-6">
                     <CardHeader className="pb-4">
-                      <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                      <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                         Stage Distribution
                       </CardTitle>
                       <CardDescription>Deal count by stage</CardDescription>
@@ -763,7 +763,7 @@ export default function SalesAcquisitionDashboardPage() {
                         </div>
                         <div className="flex-1 space-y-2">
                           {pipelineStagesData.filter((s) => s.value > 0).map((stage, i) => (
-                            <div key={stage.stage} className="flex items-center justify-between text-sm">
+                            <div key={stage.stage} className="flex items-center justify-between text-density-sm">
                               <div className="flex items-center gap-2">
                                 <div className="h-3 w-3 rounded-full" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
                                 <span className="text-gray-600 dark:text-gray-300">{stage.stage}</span>
@@ -782,12 +782,12 @@ export default function SalesAcquisitionDashboardPage() {
                   <CardHeader className="pb-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                        <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                           Open Opportunities
                         </CardTitle>
                         <CardDescription>Deals in progress</CardDescription>
                       </div>
-                      <Link href="#" className="text-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]">
+                      <Link href="#" className="text-density-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]">
                         View all
                       </Link>
                     </div>
@@ -813,7 +813,7 @@ export default function SalesAcquisitionDashboardPage() {
                             <TableCell className="pr-6">
                               <button
                                 type="button"
-                                className="text-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]"
+                                className="text-density-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]"
                               >
                                 Edit
                               </button>
@@ -837,7 +837,7 @@ export default function SalesAcquisitionDashboardPage() {
 
                 <Card className="shadow-none">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                    <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                       Revenue Forecast
                     </CardTitle>
                     <CardDescription>Actual vs forecasted revenue by month</CardDescription>
@@ -882,7 +882,7 @@ export default function SalesAcquisitionDashboardPage() {
 
                 <Card className="shadow-none">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">
+                    <CardTitle className="text-density-base font-bold text-gray-900 dark:text-gray-100">
                       All Activities
                     </CardTitle>
                     <CardDescription>Tasks, calls, meetings, and emails</CardDescription>
@@ -904,7 +904,7 @@ export default function SalesAcquisitionDashboardPage() {
                           <TableRow key={activity.id}>
                             <TableCell className="pl-6">
                               <div className="flex items-center gap-2">
-                                <Icon name={getActivityIcon(activity.type) as "call"} size={18} className="text-[#2C365D] dark:text-[#7c8cb8]" />
+                                <Icon name={getActivityIcon(activity.type) as "call"} size="var(--tally-icon-size-md)" className="text-[#2C365D] dark:text-[#7c8cb8]" />
                                 {activity.type}
                               </div>
                             </TableCell>
@@ -915,7 +915,7 @@ export default function SalesAcquisitionDashboardPage() {
                             <TableCell className="pr-6">
                               <button
                                 type="button"
-                                className="text-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]"
+                                className="text-density-sm font-medium text-[#2C365D] hover:underline dark:text-[#7c8cb8]"
                               >
                                 Complete
                               </button>

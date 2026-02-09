@@ -1,14 +1,26 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { type DensityMode, getDensityCSS } from "@/lib/density-tokens";
+
+/** Merge optional density CSS variable overrides with an existing style prop. */
+function densityStyle(
+  density: DensityMode | undefined,
+  style: React.CSSProperties | undefined,
+): React.CSSProperties | undefined {
+  if (!density) return style;
+  const vars = getDensityCSS(density) as unknown as React.CSSProperties;
+  return style ? { ...vars, ...style } : vars;
+}
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { density?: DensityMode }
+>(({ className, density, style, ...props }, ref) => (
   <div
     ref={ref}
     data-slot="card"
     className={cn("rounded-lg border border-border bg-card text-card-foreground", className)}
+    style={densityStyle(density, style)}
     {...props}
   />
 ));
@@ -16,12 +28,13 @@ Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { density?: DensityMode }
+>(({ className, density, style, ...props }, ref) => (
   <div
     ref={ref}
     data-slot="card-header"
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("flex flex-col space-y-density-sm p-density-xl", className)}
+    style={densityStyle(density, style)}
     {...props}
   />
 ));
@@ -58,12 +71,13 @@ CardDescription.displayName = "CardDescription";
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { density?: DensityMode }
+>(({ className, density, style, ...props }, ref) => (
   <div
     ref={ref}
     data-slot="card-content"
-    className={cn("p-6 pt-0", className)}
+    className={cn("p-density-xl pt-0", className)}
+    style={densityStyle(density, style)}
     {...props}
   />
 ));
@@ -71,12 +85,13 @@ CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { density?: DensityMode }
+>(({ className, density, style, ...props }, ref) => (
   <div
     ref={ref}
     data-slot="card-footer"
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("flex items-center p-density-xl pt-0", className)}
+    style={densityStyle(density, style)}
     {...props}
   />
 ));

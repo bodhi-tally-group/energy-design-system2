@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import ThemeModeSwitch from "@/components/ThemeModeSwitch/ThemeModeSwitch";
+import DensityModeSwitch from "@/components/DensityModeSwitch/DensityModeSwitch";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ const navigationSections = [
       { label: "Typography", href: "/foundation/typography" },
       { label: "Panes", href: "/foundation/materials" },
       { label: "Dark Mode", href: "/foundation/dark-mode" },
+      { label: "Density", href: "/foundation/density" },
     ],
   },
   {
@@ -118,7 +120,8 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
+          <DensityModeSwitch />
           <ThemeModeSwitch />
         </div>
         <div className="flex">
