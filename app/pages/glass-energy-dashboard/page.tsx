@@ -391,7 +391,7 @@ export default function GlassEnergyDashboard() {
                             <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                             <Tooltip
                               contentStyle={{ borderRadius: "8px", border: "1px solid #E5E7EB", fontSize: "13px" }}
-                              formatter={(value: number) => `$${value.toLocaleString()}`}
+                              formatter={(value?: number) => `$${(value ?? 0).toLocaleString()}`}
                             />
                             <Legend />
                             <Bar dataKey="revenue" name="Revenue" fill={dataVisualizationColors.dataASolid.hex} radius={[4, 4, 0, 0]} />
@@ -647,7 +647,7 @@ export default function GlassEnergyDashboard() {
                             <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                             <Tooltip
                               contentStyle={{ borderRadius: "8px", border: "1px solid #E5E7EB", fontSize: "13px" }}
-                              formatter={(value: number) => `$${value.toLocaleString()}`}
+                              formatter={(value?: number) => `$${(value ?? 0).toLocaleString()}`}
                             />
                             <Legend />
                             <Line type="monotone" dataKey="revenue" name="Revenue" stroke={dataVisualizationColors.dataESolid.hex} strokeWidth={2.5} dot={{ r: 4 }} />
