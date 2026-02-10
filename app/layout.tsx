@@ -53,6 +53,7 @@ const navigationSections = [
       { label: "Tally Acquire", href: "/pages/tally-acquire" },
       { label: "Beta Test Dashboard", href: "/pages/beta-test-dashboard" },
       { label: "S&A Beta", href: "/pages/sales-acquisition-dashboard" },
+      { label: "Tally CRM", href: "/crm/dashboard" },
     ],
   },
   {
@@ -127,7 +128,7 @@ export default function RootLayout({
         </div>
         <div className="flex overflow-x-hidden">
           <Sidebar sections={navigationSections} />
-          <main className="flex-1">{children}</main>
+          <main className="min-w-0 flex-1">{children}</main>
         </div>
       </body>
     </html>

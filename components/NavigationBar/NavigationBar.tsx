@@ -143,7 +143,7 @@ export default function NavigationBar({
               topSection.environments ? setEnvFlyoutOpen((o) => !o) : undefined
             }
             className={cn(
-              "flex w-full items-center gap-3 rounded-none border-0 bg-transparent text-left outline-none transition-colors",
+              "flex w-full items-center gap-3 rounded-none border-0 bg-transparent text-left outline-none transition-colors focus:outline-none focus-visible:outline-none",
               paddingX,
               compact ? "py-3" : "py-4",
               "hover:bg-gray-100 dark:hover:bg-gray-700",
@@ -243,7 +243,7 @@ export default function NavigationBar({
       )}
 
       {/* ----- Main nav (scrollable) ----- */}
-      <div className="flex-1 overflow-y-auto overflow-x-visible py-2">
+      <div className="flex-1 overflow-y-auto overflow-x-visible p-2">
         <ul className="space-y-0.5">
           {items.map((item) => {
             const hasChildren = (item.children?.length ?? 0) > 0;
@@ -296,12 +296,11 @@ export default function NavigationBar({
                       onMouseLeave={() => setHoveredItemId(null)}
                       onClick={() => handleItemClick(item)}
                       className={cn(
-                        "group flex w-full items-center gap-3 rounded-md border-0 bg-transparent text-left outline-none transition-colors",
+                        "group flex w-full items-center gap-3 rounded-lg border-0 bg-transparent text-left outline-none transition-colors focus:outline-none focus-visible:outline-none",
                         paddingX,
                         "py-2 text-sm font-normal",
-                        "focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800",
                         active || isOpen
-                          ? "bg-gray-200 text-gray-900 dark:bg-gray-600 dark:text-gray-100"
+                          ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100",
                         item.disabled && "cursor-not-allowed opacity-50"
                       )}
@@ -313,7 +312,7 @@ export default function NavigationBar({
                           className={cn(
                             "shrink-0",
                             (active || isOpen)
-                              ? "text-gray-900 dark:text-gray-100"
+                              ? "text-[#2C365D] dark:text-[#7c8cb8]"
                               : "text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
                           )}
                         />
@@ -339,7 +338,7 @@ export default function NavigationBar({
                                 }
                               }}
                               className={cn(
-                                "flex items-center gap-2 rounded-md py-2 pr-3 pl-2 text-sm font-normal transition-colors",
+                                "flex items-center gap-2 rounded-lg py-2 pr-3 pl-2 text-sm font-normal transition-colors focus:outline-none focus-visible:outline-none",
                                 isActive(child.id)
                                   ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
                                   : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -374,11 +373,10 @@ export default function NavigationBar({
                         }
                       }}
                       className={cn(
-                        "group relative flex cursor-pointer items-center rounded-md border-0 bg-transparent py-2 text-sm font-normal outline-none transition-colors",
+                        "group relative flex cursor-pointer items-center rounded-lg border-0 bg-transparent py-2 text-sm font-normal outline-none transition-colors focus:outline-none focus-visible:outline-none",
                         collapsed
                           ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
                           : `${paddingX} text-left gap-3`,
-                        "focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800",
                         active
                           ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100"
@@ -415,11 +413,10 @@ export default function NavigationBar({
                         else handleItemClick(item);
                       }}
                       className={cn(
-                        "group relative flex items-center rounded-md py-2 text-sm font-normal transition-colors",
+                        "group relative flex items-center rounded-lg py-2 text-sm font-normal transition-colors focus:outline-none focus-visible:outline-none",
                         collapsed
                           ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
                           : `${paddingX} gap-3`,
-                        "focus:outline-none focus:ring-2 focus:ring-[#2C365D] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800",
                         active
                           ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100",
@@ -460,7 +457,7 @@ export default function NavigationBar({
       </div>
 
       {/* ----- Bottom section (Help, Settings, collapse toggle) ----- */}
-      <div className="shrink-0 border-t border-border py-2 dark:border-gray-700">
+      <div className="shrink-0 border-t border-border p-2 dark:border-gray-700">
         {bottomItems.map((item) => (
           <Link
             key={item.id}
@@ -475,7 +472,7 @@ export default function NavigationBar({
               }
             }}
             className={cn(
-              "group flex items-center rounded-md py-2 text-sm font-normal transition-colors",
+              "group flex items-center rounded-lg py-2 text-sm font-normal transition-colors focus:outline-none focus-visible:outline-none",
               collapsed
                 ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
                 : `${paddingX} gap-3`,
@@ -509,7 +506,7 @@ export default function NavigationBar({
           type="button"
           onClick={() => setCollapsed(!collapsed)}
           className={cn(
-            "flex w-full items-center rounded-md py-2 text-sm font-normal text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100",
+            "flex w-full items-center rounded-lg py-2 text-sm font-normal text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:outline-none dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100",
             collapsed
               ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
               : `${paddingX} justify-start gap-3`
