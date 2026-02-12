@@ -31,10 +31,10 @@ const SECTION_LINKS: Record<string, string | undefined> = {
 
 const SECTION_ICONS: Record<string, string> = {
   Elements: "palette",
-  Brands: "diamond",
-  Components: "widgets",
-  Patterns: "dashboard",
-  Templates: "web",
+  Brands: "filter_vintage",
+  Components: "deployed_code",
+  Patterns: "widgets",
+  Templates: "newsmode",
 };
 
 const STORAGE_KEY = "ds-sidebar-collapsed";
