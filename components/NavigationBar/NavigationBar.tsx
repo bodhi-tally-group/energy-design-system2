@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +39,25 @@ export interface NavTopSection {
   flyoutDirection?: "right" | "dropdown";
 }
 
+/** Brand-specific active state colours. Each Tally product passes its own palette. */
+export interface NavActiveColors {
+  /** Active background class, e.g. "bg-[#E6F7FF]" */
+  bg: string;
+  /** Active text class, e.g. "text-[#006180]" */
+  text: string;
+  /** Dark-mode active background class, e.g. "dark:bg-[#006180]/20" */
+  darkBg: string;
+  /** Dark-mode active text class, e.g. "dark:text-[#80E0FF]" */
+  darkText: string;
+}
+
+const defaultActiveColors: NavActiveColors = {
+  bg: "bg-gray-100",
+  text: "text-gray-900",
+  darkBg: "dark:bg-gray-700",
+  darkText: "dark:text-gray-100",
+};
+
 interface NavigationBarProps {
   /** Main nav items (can include children for submenus) */
   items: NavigationItem[];
@@ -55,6 +75,8 @@ interface NavigationBarProps {
   /** Expand on hover when collapsed (e.g. for docs). Default false = use toggle only */
   expandOnHover?: boolean;
   onItemClick?: (itemId: string) => void;
+  /** Brand-specific active state colours. Defaults to neutral gray. */
+  activeColors?: NavActiveColors;
   className?: string;
 }
 
@@ -68,8 +90,12 @@ export default function NavigationBar({
   compact = false,
   expandOnHover = false,
   onItemClick,
+  activeColors: activeColorsProp,
   className,
 }: NavigationBarProps) {
+  const ac = activeColorsProp ?? defaultActiveColors;
+  const activeClass = `${ac.bg} ${ac.text} ${ac.darkBg} ${ac.darkText}`;
+  const activeIconClass = `${ac.text} ${ac.darkText}`;
   const [internalCollapsed, setInternalCollapsed] = useState(controlledCollapsed ?? true);
   const collapsed = controlledCollapsed ?? internalCollapsed;
   const setCollapsed = (value: boolean) => {
@@ -80,10 +106,39 @@ export default function NavigationBar({
   const [activeId, setActiveId] = useState(defaultActiveId ?? items[0]?.id);
   const [openParentId, setOpenParentId] = useState<string | null>(null);
   const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
+  const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number; label: string } | null>(null);
   const [envFlyoutOpen, setEnvFlyoutOpen] = useState(false);
   const [hoveredParentForFlyout, setHoveredParentForFlyout] = useState<string | null>(null);
+  const [flyoutPos, setFlyoutPos] = useState<{ top: number; left: number } | null>(null);
+  const flyoutTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const envRef = useRef<HTMLDivElement>(null);
   const flyoutRef = useRef<HTMLDivElement>(null);
+
+  // Show a fixed-position tooltip to the right of the collapsed nav
+  const showTooltip = (e: React.MouseEvent, label: string) => {
+    if (!collapsed) return;
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setTooltipPos({ top: rect.top + rect.height / 2, left: rect.right + 8, label });
+  };
+  const hideTooltip = () => setTooltipPos(null);
+
+  // Show a fixed-position flyout for parent items with children
+  const showFlyout = (e: React.MouseEvent, itemId: string) => {
+    if (!collapsed) return;
+    if (flyoutTimeout.current) clearTimeout(flyoutTimeout.current);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setFlyoutPos({ top: rect.top, left: rect.right + 8 });
+    setHoveredParentForFlyout(itemId);
+  };
+  const hideFlyout = () => {
+    flyoutTimeout.current = setTimeout(() => {
+      setFlyoutPos(null);
+      setHoveredParentForFlyout(null);
+    }, 100);
+  };
+  const cancelHideFlyout = () => {
+    if (flyoutTimeout.current) clearTimeout(flyoutTimeout.current);
+  };
 
   // Close env flyout when clicking outside
   useEffect(() => {
@@ -118,7 +173,6 @@ export default function NavigationBar({
 
   const isParentOpen = (itemId: string) => openParentId === itemId;
   const isActive = (itemId: string) => activeId === itemId;
-  const isHovered = (itemId: string) => hoveredItemId === itemId;
 
   const navWidth = collapsed ? "w-16" : "w-64";
   const paddingX = collapsed ? "px-3" : "px-4";
@@ -231,7 +285,10 @@ export default function NavigationBar({
                     topSection.onAddEnvironment?.();
                     setEnvFlyoutOpen(false);
                   }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[#2C365D] hover:bg-gray-100 dark:text-[#7c8cb8] dark:hover:bg-gray-700"
+                  className={cn(
+                    "flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700",
+                    ac.text, ac.darkText
+                  )}
                 >
                   <Icon name="add" size={20} />
                   Add environment
@@ -249,43 +306,9 @@ export default function NavigationBar({
             const hasChildren = (item.children?.length ?? 0) > 0;
             const isOpen = isParentOpen(item.id);
             const active = isActive(item.id);
-            const hovered = isHovered(item.id);
-            const showFlyout = collapsed && hasChildren && hoveredParentForFlyout === item.id;
 
             return (
               <li key={item.id} className="relative">
-                {/* Compact: submenu flyout on hover */}
-                {hasChildren && collapsed && showFlyout && (
-                  <div
-                    ref={flyoutRef}
-                    className="absolute left-full top-0 z-50 ml-0 min-w-[160px] rounded-r-lg border border-border bg-white py-1 dark:border-gray-600 dark:bg-gray-800"
-                    onMouseEnter={() => setHoveredParentForFlyout(item.id)}
-                    onMouseLeave={() => setHoveredParentForFlyout(null)}
-                  >
-                    {(item.children ?? []).map((child) => (
-                      <Link
-                        key={child.id}
-                        href={child.href ?? "#"}
-                        onClick={(e) => {
-                          if (child.disabled) e.preventDefault();
-                          else {
-                            setActiveId(child.id);
-                            onItemClick?.(child.id);
-                            setHoveredParentForFlyout(null);
-                          }
-                        }}
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-2 text-sm font-normal transition-colors",
-                          isActive(child.id)
-                            ? "bg-gray-200 text-gray-900 dark:bg-gray-600 dark:text-gray-100"
-                            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                        )}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
 
                 {/* Expanded: parent row + inline children when open */}
                 {hasChildren && !collapsed ? (
@@ -300,7 +323,7 @@ export default function NavigationBar({
                         paddingX,
                         "py-2 text-sm font-normal",
                         active || isOpen
-                          ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
+                          ? activeClass
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100",
                         item.disabled && "cursor-not-allowed opacity-50"
                       )}
@@ -312,7 +335,7 @@ export default function NavigationBar({
                           className={cn(
                             "shrink-0",
                             (active || isOpen)
-                              ? "text-[#2C365D] dark:text-[#7c8cb8]"
+                              ? activeIconClass
                               : "text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
                           )}
                         />
@@ -340,7 +363,7 @@ export default function NavigationBar({
                               className={cn(
                                 "flex items-center gap-2 rounded-lg py-2 pr-3 pl-2 text-sm font-normal transition-colors focus:outline-none focus-visible:outline-none",
                                 isActive(child.id)
-                                  ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
+                                  ? activeClass
                                   : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                               )}
                             >
@@ -358,13 +381,15 @@ export default function NavigationBar({
                     <div
                       role="button"
                       tabIndex={0}
-                      onMouseEnter={() => {
+                      onMouseEnter={(e) => {
                         setHoveredItemId(item.id);
-                        setHoveredParentForFlyout(item.id);
+                        cancelHideFlyout();
+                        showFlyout(e, item.id);
+                        hideTooltip();
                       }}
                       onMouseLeave={() => {
                         setHoveredItemId(null);
-                        setHoveredParentForFlyout(null);
+                        hideFlyout();
                       }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
@@ -378,7 +403,7 @@ export default function NavigationBar({
                           ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
                           : `${paddingX} text-left gap-3`,
                         active
-                          ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
+                          ? activeClass
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100"
                       )}
                     >
@@ -389,25 +414,23 @@ export default function NavigationBar({
                           className={cn(
                             "shrink-0",
                             active
-                              ? "text-[#2C365D] dark:text-[#7c8cb8]"
+                              ? activeIconClass
                               : "text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
                           )}
                         />
                       )}
-                      <span
-                        className={cn(
-                          "pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs text-white transition-opacity dark:bg-gray-700",
-                          hovered ? "opacity-100" : "opacity-0"
-                        )}
-                      >
-                        {item.label}
-                      </span>
                     </div>
                     ) : (
                       <Link
                       href={item.href ?? "#"}
-                      onMouseEnter={() => setHoveredItemId(item.id)}
-                      onMouseLeave={() => setHoveredItemId(null)}
+                      onMouseEnter={(e) => {
+                        setHoveredItemId(item.id);
+                        showTooltip(e, item.label);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredItemId(null);
+                        hideTooltip();
+                      }}
                       onClick={(e) => {
                         if (item.disabled) e.preventDefault();
                         else handleItemClick(item);
@@ -418,7 +441,7 @@ export default function NavigationBar({
                           ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
                           : `${paddingX} gap-3`,
                         active
-                          ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
+                          ? activeClass
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100",
                         item.disabled && "cursor-not-allowed opacity-50 hover:bg-transparent"
                       )}
@@ -430,22 +453,12 @@ export default function NavigationBar({
                           className={cn(
                             "shrink-0",
                             active
-                              ? "text-[#2C365D] dark:text-[#7c8cb8]"
+                              ? activeIconClass
                               : "text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
                           )}
                         />
                       )}
                       {!collapsed && <span className="truncate">{item.label}</span>}
-                      {collapsed && (
-                        <span
-                          className={cn(
-                            "pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs text-white transition-opacity dark:bg-gray-700",
-                            hovered ? "opacity-100" : "opacity-0"
-                          )}
-                        >
-                          {item.label}
-                        </span>
-                      )}
                       </Link>
                     )}
                   </>
@@ -462,8 +475,14 @@ export default function NavigationBar({
           <Link
             key={item.id}
             href={item.href ?? "#"}
-            onMouseEnter={() => setHoveredItemId(item.id)}
-            onMouseLeave={() => setHoveredItemId(null)}
+            onMouseEnter={(e) => {
+              setHoveredItemId(item.id);
+              showTooltip(e, item.label);
+            }}
+            onMouseLeave={() => {
+              setHoveredItemId(null);
+              hideTooltip();
+            }}
             onClick={(e) => {
               if (item.disabled) e.preventDefault();
               else {
@@ -477,7 +496,7 @@ export default function NavigationBar({
                 ? "mx-auto h-10 w-10 justify-center px-0 gap-0"
                 : `${paddingX} gap-3`,
               isActive(item.id)
-                ? "bg-[#2C365D]/10 text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
+                ? activeClass
                 : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-gray-100",
               item.disabled && "cursor-not-allowed opacity-50"
             )}
@@ -489,19 +508,33 @@ export default function NavigationBar({
                 className={cn(
                   "shrink-0",
                   isActive(item.id)
-                    ? "text-[#2C365D] dark:text-[#7c8cb8]"
+                    ? activeIconClass
                     : "text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
                 )}
               />
             )}
             {!collapsed && <span className="truncate">{item.label}</span>}
-            {collapsed && isHovered(item.id) && (
-              <span className="pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs text-white dark:bg-gray-700">
-                {item.label}
-              </span>
-            )}
           </Link>
         ))}
+        {/* Powered by Tally badge */}
+        {!collapsed && (
+          <div className="mt-2 flex justify-start px-4">
+            <Image
+              src="/PoweredByTallyBadge.svg"
+              alt="Powered by Tally"
+              width={123}
+              height={26}
+              className="block dark:hidden"
+            />
+            <Image
+              src="/PoweredByTallyBadgeDark.svg"
+              alt="Powered by Tally"
+              width={123}
+              height={26}
+              className="hidden dark:block"
+            />
+          </div>
+        )}
         <button
           type="button"
           onClick={() => setCollapsed(!collapsed)}
@@ -517,6 +550,71 @@ export default function NavigationBar({
           {!collapsed && <span>Collapse</span>}
         </button>
       </div>
+
+      {/* Fixed tooltip for collapsed state — rendered outside overflow containers */}
+      {collapsed && tooltipPos && !hoveredParentForFlyout && (
+        <div
+          className="pointer-events-none fixed z-[100] flex items-center"
+          style={{ top: tooltipPos.top, left: tooltipPos.left, transform: "translateY(-50%)" }}
+        >
+          <span
+            className="whitespace-nowrap rounded-md border border-gray-200 bg-white px-4 py-2.5 text-sm font-normal text-gray-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+            style={{
+              boxShadow:
+                "0 2px 2px -1px rgba(10,13,18,0.04), 0 4px 6px -2px rgba(10,13,18,0.03), 0 12px 16px -4px rgba(10,13,18,0.08)",
+            }}
+          >
+            {tooltipPos.label}
+          </span>
+        </div>
+      )}
+
+      {/* Fixed flyout for collapsed parent items with children */}
+      {collapsed && hoveredParentForFlyout && flyoutPos && (() => {
+        const parentItem = items.find((i) => i.id === hoveredParentForFlyout);
+        if (!parentItem?.children) return null;
+        return (
+          <div
+            className="fixed z-[100] min-w-[180px] rounded-md border border-gray-200 bg-white py-2 dark:border-gray-600 dark:bg-gray-800"
+            style={{
+              top: flyoutPos.top,
+              left: flyoutPos.left,
+              boxShadow:
+                "0 2px 2px -1px rgba(10,13,18,0.04), 0 4px 6px -2px rgba(10,13,18,0.03), 0 12px 16px -4px rgba(10,13,18,0.08)",
+            }}
+            onMouseEnter={() => { cancelHideFlyout(); setHoveredParentForFlyout(parentItem.id); }}
+            onMouseLeave={() => hideFlyout()}
+          >
+            <div className="px-4 pb-1 pt-1.5 text-sm font-normal text-gray-600 dark:text-gray-300">
+              {parentItem.label}
+            </div>
+            <div className="relative ml-4 border-l border-gray-200 dark:border-gray-600">
+            {parentItem.children.map((child) => (
+              <Link
+                key={child.id}
+                href={child.href ?? "#"}
+                onClick={(e) => {
+                  if (child.disabled) e.preventDefault();
+                  else {
+                    setActiveId(child.id);
+                    onItemClick?.(child.id);
+                    hideFlyout();
+                  }
+                }}
+                className={cn(
+                  "flex items-center py-2 pl-3 pr-4 text-sm font-normal transition-colors",
+                  isActive(child.id)
+                    ? "mx-2 rounded-lg bg-gray-100 font-medium text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+                    : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                )}
+              >
+                {child.label}
+              </Link>
+            ))}
+            </div>
+          </div>
+        );
+      })()}
     </nav>
   );
 }

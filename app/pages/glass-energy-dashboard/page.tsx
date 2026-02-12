@@ -213,6 +213,12 @@ export default function GlassEnergyDashboard() {
           }}
           defaultActiveId="dashboard"
           collapsed={false}
+          activeColors={{
+            bg: "bg-[#E6F7FF]",
+            text: "text-[#006180]",
+            darkBg: "dark:bg-[#006180]/20",
+            darkText: "dark:text-[#80E0FF]",
+          }}
         />
 
         {/* ── Main content ─────────────────────────────────────────── */}

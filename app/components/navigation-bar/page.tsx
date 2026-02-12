@@ -236,15 +236,16 @@ export default function NavigationBarPage() {
                       Active State
                     </h3>
                     <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                      Active items use the primary brand color (#2C365D) with a
-                      light background to indicate the current page or section.
+                      Active items use a subtle background highlight to indicate
+                      the current page or section. Each Tally product defines
+                      its own active colour — the default uses a neutral gray.
                     </p>
                     <div className="inline-flex flex-col gap-1 rounded-lg border border-border bg-white p-2 dark:border-gray-700 dark:bg-gray-800">
-                      <div className="flex items-center gap-3 rounded-md bg-[#2C365D]/10 px-3 py-2 text-sm font-medium text-[#2C365D] dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]">
+                      <div className="flex items-center gap-3 rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-900 dark:bg-gray-700 dark:text-gray-100">
                         <Icon
                           name="settings"
                           size={20}
-                          className="text-[#2C365D] dark:text-[#7c8cb8]"
+                          className="text-gray-900 dark:text-gray-100"
                         />
                         <span>Settings</span>
                       </div>
@@ -252,10 +253,11 @@ export default function NavigationBarPage() {
                     <div className="mt-4 rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
                       <p className="mb-2 font-semibold">Specifications:</p>
                       <ul className="list-inside list-disc space-y-1 text-gray-300">
-                        <li>Text color: #2C365D (dark: #7c8cb8)</li>
-                        <li>Icon color: #2C365D (dark: #7c8cb8)</li>
-                        <li>Background: #2C365D/10 (dark: #7c8cb8/20)</li>
+                        <li>Text color: gray-900 (dark: gray-100)</li>
+                        <li>Icon color: gray-900 (dark: gray-100)</li>
+                        <li>Background: gray-100 (dark: gray-700)</li>
                         <li>Indicates current page/section</li>
+                        <li>Each Tally product overrides active colours to match its brand</li>
                       </ul>
                     </div>
                   </div>
@@ -349,14 +351,14 @@ export default function NavigationBarPage() {
                           Hover: gray-900 (dark: gray-100)
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 rounded-md border border-border bg-[#2C365D]/10 px-3 py-2 dark:border-gray-700 dark:bg-[#7c8cb8]/20">
+                      <div className="flex items-center gap-3 rounded-md border border-border bg-gray-100 px-3 py-2 dark:border-gray-700 dark:bg-gray-700">
                         <Icon
                           name="settings"
                           size={20}
-                          className="text-[#2C365D] dark:text-[#7c8cb8]"
+                          className="text-gray-900 dark:text-gray-100"
                         />
-                        <span className="text-sm text-[#2C365D] dark:text-[#7c8cb8]">
-                          Active: #2C365D (dark: #7c8cb8)
+                        <span className="text-sm text-gray-900 dark:text-gray-100">
+                          Active: gray-900 (dark: gray-100) — per-product override
                         </span>
                       </div>
                       <div className="flex items-center gap-3 rounded-md border border-border bg-white px-3 py-2 opacity-50 dark:border-gray-700 dark:bg-gray-800">
@@ -439,9 +441,9 @@ export default function NavigationBarPage() {
                           Hover: gray-900 (dark: gray-100)
                         </span>
                       </div>
-                      <div className="rounded-md border border-border bg-[#2C365D]/10 px-3 py-2 dark:border-gray-700 dark:bg-[#7c8cb8]/20">
-                        <span className="text-sm font-medium text-[#2C365D] dark:text-[#7c8cb8]">
-                          Active: #2C365D (dark: #7c8cb8)
+                      <div className="rounded-md border border-border bg-gray-100 px-3 py-2 dark:border-gray-700 dark:bg-gray-700">
+                        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                          Active: gray-900 (dark: gray-100) — per-product override
                         </span>
                       </div>
                       <div className="rounded-md border border-border bg-white px-3 py-2 opacity-50 dark:border-gray-700 dark:bg-gray-800">

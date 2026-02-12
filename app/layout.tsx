@@ -14,18 +14,18 @@ export const metadata: Metadata = {
 
 const navigationSections = [
   {
-    title: "Foundation",
+    title: "Elements",
     items: [
       { label: "Colours", href: "/foundation/colour" },
       { label: "Cursor Rules", href: "/foundation/cursor-rules" },
+      { label: "Dark Mode", href: "/foundation/dark-mode" },
+      { label: "Density", href: "/foundation/density" },
       { label: "Icons", href: "/foundation/icons" },
       { label: "Layout", href: "/foundation/layout" },
       { label: "Layout Grid", href: "/foundation/layout-grid" },
       { label: "Logo", href: "/foundation/logo" },
-      { label: "Typography", href: "/foundation/typography" },
       { label: "Panes", href: "/foundation/materials" },
-      { label: "Dark Mode", href: "/foundation/dark-mode" },
-      { label: "Density", href: "/foundation/density" },
+      { label: "Typography", href: "/foundation/typography" },
     ],
   },
   {
@@ -40,7 +40,52 @@ const navigationSections = [
     ],
   },
   {
-    title: "Pages",
+    title: "Components",
+    items: [
+      { label: "Accordion", href: "/components/accordion" },
+      { label: "Alert", href: "/components/alert" },
+      { label: "Aspect Ratio", href: "/components/aspect-ratio" },
+      { label: "Avatar", href: "/components/avatar" },
+      { label: "Badge", href: "/components/badge" },
+      { label: "Button", href: "/components/button" },
+      { label: "Button Group", href: "/components/button-group" },
+      { label: "Calendar", href: "/components/calendar" },
+      { label: "Checkbox", href: "/components/checkbox" },
+      { label: "Collapsible", href: "/components/collapsible" },
+      { label: "Dropdown Menu", href: "/components/dropdown-menu" },
+      { label: "Input", href: "/components/input" },
+      { label: "Progress", href: "/components/progress" },
+      { label: "Radio Group", href: "/components/radio-group" },
+      { label: "Select", href: "/components/select" },
+      { label: "Skeleton", href: "/components/skeleton" },
+      { label: "Slider", href: "/components/slider" },
+      { label: "Switch", href: "/components/switch" },
+      { label: "Textarea", href: "/components/textarea" },
+      { label: "Toggle", href: "/components/toggle" },
+      { label: "Toggle Group", href: "/components/toggle-group" },
+      { label: "Tooltip", href: "/components/tooltip" },
+    ],
+  },
+  {
+    title: "Patterns",
+    items: [
+      { label: "Alert Dialog", href: "/components/alert-dialog" },
+      { label: "App Bar", href: "/components/app-bar" },
+      { label: "Breadcrumb", href: "/components/breadcrumb" },
+      { label: "Card", href: "/components/card" },
+      { label: "Charts", href: "/components/charts" },
+      { label: "Chart Widgets", href: "/components/electricity-usage-widget" },
+      { label: "Dialog", href: "/components/dialog" },
+      { label: "Navigation Bar", href: "/components/navigation-bar" },
+      { label: "Popover", href: "/components/popover" },
+      { label: "Sheet", href: "/components/sheet" },
+      { label: "Table", href: "/components/table" },
+      { label: "Tabs", href: "/components/tabs" },
+      { label: "Toast", href: "/components/toast" },
+    ],
+  },
+  {
+    title: "Templates",
     items: [
       { label: "Login", href: "/pages/login" },
       { label: "Dashboard", href: "/pages/dashboard" },
@@ -54,46 +99,6 @@ const navigationSections = [
       { label: "Beta Test Dashboard", href: "/pages/beta-test-dashboard" },
       { label: "S&A Beta", href: "/pages/sales-acquisition-dashboard" },
       { label: "Tally CRM", href: "/crm/dashboard" },
-    ],
-  },
-  {
-    title: "Components",
-    items: [
-      { label: "Accordion", href: "/components/accordion" },
-      { label: "Alert", href: "/components/alert" },
-      { label: "Alert Dialog", href: "/components/alert-dialog" },
-      { label: "Aspect Ratio", href: "/components/aspect-ratio" },
-      { label: "App Bar", href: "/components/app-bar" },
-      { label: "Avatar", href: "/components/avatar" },
-      { label: "Badge", href: "/components/badge" },
-      { label: "Breadcrumb", href: "/components/breadcrumb" },
-      { label: "Button", href: "/components/button" },
-      { label: "Button Group", href: "/components/button-group" },
-      { label: "Calendar", href: "/components/calendar" },
-      { label: "Card", href: "/components/card" },
-      { label: "Charts", href: "/components/charts" },
-      { label: "Chart Widgets", href: "/components/electricity-usage-widget" },
-      { label: "Checkbox", href: "/components/checkbox" },
-      { label: "Collapsible", href: "/components/collapsible" },
-      { label: "Dialog", href: "/components/dialog" },
-      { label: "Dropdown Menu", href: "/components/dropdown-menu" },
-      { label: "Input", href: "/components/input" },
-      { label: "Navigation Bar", href: "/components/navigation-bar" },
-      { label: "Popover", href: "/components/popover" },
-      { label: "Progress", href: "/components/progress" },
-      { label: "Radio Group", href: "/components/radio-group" },
-      { label: "Select", href: "/components/select" },
-      { label: "Sheet", href: "/components/sheet" },
-      { label: "Skeleton", href: "/components/skeleton" },
-      { label: "Slider", href: "/components/slider" },
-      { label: "Switch", href: "/components/switch" },
-      { label: "Table", href: "/components/table" },
-      { label: "Tabs", href: "/components/tabs" },
-      { label: "Textarea", href: "/components/textarea" },
-      { label: "Toast", href: "/components/toast" },
-      { label: "Toggle", href: "/components/toggle" },
-      { label: "Toggle Group", href: "/components/toggle-group" },
-      { label: "Tooltip", href: "/components/tooltip" },
     ],
   },
 ];
@@ -126,9 +131,9 @@ export default function RootLayout({
           <DensityModeSwitch />
           <ThemeModeSwitch />
         </div>
-        <div className="flex overflow-x-hidden">
+        <div className="flex h-screen overflow-hidden">
           <Sidebar sections={navigationSections} />
-          <main className="min-w-0 flex-1">{children}</main>
+          <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
         </div>
       </body>
     </html>

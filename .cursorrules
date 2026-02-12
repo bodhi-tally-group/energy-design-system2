@@ -40,7 +40,7 @@ This is a design system for energy sector products: call center tools, customer 
 | Header | `components/Header/Header.tsx` | DS logo header (sidebar) |
 | Input | `components/Input/Input.tsx` | Text inputs |
 | Label | `components/Label/Label.tsx` | Form labels |
-| NavigationBar | `components/NavigationBar/NavigationBar.tsx` | Left nav bar (collapsible) |
+| NavigationBar | `components/NavigationBar/NavigationBar.tsx` | Left nav bar (collapsible, per-product `activeColors`) |
 | PageBanner | `components/PageBanner/PageBanner.tsx` | Page title banner |
 | Popover | `components/Popover/Popover.tsx` | Popovers |
 | Progress | `components/Progress/Progress.tsx` | Progress bars |
@@ -64,6 +64,14 @@ This is a design system for energy sector products: call center tools, customer 
 | Tooltip | `components/Tooltip/Tooltip.tsx` | Tooltips |
 | Typography | `components/Typography/Typography.tsx` | H1–H4, P, Lead, Small, Muted, etc. |
 
+### From `components/crm/` (CRM-specific components)
+
+| Component | Path | Use for |
+|-----------|------|---------|
+| PipelineColumn | `components/crm/PipelineColumn.tsx` | Kanban column with drag-and-drop (fixed-width `w-72`) |
+| OpportunityCard | `components/crm/OpportunityCard.tsx` | Draggable Kanban card for pipeline opportunities |
+| DensityToggle | `components/crm/DensityToggle.tsx` | Density mode toggle for the CRM app bar |
+
 ### From `components/ui/` (lowercase, primitive/build block)
 
 - `badge.tsx`, `button.tsx`, `card.tsx`, `icon.tsx`, `input.tsx` — Use design-system components (Badge, Button, Card, Input) instead unless building a primitive.
@@ -79,10 +87,14 @@ Reference these when building new pages. Path: `app/pages/`
 | Dashboard | `app/pages/dashboard/page.tsx` | KPI cards, charts, tables, tabs, breadcrumbs |
 | Beta Test Dashboard | `app/pages/beta-test-dashboard/page.tsx` | App bar (logo + search + avatar), left nav, main content |
 | Tally Glass | `app/pages/tally-glass/page.tsx` | App bar, compact icon nav, side panels, collapsible cards |
+| Glass Energy Dashboard | `app/pages/glass-energy-dashboard/page.tsx` | Full dashboard with NavigationBar, KPI cards, charts, tabs |
 | Tally Small Market | `app/pages/small-market/page.tsx` | Small market layout |
 | Tally Large Market | `app/pages/tally-large-market/page.tsx` | Large market layout |
 | Tally Orion | `app/pages/tally-orion/page.tsx` | Orion brand |
 | Tally Acquire | `app/pages/tally-acquire/page.tsx` | Acquire brand |
+| Tally CRM | `app/crm/layout.tsx` + `app/crm/dashboard/page.tsx` | CRM app with own layout, NavigationBar, app bar |
+| Tally CRM Pipeline | `app/crm/pipeline/page.tsx` | Kanban board (fixed-width cols), list view, drag-and-drop |
+| Tally CRM Opportunities | `app/crm/opportunities/page.tsx` | Kanban board (responsive grid cols), filters, KPIs, modal |
 | Forms | `app/pages/forms/page.tsx` | Form patterns, Input, Select, etc. |
 
 **App Bar structure** (from beta-test-dashboard, tally-glass):
@@ -115,11 +127,58 @@ Icons: Material Symbols Outlined via `components/ui/icon.tsx` — `<Icon name="s
 
 ### Layout (`app/foundation/layout/`)
 
+- **Root layout** uses `flex h-screen overflow-hidden` — the sidebar stays fixed and only `<main>` scrolls (`overflow-y-auto`)
 - **App bar** (top, h-14)
-- **Collapsible navigation** (left, w-16 collapsed / w-52 expanded)
+- **Collapsible navigation** (left, w-16 collapsed / w-64 expanded)
 - **Pane** (main content, `#F9F9FB` background)
 - **Control panel** (right, optional)
 - Max content width: `max-w-7xl` or `max-w-[1600px]`
+
+### NavigationBar Active Colours
+
+The `NavigationBar` component defaults to **neutral gray** active states. Each Tally product passes its own brand colours via the `activeColors` prop:
+
+```tsx
+<NavigationBar
+  activeColors={{
+    bg: "bg-[#E6F7FF]",       // light-mode active background
+    text: "text-[#006180]",    // light-mode active text & icon
+    darkBg: "dark:bg-[#006180]/20",  // dark-mode active background
+    darkText: "dark:text-[#80E0FF]", // dark-mode active text & icon
+  }}
+  // ... other props
+/>
+```
+
+**Known product palettes:**
+- **Tally CRM:** bg `#E6F7FF`, text `#006180`, dark bg `#006180/20`, dark text `#80E0FF`
+- Other products: TBD — will be defined per brand
+
+### Kanban Page Pattern
+
+Two Kanban layout strategies exist (both in `app/crm/`):
+
+**Strategy A — Fixed-width columns (Pipeline page)**
+- Columns use `w-72` (288px) with `shrink-0`
+- Container has `overflowX: auto, overflowY: hidden` with `width: max-content`
+- Uses shared `PipelineColumn` + `OpportunityCard` components
+
+**Strategy B — Responsive grid columns (Opportunities page)**
+- Columns use CSS Grid: `repeat(N, minmax(260px, 1fr))`
+- Includes filter bar, KPI stat cards, and "New Opportunity" modal
+- Uses inline `OpportunityColumn` + `OpportunityKanbanCard` components
+
+**Shared patterns:**
+- View toggle (Kanban/List) using segmented `bg-[#2C365D] text-white` active style
+- HTML5 drag-and-drop (no library) — `dataTransfer.setData/getData("text/plain")`
+- Wheel-to-horizontal-scroll interception (`{ passive: false }`)
+- Drag-over feedback: `border-[#2C365D] bg-[#2C365D]/5`
+- Stage color dot: `h-2.5 w-2.5 rounded-full` + per-stage color class
+- Full density system integration via CSS custom properties
+
+**Mock data files:**
+- `lib/mock-data/pipeline.ts` — `mockOpportunities` (uses `Opportunity` type from `types/crm.ts`)
+- `lib/mock-data/colleague-opportunities.ts` — `OPPORTUNITIES` (uses local `OpportunityRecord` type)
 
 ---
 
@@ -134,7 +193,7 @@ Available brands (see `app/foundation/brands/`):
 - **Tally Digital** — `/foundation/brands/tally-digital`
 - **Tally CRM** — `/foundation/brands/tally-crm`
 
-**Logos in `/public/`:** Tally_DS_Logo.svg, BetaTestLogo.svg, GlassLogoTest.svg, ORION_LOGO.svg, TallyAcquire.svg (plus _darkmode variants)
+**Logos in `/public/`:** Tally_DS_Logo.svg, BetaTestLogo.svg, GlassLogoTest.svg, ORION_LOGO.svg, TallyAcquire.svg, Tally_CRM_Logo.svg, PoweredByTallyBadge.svg (plus _darkmode / _dark variants)
 
 Always specify brand context in prompts: e.g. "This is for Tally Glass (call center agents)".
 
@@ -156,4 +215,6 @@ Always specify brand context in prompts: e.g. "This is for Tally Glass (call cen
 - Don't create new input components — use `Input`, `Select`, `Textarea` from components
 - Don't create new avatar/header components — use `Avatar`, `Header`, and App Bar patterns
 - Don't duplicate color values — use tokens from `@/lib/tokens/colors` or Tailwind semantic classes
+- Don't hardcode NavigationBar active colours in the component — pass them via the `activeColors` prop per product
+- Don't create new Kanban column/card components — use `PipelineColumn` + `OpportunityCard` for pipeline data, or follow the inline `OpportunityColumn` pattern from the Opportunities page for different data shapes
 - Don't use `/src/` — this project uses root-level `components/` and `app/`

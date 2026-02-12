@@ -16,6 +16,7 @@ const navItems: NavigationItem[] = [
   { id: "dashboard", label: "Dashboard", icon: "dashboard", href: "/crm/dashboard" },
   { id: "cases", label: "Cases", icon: "inbox", href: "/crm/cases" },
   { id: "pipeline", label: "Pipeline", icon: "trending_up", href: "/crm/pipeline" },
+  { id: "opportunities", label: "Opportunities", icon: "handshake", href: "/crm/opportunities" },
 ];
 
 const bottomNavItems: NavigationItem[] = [
@@ -34,11 +35,13 @@ export default function CRMLayout({
   const [navCollapsed, setNavCollapsed] = React.useState(false);
 
   // Determine default active nav id from pathname
-  const defaultActiveId = pathname.startsWith("/crm/pipeline")
-    ? "pipeline"
-    : pathname.startsWith("/crm/cases")
-      ? "cases"
-      : "dashboard";
+  const defaultActiveId = pathname.startsWith("/crm/opportunities")
+    ? "opportunities"
+    : pathname.startsWith("/crm/pipeline")
+      ? "pipeline"
+      : pathname.startsWith("/crm/cases")
+        ? "cases"
+        : "dashboard";
 
   return (
     <div className="flex h-screen min-w-0 flex-col overflow-hidden bg-[#F9F9FB] dark:bg-gray-900">
@@ -100,6 +103,12 @@ export default function CRMLayout({
           defaultActiveId={defaultActiveId}
           collapsed={navCollapsed}
           onCollapsedChange={setNavCollapsed}
+          activeColors={{
+            bg: "bg-[#E6F7FF]",
+            text: "text-[#006180]",
+            darkBg: "dark:bg-[#006180]/20",
+            darkText: "dark:text-[#80E0FF]",
+          }}
         />
 
         {/* ── Main content ─────────────────────────────────────────── */}
