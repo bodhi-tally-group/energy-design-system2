@@ -373,14 +373,14 @@ export default function SmallMarketPage() {
                 >
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <Select label="Bill Group" value="monthly">
+                      <Select label="Bill Group" defaultValue="monthly">
                         <option value="monthly">Monthly Bill Group</option>
                         <option value="quarterly">Quarterly Bill Group</option>
                       </Select>
                       <Input label="Invoice Due Days" type="number" defaultValue="15" />
                     </div>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <Select label="Correspondence Delivery" value="email">
+                      <Select label="Correspondence Delivery" defaultValue="email">
                         <option value="email">Email</option>
                         <option value="post">Post</option>
                         <option value="both">Both</option>
@@ -410,7 +410,7 @@ export default function SmallMarketPage() {
                   onOpenChange={(open) => setCardOpenState((prev) => ({ ...prev, "Payment Details": open }))}
                 >
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <Select label="Payment Frequency" value="monthly">
+                    <Select label="Payment Frequency" defaultValue="monthly">
                       <option value="monthly">Monthly</option>
                       <option value="quarterly">Quarterly</option>
                       <option value="yearly">Yearly</option>

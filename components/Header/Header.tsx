@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { DESIGN_SYSTEM_VERSION } from "@/lib/version";
 
 export default function Header() {
   return (
@@ -14,9 +15,12 @@ export default function Header() {
           priority
         />
       </Link>
-      <span className="text-xs font-medium text-muted-foreground">
-        Version 1.5.0
-      </span>
+      <Link
+        href="/changelog"
+        className="text-xs font-medium text-muted-foreground underline underline-offset-2 hover:text-gray-900 dark:hover:text-gray-100"
+      >
+        Version {DESIGN_SYSTEM_VERSION}
+      </Link>
     </div>
   );
 }

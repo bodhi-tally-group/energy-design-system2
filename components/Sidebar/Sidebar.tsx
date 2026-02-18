@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header/Header";
 import { Icon } from "@/components/ui/icon";
+import { DESIGN_SYSTEM_VERSION } from "@/lib/version";
 import { cn } from "@/lib/utils";
 
 interface SidebarItem {
@@ -144,19 +145,24 @@ export default function Sidebar({ sections }: SidebarProps) {
           )}
         >
           {isCollapsed ? (
-            <Link href="/" className="flex flex-col items-center gap-1">
-              <Image
-                src="/tDS_Logo_Compact.svg"
-                alt="Tally Design System"
-                width={41}
-                height={18}
-                className="h-[18px] w-auto"
-                priority
-              />
-              <span className="text-xs font-medium text-muted-foreground">
-                1.5.0
-              </span>
-            </Link>
+            <div className="flex flex-col items-center gap-1">
+              <Link href="/" className="flex flex-col items-center">
+                <Image
+                  src="/tDS_Logo_Compact.svg"
+                  alt="Tally Design System"
+                  width={41}
+                  height={18}
+                  className="h-[18px] w-auto"
+                  priority
+                />
+              </Link>
+              <Link
+                href="/changelog"
+                className="text-xs font-medium text-muted-foreground underline underline-offset-2 hover:text-gray-900 dark:hover:text-gray-100"
+              >
+                {DESIGN_SYSTEM_VERSION}
+              </Link>
+            </div>
           ) : (
             <Header />
           )}
