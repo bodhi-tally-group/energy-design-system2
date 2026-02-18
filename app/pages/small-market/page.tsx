@@ -20,7 +20,6 @@ import Input from "@/components/Input/Input";
 import Select from "@/components/Select/Select";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import { Icon } from "@/components/ui/icon";
-import { Avatar, AvatarFallback } from "@/components/Avatar/Avatar";
 import { cn } from "@/lib/utils";
 import {
   Table,
@@ -131,20 +130,38 @@ export default function SmallMarketPage() {
   const expandAll = () => setCardOpenState(() => Object.fromEntries(DETAILS_CARD_TITLES.map((t) => [t, true])));
   const collapseAll = () => setCardOpenState(() => Object.fromEntries(DETAILS_CARD_TITLES.map((t) => [t, false])));
 
+  // Tally+ Small Market brand palette (from foundation/brands/tally-plus-small-market)
+  const BRAND_GREEN = "#C1EE41";
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
+      {/* 4px Tally+ Small Market brand bar */}
+      <div
+        className="h-1 shrink-0"
+        style={{ backgroundColor: BRAND_GREEN }}
+        aria-hidden
+      />
       {/* App Bar */}
       <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-white px-6 dark:border-gray-800 dark:bg-gray-950/90">
         {/* Left: Logo */}
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center">
+          <Link href="/pages/small-market" className="flex items-center">
             <Image
-              src="/TallyPlus.svg"
-              alt="Tally+"
+              src="/foundation/brands/tally-plus-small-market/TallyPlusSMLogo.svg"
+              alt="Tally+ Small Market"
               width={140}
-              height={40}
-              className="h-8 w-auto"
+              height={28}
+              className="h-8 w-auto dark:hidden"
               priority
+              unoptimized
+            />
+            <Image
+              src="/foundation/brands/tally-plus-small-market/TallyPlusSMLogoReversed.svg"
+              alt="Tally+ Small Market"
+              width={140}
+              height={28}
+              className="h-8 w-auto hidden dark:block"
+              unoptimized
             />
           </Link>
         </div>
@@ -160,7 +177,7 @@ export default function SmallMarketPage() {
             <input
               type="search"
               placeholder="Search"
-              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#2C365D] focus:outline-none focus:ring-1 focus:ring-[#2C365D] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#C1EE41] focus:outline-none focus:ring-1 focus:ring-[#C1EE41] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
             />
           </div>
         </div>
@@ -173,9 +190,12 @@ export default function SmallMarketPage() {
           >
             <Icon name="grid_view" size={20} />
           </button>
-          <Avatar className="h-9 w-9">
-            <AvatarFallback className="text-xs">SA</AvatarFallback>
-          </Avatar>
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium text-gray-900"
+            style={{ backgroundColor: BRAND_GREEN }}
+          >
+            SA
+          </div>
         </div>
       </header>
 
@@ -192,7 +212,7 @@ export default function SmallMarketPage() {
               className={cn(
                 "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
                 activeNavId === item.id
-                  ? "bg-gray-100 text-gray-900 dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
+                  ? "bg-[#F5FCEB] text-[#91B231] dark:bg-[#F5FCEB]/15 dark:text-[#E0F5A0]"
                   : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
               )}
             >
@@ -202,7 +222,7 @@ export default function SmallMarketPage() {
                 className={cn(
                   "font-extralight transition-colors",
                   activeNavId === item.id
-                    ? "text-gray-900 dark:text-[#7c8cb8]"
+                    ? "text-[#91B231] dark:text-[#E0F5A0]"
                     : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
                 )}
               />
@@ -212,7 +232,8 @@ export default function SmallMarketPage() {
         </nav>
         </div>
         <div className="shrink-0 border-t border-border p-3 dark:border-gray-800">
-          <Image src="/PoweredByTallyBadgeDark.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto" />
+          <Image src="/PoweredByTallyBadge.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto dark:hidden" />
+          <Image src="/PoweredByTallyBadgeREV.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto hidden dark:block" />
         </div>
       </aside>
 
@@ -248,7 +269,7 @@ export default function SmallMarketPage() {
               <BreadcrumbLink asChild>
                 <Link
                   href="/pages/small-market"
-                  className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                  className="text-gray-700 transition-colors hover:text-[#91B231] dark:text-gray-300 dark:hover:text-[#E0F5A0]"
                 >
                   Tally+ Small Market Accounts
                 </Link>
@@ -256,7 +277,7 @@ export default function SmallMarketPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+              <BreadcrumbPage className="rounded bg-[#F5FCEB] px-2.5 py-1 font-normal text-[#91B231] dark:bg-[#F5FCEB]/15 dark:text-[#E0F5A0]">
                 104063774 - Shirley Anderson
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -314,7 +335,7 @@ export default function SmallMarketPage() {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="text-gray-700 data-[state=active]:bg-white data-[state=active]:text-gray-900 dark:text-gray-200 dark:data-[state=active]:bg-gray-900 dark:data-[state=active]:text-gray-100"
+                className="text-gray-700 data-[state=active]:bg-[#F5FCEB] data-[state=active]:text-[#91B231] dark:text-gray-200 dark:data-[state=active]:bg-[#F5FCEB]/15 dark:data-[state=active]:text-[#E0F5A0]"
               >
                 {tab.label}
               </TabsTrigger>
@@ -392,7 +413,7 @@ export default function SmallMarketPage() {
                         Custom Invoice Message
                       </label>
                       <textarea
-                        className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2C365D] focus-visible:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                        className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C1EE41] focus-visible:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                         rows={3}
                         defaultValue="The Australian Government and your State Government require us to provide you with information about energy rebates and concessions."
                       />
@@ -462,7 +483,7 @@ export default function SmallMarketPage() {
                           <p className="mt-1 text-sm font-medium text-gray-900 dark:text-gray-100">1 Lee Walk</p>
                           <p className="text-sm text-gray-900 dark:text-gray-100">Cranbourne, VIC 3977</p>
                         </div>
-                        <button className="text-[#2C365D] hover:text-[#2C365D]/80">
+                        <button className="text-[#91B231] hover:text-[#617721] dark:text-[#E0F5A0] dark:hover:text-[#C1EE41]">
                           <Icon name="edit" size={18} />
                         </button>
                       </div>
@@ -474,7 +495,7 @@ export default function SmallMarketPage() {
                           <p className="mt-1 text-sm font-medium text-gray-900 dark:text-gray-100">666-678 Lygon Street</p>
                           <p className="text-sm text-gray-900 dark:text-gray-100">Carlton North, VIC 3054</p>
                         </div>
-                        <button className="text-[#2C365D] hover:text-[#2C365D]/80">
+                        <button className="text-[#91B231] hover:text-[#617721] dark:text-[#E0F5A0] dark:hover:text-[#C1EE41]">
                           <Icon name="edit" size={18} />
                         </button>
                       </div>
@@ -484,8 +505,14 @@ export default function SmallMarketPage() {
                 </CollapsibleCard>
 
                 <div className="flex items-center justify-end gap-3">
-                  <Button variant="outline">Cancel</Button>
-                  <Button>Save Changes</Button>
+                  <Button variant="outline" className="border-[#91B231] text-[#91B231] hover:bg-[#91B231]/10 focus:ring-[#91B231] dark:border-[#E0F5A0] dark:text-[#E0F5A0] dark:hover:bg-[#E0F5A0]/10">
+                    Cancel
+                  </Button>
+                  <Button
+                    className="!bg-[#C1EE41] text-gray-900 hover:!bg-[#91B231] focus:ring-[#C1EE41] dark:!bg-[#C1EE41] dark:text-gray-900 dark:hover:!bg-[#91B231]"
+                  >
+                    Save Changes
+                  </Button>
                 </div>
               </div>
 
@@ -500,8 +527,8 @@ export default function SmallMarketPage() {
                       {ACCOUNT_EVENTS.map((event) => (
                         <div key={event.id} className="p-4">
                           <div className="flex items-start gap-3">
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2C365D]/10 dark:bg-[#7c8cb8]/20">
-                              <Icon name="event" size={16} className="text-[#2C365D] dark:text-[#7c8cb8]" />
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F5FCEB] dark:bg-[#F5FCEB]/15">
+                              <Icon name="event" size={16} className="text-[#91B231] dark:text-[#E0F5A0]" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{event.event}</p>

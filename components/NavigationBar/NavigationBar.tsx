@@ -541,7 +541,7 @@ export default function NavigationBar({
                 className="block dark:hidden"
               />
               <Image
-                src="/PoweredByTallyBadgeDark.svg"
+                src="/PoweredByTallyBadgeREV.svg"
                 alt="Powered by Tally"
                 width={123}
                 height={26}

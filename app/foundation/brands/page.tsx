@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/Card/Card";
@@ -10,27 +11,31 @@ const brands = [
     title: "Tally Group",
     description: "Main Tally Group brand guidelines and usage",
     href: "/foundation/brands/tally-group",
+    logo: "/foundation/brands/tally-group/TallyOfficialLogo.svg",
     icon: "flag",
     tags: ["Main Brand"],
   },
   {
-    title: "Tally Small Market",
-    description: "Brand guidelines for Tally Small Market products",
-    href: "/foundation/brands/tally-small-markets",
-    icon: "store",
-    tags: ["Small Market"],
+    title: "Tally+",
+    description: "Brand guidelines for Tally+ products",
+    href: "/foundation/brands/tally-plus",
+    logo: "/TallyPlus.svg",
+    icon: "add_circle",
+    tags: ["Tally+"],
   },
   {
-    title: "Tally Large Market",
-    description: "Brand guidelines for Tally Large Market products",
-    href: "/foundation/brands/tally-large-market",
-    icon: "business",
-    tags: ["Large Market"],
+    title: "Tally+ Small Market",
+    description: "Brand guidelines for Tally+ Small Market products",
+    href: "/foundation/brands/tally-plus-small-market",
+    logo: "/foundation/brands/tally-plus-small-market/TallyPlusSMLogo.svg",
+    icon: "store",
+    tags: ["Tally+", "Small Market"],
   },
   {
     title: "Tally Sales & Acquisition",
     description: "Brand guidelines for Tally Sales & Acquisition",
     href: "/foundation/brands/tally-sales-acquisition",
+    logo: "/foundation/brands/tally-sales-acquisition/TallySALogo.svg",
     icon: "trending_up",
     tags: ["Sales", "Acquisition"],
   },
@@ -38,6 +43,7 @@ const brands = [
     title: "Tally Digital",
     description: "Brand guidelines for Tally Digital products",
     href: "/foundation/brands/tally-digital",
+    logo: "/foundation/brands/tally-digital/TallyDigital.svg",
     icon: "devices",
     tags: ["Digital"],
   },
@@ -45,8 +51,17 @@ const brands = [
     title: "Tally CRM",
     description: "Brand guidelines for Tally CRM",
     href: "/foundation/brands/tally-crm",
+    logo: "/foundation/brands/tally-crm/TallyCRMLogo.svg",
     icon: "contact_page",
     tags: ["CRM"],
+  },
+  {
+    title: "Powered by Tally",
+    description: "Powered by Tally badge and its use in the navigation bar",
+    href: "/foundation/brands/powered-by-tally",
+    logo: "/PoweredByTallyBadge.svg",
+    icon: "verified",
+    tags: ["Badge", "Navigation"],
   },
 ];
 
@@ -68,8 +83,19 @@ export default function BrandsIndex() {
               <Link key={brand.href} href={brand.href} className="group">
                 <Card className="h-full shadow-none transition-all hover:border-[#2C365D]/30">
                   <CardHeader>
-                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-[#2C365D]/10 transition-colors group-hover:bg-[#2C365D]/20">
-                      <Icon name={brand.icon as "flag"} size={24} className="text-[#2C365D] dark:text-[#7c8cb8]" />
+                    <div className="mb-4 flex min-h-[72px] items-center justify-start">
+                      {brand.logo ? (
+                        <Image
+                          src={brand.logo}
+                          alt=""
+                          width={160}
+                          height={72}
+                          className="max-h-[72px] w-auto max-w-full object-contain object-center"
+                          unoptimized
+                        />
+                      ) : (
+                        <Icon name={brand.icon as "flag"} size={40} className="text-[#2C365D] dark:text-[#7c8cb8]" />
+                      )}
                     </div>
                     <CardTitle className="text-lg font-semibold text-gray-900 group-hover:text-[#2C365D] dark:text-gray-100 dark:group-hover:text-[#7c8cb8]">
                       {brand.title}

@@ -39,7 +39,7 @@ const SECTION_ICONS: Record<string, string> = {
 };
 
 const STORAGE_KEY = "ds-sidebar-collapsed";
-const SECTIONS_STORAGE_KEY = "ds-sidebar-sections";
+const SECTIONS_STORAGE_KEY = "ds-sidebar-sections-v2";
 
 export default function Sidebar({ sections }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -301,7 +301,7 @@ export default function Sidebar({ sections }: SidebarProps) {
                   className="block dark:hidden"
                 />
                 <Image
-                  src="/PoweredByTallyBadgeDark.svg"
+                  src="/PoweredByTallyBadgeREV.svg"
                   alt="Powered by Tally"
                   width={123}
                   height={26}

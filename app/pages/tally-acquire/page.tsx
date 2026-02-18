@@ -153,7 +153,7 @@ export default function TallyAcquirePage() {
             <div className="pt-1">
               <div className="flex w-full items-center justify-center rounded-full bg-transparent px-2 py-1.5">
                 <Image
-                  src="/PoweredByTallyBadgeDark.svg"
+                  src="/PoweredByTallyBadgeREV.svg"
                   alt="Powered by Tally"
                   width={120}
                   height={29}

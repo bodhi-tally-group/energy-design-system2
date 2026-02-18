@@ -326,7 +326,7 @@ export default function TallyLargeMarketPage() {
           </nav>
           </div>
           <div className="shrink-0 border-t border-border p-3 dark:border-gray-800">
-            <Image src="/PoweredByTallyBadgeDark.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto" />
+            <Image src="/PoweredByTallyBadgeREV.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto" />
           </div>
         </aside>
 
