@@ -209,6 +209,14 @@ Always specify brand context in prompts: e.g. "This is for Tally Glass (call cen
 
 ---
 
+## Versioning
+
+- **Project version** is **1.5.x** for the Tally Energy Design System (1.5 is the overall project version for now).
+- **Patch increments** for each release: e.g. 1.5.3 is the latest update after 1.5.2.
+- When releasing: update `lib/version.ts` (`DESIGN_SYSTEM_VERSION`), `package.json` (`version`), `CHANGELOG.md`, and the changelog array in `app/changelog/page.tsx` so the version under the logo and the changelog page stay in sync.
+
+---
+
 ## Mistakes to Avoid
 
 - Don't create new card/panel components — use `Card` from `@/components/Card/Card`

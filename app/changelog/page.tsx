@@ -4,6 +4,17 @@ import { DESIGN_SYSTEM_VERSION } from "@/lib/version";
 
 const CHANGELOG: { version: string; date: string; changes: string[] }[] = [
   {
+    version: "1.5.3",
+    date: "2026-02-18",
+    changes: [
+      "Powered by Tally brand page: new foundation page at /foundation/brands/powered-by-tally with two badge variants (light and dark/REV), download links, and “Use in the nav bar” section with NavigationBar demos.",
+      "Powered by Tally added to Brands section in sidebar navigation and to the brands index with a dedicated card.",
+      "Powered by Tally dark variant (REV): new asset PoweredByTallyBadgeREV.svg; NavigationBar, Sidebar, and all pages using the dark badge now reference this file.",
+      "Brands index: brand cards show respective logos (Tally Group, Tally+, Tally+ Small Market, Tally Sales & Acquisition, Tally Digital, Tally CRM, Powered by Tally) where assets exist; icons used when no logo is available.",
+      "Brands index: removed grey box around logos; logos are larger (72px row), consistent, and left-aligned.",
+    ],
+  },
+  {
     version: "1.5.2",
     date: "2025-02-13",
     changes: [
