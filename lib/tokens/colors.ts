@@ -82,13 +82,13 @@ export const semanticColors = {
   },
   warning: {
     name: "warning",
-    hex: "#C53B00",
-    rgb: { r: 197, g: 59, b: 0 },
+    hex: "#E8560A",
+    rgb: { r: 232, g: 86, b: 10 },
   },
   warningLight: {
     name: "warning light",
-    hex: "#FEF3C7",
-    rgb: { r: 254, g: 243, b: 199 },
+    hex: "#FFF4E6",
+    rgb: { r: 255, g: 244, b: 230 },
   },
   error: {
     name: "error",
@@ -112,8 +112,8 @@ export const semanticColors = {
   },
   system: {
     name: "system",
-    hex: "#FFFF00",
-    rgb: { r: 255, g: 255, b: 0 },
+    hex: "#EAB308",
+    rgb: { r: 234, g: 179, b: 8 },
   },
 } as const satisfies Record<string, ColorToken>;
 

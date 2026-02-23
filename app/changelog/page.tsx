@@ -4,6 +4,13 @@ import { DESIGN_SYSTEM_VERSION } from "@/lib/version";
 
 const CHANGELOG: { version: string; date: string; changes: string[] }[] = [
   {
+    version: "1.5.5",
+    date: "2026-02-23",
+    changes: [
+      "Colours (Foundation): semantic tokens updated — System (yellow) #EAB308; Warning #E8560A with Warning Light #FFF4E6. See Colours page and lib/tokens/colors.ts.",
+    ],
+  },
+  {
     version: "1.5.4",
     date: "2026-02-23",
     changes: [

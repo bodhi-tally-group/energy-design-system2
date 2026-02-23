@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.5.5] - 2026-02-23
+
+### Changed
+
+- **Colours (Foundation)** – Semantic colour tokens updated: System (yellow) set to `#EAB308`; Warning set to `#E8560A` with Warning Light `#FFF4E6` (matching light tint). See Colours page and `lib/tokens/colors.ts`.
+
 ## [1.5.4] - 2026-02-23
 
 ### Added
