@@ -2,7 +2,7 @@
  * Single source of truth for the Tally Energy Design System version.
  * Format: 1.5.x (patch increments per release, e.g. 1.5.3). Keep in sync with package.json and CHANGELOG.md.
  */
-export const DESIGN_SYSTEM_VERSION = "1.5.3";
+export const DESIGN_SYSTEM_VERSION = "1.5.4";
 
 /** Base version (major.minor) shown as static text; only the patch is the link. */
 export function getVersionBaseAndPatch(version: string): { base: string; patch: string } {

@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.5.4] - 2026-02-23
+
+### Added
+
+- **Surface Colour (Elements)** – New foundation page at `/foundation/surface-colour` documenting background gradients for the main content area (Pane) per Tally brand. Includes Tally CRM example (layered sky/blue), a table of all brands with their layer pairs, live swatches, and usage notes.
+- **Surface colour tokens** – New `lib/tokens/surface-colours.ts` with `surfaceColours` and `getSurfaceClass(brand)`; each brand uses a layered gradient class defined in `globals.css`.
+- **Layered brand gradients** – All brand surfaces now use the same opacity rule (light: layer1 50%→70%, layer2 30%→50%; dark: layer1 15%→25%, layer2 10%→20%). CRM: sky/blue; Tally Group, Tally+, Tally Glass: slate/blue; Tally+ Small Market: teal/emerald; Tally Sales & Acquisition: violet/purple; Tally Digital: orange/amber.
+- **Surface Colour in nav** – “Surface Colour” added to the Elements section in the sidebar.
+- **Tally Glass brand page** – New foundation page at `/foundation/brands/tally-glass` with logo variants and assets (TallyGlassLogo, Mono, Reversed, MonoReversed) in `public/foundation/brands/tally-glass/`.
+
+### Changed
+
+- **CRM layout** – Main content area uses `surfaceColours["tally-crm"]` (layered sky/blue gradient).
+- **Page templates** – Surface gradients applied to Glass Energy Dashboard (tally-crm), Small Market (tally-plus-small-market), S&A Dashboard and Tally Acquire (tally-sales-acquisition), Tally Glass (tally-glass), Beta Test Dashboard, Tally Orion, Tally Large Market (tally-group).
+- **Layout and .cursorrules** – Pane and Surface Colour documented; token keys and usage added.
+
 ## [1.5.3] - 2026-02-18
 
 ### Added
