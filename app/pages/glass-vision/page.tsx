@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -160,7 +160,68 @@ const COMBINED_FORECAST = [
   { month: "Jun", actual: null, forecast: 78, low: 60, high: 95 },
 ];
 
-const PANEL_TABS = ["Adora", "Control Panel", "X-Sell"] as const;
+const PANEL_TABS = ["Control Panel", "X-Sell"] as const;
+
+const BROADBAND_PLANS = [
+  {
+    name: "Galileo",
+    logo: "/broadband/Galileo.svg",
+    cost: "$68/mth",
+    speed: "25 Mbps",
+    data: "Unlimited",
+    description: "A solid all-rounder for everyday use. Perfect for emails, streaming your favourite shows, and keeping up with the news.",
+    features: ["No contract", "14 day trial", "$0 Setup Fee", "Unlimited data"],
+  },
+  {
+    name: "Luminary",
+    logo: "/broadband/Luminary.svg",
+    cost: "$98/mth",
+    speed: "100 Mbps",
+    data: "Unlimited",
+    description: "Made for households that love to stream, game, and stay connected. Fast, reliable, and built to handle multiple devices at once — no more buffering battles.",
+    features: ["No contract", "14 day trial", "$0 Setup Fee", "Unlimited data"],
+  },
+  {
+    name: "3Portals",
+    logo: "/broadband/3Portals.svg",
+    cost: "$75/mth",
+    speed: "50 Mbps",
+    data: "Unlimited",
+    description: "A great mix of speed and value for busy homes. Stream, scroll, and video call without missing a beat.",
+    features: ["No contract", "$0 Setup Fee", "Unlimited data"],
+  },
+  {
+    name: "Ollio",
+    logo: "/broadband/Ollio.svg",
+    cost: "$120/mth",
+    speed: "240 Mbps",
+    data: "Unlimited",
+    description: "Premium speed for homes that do it all. Stream in 4K, game online, jump on video calls, and still have bandwidth to spare.",
+    features: ["$0 Setup Fee", "Unlimited data"],
+  },
+  {
+    name: "Photon",
+    logo: null,
+    icon: "bolt",
+    iconBg: "bg-amber-500",
+    cost: "$55/mth",
+    speed: "12 Mbps",
+    data: "500 GB",
+    description: "An affordable entry plan for light users. Browse, email, and stream in SD without breaking the bank.",
+    features: ["No contract", "$0 Setup Fee"],
+  },
+  {
+    name: "Vertex",
+    logo: null,
+    icon: "cell_tower",
+    iconBg: "bg-sky-600",
+    cost: "$149/mth",
+    speed: "1000 Mbps",
+    data: "Unlimited",
+    description: "Ultra-fast fibre for power users and large households. Download, upload, and stream simultaneously without limits.",
+    features: ["No contract", "14 day trial", "$0 Setup Fee", "Unlimited data"],
+  },
+];
 
 const TASK_CATEGORIES = [
   { name: "Account Tasks", count: null, icon: "group" as const, hot: false },
@@ -388,6 +449,21 @@ const ACCOUNTS: AccountRecord[] = [
 const CUSTOMER_SUMMARY =
   "Ronald is a long-standing customer since April 2008 with an excellent payment history (95th percentile). He holds 5 service accounts across residential, commercial, and small business premises. Energy usage has been declining steadily at his primary residence — down 63% over 12 months, likely due to solar. Commercial accounts at Collins St and Queen St show rising usage (+12.3% and +5.1%). Currently in net credit of $144.74 on the primary account. Multiple vulnerability flags are active. Recommended actions: Review commercial tariff rates, proactive hardship check-in, and solar feed-in review for residential.";
 
+const ADORA_OVERVIEW_SEGMENTS = [
+  { text: "Ronald is a ", bold: false },
+  { text: "long-standing customer", bold: true },
+  { text: " since April 2008 with an ", bold: false },
+  { text: "excellent payment history", bold: true },
+  { text: " (95th percentile). He holds ", bold: false },
+  { text: "5 service accounts", bold: true },
+  { text: " across residential, commercial, and small business premises. Energy usage has been ", bold: false },
+  { text: "declining steadily", bold: true },
+  { text: " at his primary residence — down 63% over 12 months, likely due to solar. Commercial accounts at Collins St and Queen St show rising usage (+12.3% and +5.1%). Currently in net credit of $144.74 on the primary account. Multiple vulnerability flags are active. ", bold: false },
+  { text: "Recommended actions:", bold: true },
+  { text: " Review commercial tariff rates, proactive hardship check-in, and solar feed-in review for residential.", bold: false },
+];
+const ADORA_TOTAL_CHARS = ADORA_OVERVIEW_SEGMENTS.reduce((sum, s) => sum + s.text.length, 0);
+
 export default function GlassVisionPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [activeNavId, setActiveNavId] = useState("customers");
@@ -395,6 +471,10 @@ export default function GlassVisionPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [controlPanelOpen, setControlPanelOpen] = useState(true);
   const [activePanelTab, setActivePanelTab] = useState<(typeof PANEL_TABS)[number]>("Control Panel");
+  const [adoraPhase, setAdoraPhase] = useState<"idle" | "thinking" | "typing" | "done">("idle");
+  const [adoraCharCount, setAdoraCharCount] = useState(0);
+  const adoraStarted = useRef(false);
+  const [xSellView, setXSellView] = useState<string | null>(null);
 
   const handleAccountClick = useCallback((address: string) => {
     const isDeselecting = selectedAccountAddress === address;
@@ -417,6 +497,40 @@ export default function GlassVisionPage() {
       if (sidebar instanceof HTMLElement) sidebar.style.display = "";
     };
   }, [isExpanded]);
+
+  useEffect(() => {
+    if (activeTab === "overview" && !adoraStarted.current) {
+      adoraStarted.current = true;
+      setAdoraPhase("thinking");
+      const t = setTimeout(() => setAdoraPhase("typing"), 1800);
+      return () => clearTimeout(t);
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (adoraPhase !== "typing") return;
+    if (adoraCharCount >= ADORA_TOTAL_CHARS) {
+      setAdoraPhase("done");
+      return;
+    }
+    const t = setTimeout(() => setAdoraCharCount((c) => Math.min(c + 2, ADORA_TOTAL_CHARS)), 10);
+    return () => clearTimeout(t);
+  }, [adoraPhase, adoraCharCount]);
+
+  const renderAdoraSegments = (charLimit: number) => {
+    let remaining = charLimit;
+    return ADORA_OVERVIEW_SEGMENTS.map((seg, i) => {
+      if (remaining <= 0) return null;
+      const visible = Math.min(remaining, seg.text.length);
+      remaining -= visible;
+      const text = seg.text.slice(0, visible);
+      return seg.bold ? (
+        <strong key={i} className="text-gray-900 dark:text-slate-100">{text}</strong>
+      ) : (
+        <span key={i}>{text}</span>
+      );
+    });
+  };
 
   return (
     <div
@@ -454,7 +568,14 @@ export default function GlassVisionPage() {
             </kbd>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-3">
+          <button
+            type="button"
+            className="flex items-center gap-1.5 rounded-full bg-orange-400 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-orange-500"
+          >
+            <Image src="/AdoraDot.svg" alt="" width={16} height={16} className="h-4 w-4" />
+            Adora
+          </button>
           <button
             type="button"
             className="relative rounded-lg p-2 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
@@ -702,7 +823,7 @@ export default function GlassVisionPage() {
               </TabsList>
             </div>
             <TabsContent value="overview" className="mt-0">
-          {/* Adora Customer Summary — light: warm tint; dark: turquoise glow */}
+          {/* Adora Customer Summary — progressive typing animation */}
           <Card className={cn("mb-8 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
             <CardContent className="p-6 pt-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -716,9 +837,35 @@ export default function GlassVisionPage() {
                   Auto-generated
                 </Badge>
               </div>
-              <p className="text-sm leading-relaxed text-gray-700 dark:text-slate-300">
-                Ronald is a <strong className="text-gray-900 dark:text-slate-100">long-standing customer</strong> since April 2008 with an <strong className="text-gray-900 dark:text-slate-100">excellent payment history</strong> (95th percentile). He holds <strong className="text-gray-900 dark:text-slate-100">5 service accounts</strong> across residential, commercial, and small business premises. Energy usage has been <strong className="text-gray-900 dark:text-slate-100">declining steadily</strong> at his primary residence — down 63% over 12 months, likely due to solar. Commercial accounts at Collins St and Queen St show rising usage (+12.3% and +5.1%). Currently in net credit of $144.74 on the primary account. Multiple vulnerability flags are active. <strong className="text-gray-900 dark:text-slate-100">Recommended actions:</strong> Review commercial tariff rates, proactive hardship check-in, and solar feed-in review for residential.
-              </p>
+              <div className="rounded-lg border border-orange-300 p-3 dark:border-orange-500/40">
+                {(adoraPhase === "idle" || adoraPhase === "thinking") && (
+                  <div className="flex items-center gap-2.5 py-1">
+                    <div className="flex gap-1">
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-orange-400" style={{ animationDelay: "0ms" }} />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-orange-400" style={{ animationDelay: "150ms" }} />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-orange-400" style={{ animationDelay: "300ms" }} />
+                    </div>
+                    <span className="text-sm text-gray-500 dark:text-slate-400">Adora is analysing...</span>
+                  </div>
+                )}
+                {(adoraPhase === "typing" || adoraPhase === "done") && (
+                  <p className="text-sm leading-relaxed text-gray-700 dark:text-slate-300">
+                    {renderAdoraSegments(adoraPhase === "done" ? ADORA_TOTAL_CHARS : adoraCharCount)}
+                    {adoraPhase === "typing" && (
+                      <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-orange-400 align-middle" />
+                    )}
+                  </p>
+                )}
+              </div>
+              {adoraPhase === "done" && (
+                <button
+                  type="button"
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-orange-400 px-3 py-1 text-xs font-semibold text-white transition-all hover:bg-orange-500"
+                >
+                  <Image src="/AdoraDot.svg" alt="" width={14} height={14} className="h-3.5 w-3.5" />
+                  Ask Adora
+                </button>
+              )}
             </CardContent>
           </Card>
 
@@ -1155,9 +1302,9 @@ export default function GlassVisionPage() {
                   { icon: "shield" as const, label: "Risk Level", value: "Low", color: "#864EAD" },
                 ].map((badge) => (
                   <Card key={badge.label} className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
-                    <CardContent className="flex items-center gap-3 p-4 pt-4">
+                    <CardContent className="flex items-start gap-3 p-4 pt-4">
                       <div
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                        className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
                         style={{ backgroundColor: `${badge.color}18` }}
                       >
                         <Icon name={badge.icon} size={20} style={{ color: badge.color }} />
@@ -1171,7 +1318,7 @@ export default function GlassVisionPage() {
                 ))}
               </div>
 
-              {/* Adora Customer Summary */}
+              {/* Adora Customer Summary — static (already seen on Overview) */}
               <Card className={cn("mb-3 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
                 <CardContent className="p-4 pt-4">
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -1181,9 +1328,18 @@ export default function GlassVisionPage() {
                     </div>
                     <Badge className="border-[#00D2A2]/40 bg-[#00D2A2]/10 text-xs font-medium text-[#008f6f] dark:border-[#00D2A2]/30 dark:bg-[#00D2A2]/15 dark:text-[#00D2A2]">Auto-generated</Badge>
                   </div>
-                  <p className="text-sm leading-relaxed text-gray-700 dark:text-slate-300">
-                    Ronald is a <strong className="text-gray-900 dark:text-slate-100">long-standing customer</strong> since April 2008 with an <strong className="text-gray-900 dark:text-slate-100">excellent payment history</strong> (95th percentile). Energy usage has been <strong className="text-gray-900 dark:text-slate-100">declining steadily</strong> — down 63% over the past 12 months, likely due to solar panel installation. Currently in credit of $144.74. Multiple vulnerability flags are active. The account shows strong engagement through digital channels with decreasing call center contact.<strong className="text-gray-900 dark:text-slate-100">Recommended action:</strong> Review solar feed-in tariff rates and consider proactive hardship check-in.
-                  </p>
+                  <div className="rounded-lg border border-orange-300 p-3 dark:border-orange-500/40">
+                    <p className="text-sm leading-relaxed text-gray-700 dark:text-slate-300">
+                      Ronald is a <strong className="text-gray-900 dark:text-slate-100">long-standing customer</strong> since April 2008 with an <strong className="text-gray-900 dark:text-slate-100">excellent payment history</strong> (95th percentile). Energy usage has been <strong className="text-gray-900 dark:text-slate-100">declining steadily</strong> — down 63% over the past 12 months, likely due to solar panel installation. Currently in credit of $144.74. Multiple vulnerability flags are active. The account shows strong engagement through digital channels with decreasing call center contact. <strong className="text-gray-900 dark:text-slate-100">Recommended action:</strong> Review solar feed-in tariff rates and consider proactive hardship check-in.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-orange-400 px-3 py-1 text-xs font-semibold text-white transition-all hover:bg-orange-500"
+                  >
+                    <Image src="/AdoraDot.svg" alt="" width={14} height={14} className="h-3.5 w-3.5" />
+                    Ask Adora
+                  </button>
                 </CardContent>
               </Card>
 
@@ -1225,28 +1381,26 @@ export default function GlassVisionPage() {
                 <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-slate-100">Cost Breakdown</h3>
-                    <div className="flex items-center gap-2">
-                      <div className="w-[55%]">
-                        <ResponsiveContainer width="100%" height={180}>
-                          <PieChart>
-                            <Pie data={COST_BREAKDOWN} cx="50%" cy="50%" innerRadius={45} outerRadius={72} dataKey="value" stroke="none">
-                              {COST_BREAKDOWN.map((entry, i) => (
-                                <Cell key={i} fill={entry.color} />
-                              ))}
-                            </Pie>
-                            <Tooltip content={<ChartTooltip />} />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      </div>
-                      <div className="flex flex-1 flex-col gap-2">
-                        {COST_BREAKDOWN.map((c) => (
-                          <div key={c.name} className="flex items-center gap-2 text-xs">
-                            <span className="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: c.color }} />
-                            <span className="flex-1 text-gray-600 dark:text-slate-400">{c.name}</span>
-                            <span className="font-semibold text-gray-900 dark:text-slate-100">{c.value}%</span>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="flex justify-center">
+                      <ResponsiveContainer width="100%" height={170}>
+                        <PieChart>
+                          <Pie data={COST_BREAKDOWN} cx="50%" cy="50%" innerRadius={45} outerRadius={72} dataKey="value" stroke="none">
+                            {COST_BREAKDOWN.map((entry, i) => (
+                              <Cell key={i} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip content={<ChartTooltip />} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1.5">
+                      {COST_BREAKDOWN.map((c) => (
+                        <div key={c.name} className="flex items-center gap-1.5 text-xs">
+                          <span className="inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: c.color }} />
+                          <span className="text-gray-600 dark:text-slate-400">{c.name}</span>
+                          <span className="font-semibold text-gray-900 dark:text-slate-100">{c.value}%</span>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -1448,12 +1602,7 @@ export default function GlassVisionPage() {
                             : "text-gray-400 hover:text-gray-600 dark:text-slate-600 dark:hover:text-slate-400"
                         )}
                       >
-                        {tab === "Adora" ? (
-                          <span className="flex items-center gap-1">
-                            <Image src="/AdoraDot.svg" alt="" width={16} height={16} className="h-3.5 w-3.5" />
-                            Adora
-                          </span>
-                        ) : tab}
+                        {tab}
                       </button>
                     ))}
                   </div>
@@ -1467,67 +1616,218 @@ export default function GlassVisionPage() {
                   </button>
                 </div>
 
-                {/* Quick action buttons */}
-                <div className="flex gap-2 border-b border-gray-100/60 p-3.5 dark:border-white/[0.04]">
-                  {([
-                    ["edit", "Edit"],
-                    ["download", "Export"],
-                    ["filter_list", "Filter"],
-                    ["settings", "Config"],
-                  ] as const).map(([icon, label]) => (
-                    <button
-                      key={icon}
-                      type="button"
-                      className="flex flex-1 flex-col items-center gap-1.5 rounded-xl border border-gray-200/60 bg-white/60 px-1 py-2.5 text-gray-500 backdrop-blur-lg transition-all hover:-translate-y-0.5 hover:border-[#4EEECA]/30 hover:bg-[#4EEECA]/8 hover:text-[#298268] dark:border-white/[0.06] dark:bg-white/[0.04] dark:text-slate-500 dark:hover:border-[#4EEECA]/20 dark:hover:bg-[#4EEECA]/10 dark:hover:text-[#4EEECA]"
-                    >
-                      <Icon name={icon} size={17} />
-                      <span className="text-[10px] font-medium">{label}</span>
-                    </button>
-                  ))}
-                </div>
+                {activePanelTab === "Control Panel" && (
+                  <>
+                    {/* Quick action buttons */}
+                    <div className="flex gap-2 border-b border-gray-100/60 p-3.5 dark:border-white/[0.04]">
+                      {([
+                        ["check_box", "Tasks", true],
+                        ["add_comment", "New Interaction", false],
+                        ["filter_alt", "Filter", false],
+                        ["layers", "Work Items", false],
+                      ] as const).map(([icon, label, active]) => (
+                        <button
+                          key={icon}
+                          type="button"
+                          aria-label={label}
+                          className={cn(
+                            "flex flex-1 items-center justify-center rounded-xl border px-1 py-2 backdrop-blur-lg transition-all hover:-translate-y-0.5",
+                            active
+                              ? "border-[#00D2A2]/40 bg-[#00D2A2]/10 text-[#008f6f] dark:border-[#00D2A2]/30 dark:bg-[#00D2A2]/15 dark:text-[#00D2A2]"
+                              : "border-gray-200/60 bg-white/60 text-gray-500 hover:border-[#4EEECA]/30 hover:bg-[#4EEECA]/8 hover:text-[#298268] dark:border-white/[0.06] dark:bg-white/[0.04] dark:text-slate-500 dark:hover:border-[#4EEECA]/20 dark:hover:bg-[#4EEECA]/10 dark:hover:text-[#4EEECA]"
+                          )}
+                        >
+                          <Icon name={icon} size={17} />
+                        </button>
+                      ))}
+                    </div>
 
-                {/* Create new task */}
-                <div className="px-3.5 pt-3.5">
-                  <button
-                    type="button"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-[#2C365D]/30 bg-[#2C365D]/4 px-3 py-2.5 text-[13px] font-semibold text-[#2C365D] transition-all hover:-translate-y-0.5 hover:border-[#2C365D] hover:bg-[#2C365D]/8 hover:shadow-md dark:border-white/20 dark:bg-white/[0.03] dark:text-slate-200 dark:hover:border-white/40 dark:hover:bg-white/[0.06]"
-                  >
-                    <Icon name="add" size={16} />
-                    Create new task
-                    <span className="rounded bg-[#2C365D] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white dark:bg-[#00D2A2] dark:text-gray-900">
-                      New
-                    </span>
-                  </button>
-                </div>
-
-                {/* Task categories */}
-                <div className="flex-1 px-2 py-1.5">
-                  {TASK_CATEGORIES.map((tc) => (
-                    <button
-                      key={tc.name}
-                      type="button"
-                      className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-gray-100/60 dark:hover:bg-white/[0.04]"
-                    >
-                      <Icon name={tc.icon} size={17} className="shrink-0 text-gray-400 dark:text-slate-500" />
-                      <span className="flex-1 text-left text-[13px] font-medium text-gray-700 dark:text-slate-300">
-                        {tc.name}
-                      </span>
-                      <span
-                        className={cn(
-                          "min-w-[28px] rounded-full px-2 py-0.5 text-center font-mono text-[11.5px] font-medium",
-                          tc.count === null
-                            ? "bg-gray-100/60 text-gray-400 dark:bg-white/[0.04] dark:text-slate-600"
-                            : tc.hot
-                              ? "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400"
-                              : "bg-gray-100/60 text-gray-500 dark:bg-white/[0.06] dark:text-slate-400"
-                        )}
+                    {/* Create new task */}
+                    <div className="px-3.5 pt-3.5">
+                      <button
+                        type="button"
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-[#2C365D]/30 bg-[#2C365D]/4 px-3 py-2.5 text-[13px] font-semibold text-[#2C365D] transition-all hover:-translate-y-0.5 hover:border-[#2C365D] hover:bg-[#2C365D]/8 hover:shadow-md dark:border-white/20 dark:bg-white/[0.03] dark:text-slate-200 dark:hover:border-white/40 dark:hover:bg-white/[0.06]"
                       >
-                        {tc.count ?? "—"}
+                        <Icon name="add" size={16} />
+                        Create new task
+                        <span className="rounded bg-[#2C365D] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white dark:bg-[#00D2A2] dark:text-gray-900">
+                          New
+                        </span>
+                      </button>
+                    </div>
+
+                    {/* Task categories */}
+                    <div className="flex-1 px-2 py-1.5">
+                      {TASK_CATEGORIES.map((tc) => (
+                        <button
+                          key={tc.name}
+                          type="button"
+                          className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-gray-100/60 dark:hover:bg-white/[0.04]"
+                        >
+                          <Icon name={tc.icon} size={17} className="shrink-0 text-gray-400 dark:text-slate-500" />
+                          <span className="flex-1 text-left text-[13px] font-medium text-gray-700 dark:text-slate-300">
+                            {tc.name}
+                          </span>
+                          <span
+                            className={cn(
+                              "min-w-[28px] rounded-full px-2 py-0.5 text-center font-mono text-[11.5px] font-medium",
+                              tc.count === null
+                                ? "bg-gray-100/60 text-gray-400 dark:bg-white/[0.04] dark:text-slate-600"
+                                : tc.hot
+                                  ? "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400"
+                                  : "bg-gray-100/60 text-gray-500 dark:bg-white/[0.06] dark:text-slate-400"
+                            )}
+                          >
+                            {tc.count ?? "—"}
+                          </span>
+                          <Icon name="chevron_right" size={15} className="shrink-0 text-gray-300 dark:text-slate-600" />
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {activePanelTab === "X-Sell" && xSellView === null && (
+                  <div className="flex-1 space-y-5 overflow-y-auto px-3.5 py-3.5">
+                    {/* Active Services */}
+                    <div>
+                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">Active Services</p>
+                      <div className="space-y-2">
+                        {([
+                          { icon: "bolt" as const, iconBg: "bg-amber-100 text-amber-700 dark:bg-amber-500/25 dark:text-amber-300", service: "Electricity", provider: "EnergyCo", plan: "Home Saver plan", status: "Connected" },
+                          { icon: "local_fire_department" as const, iconBg: "bg-orange-100 text-orange-700 dark:bg-orange-500/25 dark:text-orange-300", service: "Gas", provider: "Energy Co", plan: "Online saver plan 2024", status: "Connected" },
+                        ]).map((s) => (
+                          <button key={s.service} type="button" className={cn("flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.04]", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                            <div className={cn("mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", s.iconBg)}>
+                              <Icon name={s.icon} size={16} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-medium text-gray-500 dark:text-slate-400">{s.service}</span>
+                                <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">{s.status}</span>
+                              </div>
+                              <p className="text-[13px] font-semibold text-gray-900 dark:text-slate-100">{s.provider}</p>
+                              <p className="text-[11px] text-gray-500 dark:text-slate-500">{s.plan}</p>
+                            </div>
+                            <Icon name="chevron_right" size={16} className="mt-2 shrink-0 text-gray-300 dark:text-slate-600" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Services available to this site */}
+                    <div>
+                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">Services available to this site</p>
+                      <div className="space-y-2">
+                        {([
+                          { icon: "wifi" as const, iconBg: "bg-sky-100 text-sky-700 dark:bg-sky-500/25 dark:text-sky-300", service: "Broadband", headline: "6 broadband plans available", sub: "Plans from $68/month", badge: null, action: "broadband" },
+                          { icon: "solar_power" as const, iconBg: "bg-amber-100 text-amber-700 dark:bg-amber-500/25 dark:text-amber-300", service: "Solar", headline: "7 Exclusive Solar offers available", sub: "Offers starting at $4,500", badge: null, action: null },
+                          { icon: "battery_charging_full" as const, iconBg: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/25 dark:text-emerald-300", service: null, headline: "2025 Home battery subsidies available", sub: "Check eligibility", badge: "New", action: null },
+                        ]).map((s) => (
+                          <button key={s.headline} type="button" onClick={() => s.action && setXSellView(s.action)} className={cn("flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.04]", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                            <div className={cn("mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", s.iconBg)}>
+                              <Icon name={s.icon} size={16} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                {s.service && <span className="text-xs font-medium text-gray-500 dark:text-slate-400">{s.service}</span>}
+                                {s.badge && <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">{s.badge}</span>}
+                              </div>
+                              <p className="text-[13px] font-semibold text-gray-900 dark:text-slate-100">{s.headline}</p>
+                              <p className="text-[11px] text-gray-500 dark:text-slate-500">{s.sub}</p>
+                            </div>
+                            <Icon name="chevron_right" size={16} className="mt-2 shrink-0 text-gray-300 dark:text-slate-600" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* MIMO Services */}
+                    <div>
+                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">MIMO Services</p>
+                      <div className="space-y-2">
+                        {([
+                          { icon: "cleaning_services" as const, iconBg: "bg-violet-100 text-violet-700 dark:bg-violet-500/25 dark:text-violet-300", service: "Cleaning", headline: "3 cleaning services available", sub: "Starting at $650" },
+                          { icon: "local_shipping" as const, iconBg: "bg-sky-100 text-sky-700 dark:bg-sky-500/25 dark:text-sky-300", service: "Removals", headline: "11 removal services available", sub: "From $1200" },
+                        ]).map((s) => (
+                          <button key={s.service} type="button" className={cn("flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.04]", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                            <div className={cn("mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", s.iconBg)}>
+                              <Icon name={s.icon} size={16} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-medium text-gray-500 dark:text-slate-400">{s.service}</span>
+                              </div>
+                              <p className="text-[13px] font-semibold text-gray-900 dark:text-slate-100">{s.headline}</p>
+                              <p className="text-[11px] text-gray-500 dark:text-slate-500">{s.sub}</p>
+                            </div>
+                            <Icon name="chevron_right" size={16} className="mt-2 shrink-0 text-gray-300 dark:text-slate-600" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Broadband Plans drill-down */}
+                {activePanelTab === "X-Sell" && xSellView === "broadband" && (
+                  <div className="flex flex-1 flex-col overflow-y-auto">
+                    <div className="flex items-center gap-2 border-b border-gray-100/60 px-3.5 py-3 dark:border-white/[0.04]">
+                      <button
+                        type="button"
+                        onClick={() => setXSellView(null)}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-slate-400 dark:hover:bg-white/[0.06] dark:hover:text-slate-200"
+                        aria-label="Back to X-Sell"
+                      >
+                        <Icon name="arrow_back" size={16} />
+                      </button>
+                      <span className="text-[13px] font-semibold text-gray-900 dark:text-slate-100">
+                        ({BROADBAND_PLANS.length}) Broadband Plans
                       </span>
-                      <Icon name="chevron_right" size={15} className="shrink-0 text-gray-300 dark:text-slate-600" />
-                    </button>
-                  ))}
-                </div>
+                    </div>
+                    <div className="space-y-2.5 px-3.5 py-3.5">
+                      {BROADBAND_PLANS.map((plan) => (
+                        <div key={plan.name} className={cn("overflow-hidden rounded-xl", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                          <div className="p-3.5">
+                            <div className="mb-2.5 flex items-center gap-2.5">
+                              {plan.logo ? (
+                                <Image src={plan.logo} alt={plan.name} width={120} height={40} className="h-7 w-auto" />
+                              ) : (
+                                <>
+                                  <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white", (plan as { iconBg?: string }).iconBg)}>
+                                    <Icon name={(plan as { icon?: string }).icon ?? "public"} size={16} />
+                                  </div>
+                                  <span className="text-base font-bold tracking-tight text-gray-900 dark:text-slate-100">{plan.name}</span>
+                                </>
+                              )}
+                            </div>
+                            <div className="mb-2.5 grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-gray-200/80 dark:border-white/[0.08]">
+                              {([
+                                ["Cost", plan.cost],
+                                ["Speed", plan.speed],
+                                ["Data", plan.data],
+                              ] as const).map(([label, value]) => (
+                                <div key={label} className="bg-gray-50 px-2 py-1.5 text-center dark:bg-white/[0.04]">
+                                  <p className="text-[9px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">{label}</p>
+                                  <p className="text-xs font-bold text-gray-900 dark:text-slate-100">{value}</p>
+                                </div>
+                              ))}
+                            </div>
+                            <p className="mb-2.5 text-[11px] leading-relaxed text-gray-600 dark:text-slate-400">{plan.description}</p>
+                            <div className="flex flex-wrap gap-x-3 gap-y-1">
+                              {plan.features.map((f) => (
+                                <div key={f} className="flex items-center gap-1 text-[10px]">
+                                  <Icon name="check_circle" size={13} className="text-emerald-500" />
+                                  <span className="font-medium text-gray-700 dark:text-slate-300">{f}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
               </div>
             </aside>
