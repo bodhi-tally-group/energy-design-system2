@@ -162,6 +162,51 @@ const COMBINED_FORECAST = [
 
 const PANEL_TABS = ["Control Panel", "X-Sell"] as const;
 
+/* ────────── Bill Compare data ────────── */
+const BILL_COMPARE_BILLS = [
+  {
+    id: "bill-1",
+    label: "Bill 1",
+    period: "Latest",
+    status: "Paid" as const,
+    adoraColor: "#F97316",
+    adoraSummary: "The significant increase in air conditioning usage ($210 this month vs. $90 last year average), driven by a 9.5°C rise in average monthly temperature (34.5°C vs 25°C), is the primary contributor to the high bill.",
+  },
+  {
+    id: "bill-2",
+    label: "Bill 2",
+    period: "Previous bill",
+    status: "Paid" as const,
+    adoraColor: "#EF4444",
+    adoraSummary: "A substantial increase in entertainment energy consumption ($100 this month vs $50 last year average), doubling from the previous year's average.",
+  },
+  {
+    id: "bill-3",
+    label: "Bill 3",
+    period: "17 Nov 2025 – 23 Dec 2025",
+    status: "Paid" as const,
+    adoraColor: "#EF4444",
+    adoraSummary: "Kitchen and laundry energy use doubled this month ($80 vs $40 last year average), significantly impacting the overall electricity bill.",
+  },
+];
+
+const BILL_COMPARE_ROWS: { label: string; values: string[]; detail?: string }[] = [
+  { label: "Invoice issue date", values: ["29 Apr 2025", "28 Jan 2025", "23 Dec 2025"] },
+  { label: "Energy plan", values: ["Value Saver", "Home Saver", "Home Saver"], detail: "Plan includes 15% usage discount (expires 31 March 2025). Plan includes 20% GreenPower" },
+  { label: "Invoice amount", values: ["$312.48", "$186.72", "$224.35"] },
+  { label: "Allocated amount", values: ["$312.48", "$186.72", "$224.35"] },
+  { label: "Total Usage", values: ["1,248 kWh", "746 kWh", "897 kWh"] },
+  { label: "Average Daily Usage", values: ["13.5 kWh", "8.3 kWh", "9.7 kWh"] },
+  { label: "Compared to last year", values: ["+42.3%", "−8.1%", "+12.6%"] },
+  { label: "General usage charge", values: ["$218.40", "$130.64", "$157.08"] },
+  { label: "Daily supply charge", values: ["$82.80", "$82.80", "$75.90"] },
+  { label: "Total new charges", values: ["$301.20", "$213.44", "$232.98"] },
+  { label: "GST", values: ["$30.12", "$21.34", "$23.30"] },
+  { label: "Previous Balance", values: ["$0.00", "$48.06", "$0.00"] },
+  { label: "VIC/AUS Government Bill Relief", values: ["−$18.84", "−$18.84", "−$18.84"] },
+  { label: "Carried forward credit", values: ["$0.00", "−$77.28", "−$13.09"] },
+];
+
 const BROADBAND_PLANS = [
   {
     name: "Galileo",
@@ -475,6 +520,17 @@ export default function GlassVisionPage() {
   const [adoraCharCount, setAdoraCharCount] = useState(0);
   const adoraStarted = useRef(false);
   const [xSellView, setXSellView] = useState<string | null>(null);
+  const [billCompareView, setBillCompareView] = useState<"table" | "chart">("table");
+  const [expandedBillRows, setExpandedBillRows] = useState<Set<string>>(new Set());
+
+  const toggleBillRow = useCallback((label: string) => {
+    setExpandedBillRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  }, []);
 
   const handleAccountClick = useCallback((address: string) => {
     const isDeselecting = selectedAccountAddress === address;
@@ -701,20 +757,20 @@ export default function GlassVisionPage() {
                 {/* Personal details card */}
                 <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
-                    <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Personal details</p>
-                    <div className="space-y-2.5 text-sm text-gray-700 dark:text-slate-300">
+                    <p className="mb-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-600">Personal details</p>
+                    <div className="space-y-2.5 text-xs">
                       <div className="flex items-center gap-2">
-                        <Icon name="calendar_today" size={18} className="text-gray-500 dark:text-slate-500" />
-                        <span>01 Jun 1960</span>
-                        <Badge variant="secondary" className="ml-auto border-gray-200 bg-gray-100 text-xs text-gray-700 dark:border-white/10 dark:bg-white/10 dark:text-slate-300">65</Badge>
+                        <Icon name="calendar_today" size={14} className="text-gray-300 dark:text-slate-600" />
+                        <span className="font-medium text-gray-800 dark:text-slate-200">01 Jun 1960</span>
+                        <Badge variant="secondary" className="ml-auto border-gray-200 bg-gray-100 text-[10px] text-gray-500 dark:border-white/10 dark:bg-white/10 dark:text-slate-400">65</Badge>
                       </div>
                       <div className="flex items-start gap-2">
-                        <Icon name="mail" size={18} className="mt-0.5 shrink-0 text-gray-500 dark:text-slate-500" />
-                        <span className="break-all">ronald_thomas12345@gmail.com</span>
+                        <Icon name="mail" size={14} className="mt-0.5 shrink-0 text-gray-300 dark:text-slate-600" />
+                        <span className="break-all font-medium text-gray-800 dark:text-slate-200">ronald_thomas12345@gmail.com</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Icon name="phone" size={18} className="text-gray-500 dark:text-slate-500" />
-                        <span>0464 464 646</span>
+                        <Icon name="phone" size={14} className="text-gray-300 dark:text-slate-600" />
+                        <span className="font-medium text-gray-800 dark:text-slate-200">0464 464 646</span>
                       </div>
                     </div>
                   </CardContent>
@@ -723,8 +779,8 @@ export default function GlassVisionPage() {
                 {/* Contact history card */}
                 <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
-                    <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Contact history</p>
-                    <div className="space-y-2.5 text-sm text-gray-700 dark:text-slate-300">
+                    <p className="mb-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-600">Contact history</p>
+                    <div className="space-y-2.5 text-xs">
                       {[
                         { icon: "chat_bubble_outline" as const, label: "Created", date: "05 Apr 2008" },
                         { icon: "call" as const, label: "Last call", date: "02 Feb 2025" },
@@ -733,10 +789,10 @@ export default function GlassVisionPage() {
                       ].map((row) => (
                         <div key={row.label} className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
-                            <Icon name={row.icon} size={18} className="text-gray-500 dark:text-slate-500" />
-                            <span>{row.label}</span>
+                            <Icon name={row.icon} size={14} className="text-gray-300 dark:text-slate-600" />
+                            <span className="text-gray-400 dark:text-slate-500">{row.label}</span>
                           </div>
-                          <span className="text-gray-500 dark:text-slate-500">{row.date}</span>
+                          <span className="font-medium text-gray-800 dark:text-slate-200">{row.date}</span>
                         </div>
                       ))}
                     </div>
@@ -757,32 +813,32 @@ export default function GlassVisionPage() {
                 {/* Payment methods card */}
                 <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
-                    <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Payment methods</p>
-                    <div className="space-y-3 text-sm text-gray-700 dark:text-slate-300">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-7 w-10 shrink-0 items-center justify-center rounded bg-indigo-600 text-[10px] font-bold text-white">VISA</div>
+                    <p className="mb-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-600">Payment methods</p>
+                    <div className="space-y-3 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-6 w-9 shrink-0 items-center justify-center rounded bg-indigo-600 text-[8px] font-bold text-white">VISA</div>
                         <div className="min-w-0 flex-1">
-                          <div>.... 1234</div>
-                          <div className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</div>
+                          <div className="font-medium text-gray-800 dark:text-slate-200">.... 1234</div>
+                          <div className="text-[10px] text-gray-400 dark:text-slate-600">Exp 06/2025</div>
                         </div>
-                        <Badge variant="secondary" className="border-emerald-200 bg-emerald-50 text-xs text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300">Default</Badge>
+                        <Badge variant="secondary" className="border-emerald-200 bg-emerald-50 text-[10px] text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300">Default</Badge>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-7 w-10 shrink-0 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white">MC</div>
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-6 w-9 shrink-0 items-center justify-center rounded bg-red-600 text-[8px] font-bold text-white">MC</div>
                         <div className="min-w-0 flex-1">
-                          <div>.... 1234</div>
-                          <div className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-7 w-10 shrink-0 items-center justify-center rounded bg-violet-600 text-[10px] font-bold text-white">DD</div>
-                        <div className="min-w-0 flex-1">
-                          <div>Direct Debit</div>
-                          <div className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</div>
+                          <div className="font-medium text-gray-800 dark:text-slate-200">.... 1234</div>
+                          <div className="text-[10px] text-gray-400 dark:text-slate-600">Exp 06/2025</div>
                         </div>
                       </div>
-                      <button type="button" className="flex w-full items-center gap-2 pt-1 text-sm font-medium text-gray-600 transition-colors hover:text-[#00D2A2] dark:text-slate-400 dark:hover:text-[#00D2A2]">
-                        <Icon name="add" size={18} />
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-6 w-9 shrink-0 items-center justify-center rounded bg-violet-600 text-[8px] font-bold text-white">DD</div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-gray-800 dark:text-slate-200">Direct Debit</div>
+                          <div className="text-[10px] text-gray-400 dark:text-slate-600">Exp 06/2025</div>
+                        </div>
+                      </div>
+                      <button type="button" className="flex w-full items-center gap-2 pt-1 text-xs font-medium text-gray-400 transition-colors hover:text-[#00D2A2] dark:text-slate-500 dark:hover:text-[#00D2A2]">
+                        <Icon name="add" size={14} />
                         Add method
                       </button>
                     </div>
@@ -1559,9 +1615,84 @@ export default function GlassVisionPage() {
               </div>
             </TabsContent>
             <TabsContent value="bill-compare" className="mt-0">
-              <div className="rounded-density-lg border border-border bg-card p-8 text-center text-muted-foreground shadow-sm">
-                <p>Bill Compare content would go here.</p>
-              </div>
+              {/* Bill comparison card */}
+              <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <CardContent className="p-0">
+                  {/* Bill headers */}
+                  <div className="grid grid-cols-3 gap-px">
+                    {BILL_COMPARE_BILLS.map((bill) => (
+                      <div key={bill.id} className="p-4">
+                        <div className="mb-2 flex items-center gap-2">
+                          <span className="text-sm font-semibold text-gray-900 dark:text-slate-100">{bill.label}</span>
+                          <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">{bill.status}</span>
+                          <button
+                            type="button"
+                            className="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
+                            aria-label="Download PDF"
+                          >
+                            <Icon name="picture_as_pdf" size={16} />
+                          </button>
+                        </div>
+                        <p className="mb-3 text-xs text-gray-500 dark:text-slate-400">{bill.period}</p>
+                        <div className="rounded-lg border border-orange-300 p-2.5 dark:border-orange-500/40">
+                          <div className="mb-1.5 flex items-center gap-1.5">
+                            <Image src="/AdoraDot.svg" alt="" width={14} height={14} className="h-3.5 w-3.5" />
+                            <span className="text-[10px] font-semibold text-gray-700 dark:text-slate-300">Adora</span>
+                          </div>
+                          <p className="text-[11px] leading-relaxed text-gray-600 dark:text-slate-400">{bill.adoraSummary}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Expand/Collapse all + Data rows */}
+                  <div className="flex items-center justify-end px-4 py-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (expandedBillRows.size === BILL_COMPARE_ROWS.length) {
+                          setExpandedBillRows(new Set());
+                        } else {
+                          setExpandedBillRows(new Set(BILL_COMPARE_ROWS.map((r) => r.label)));
+                        }
+                      }}
+                      className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-600 dark:text-slate-500 dark:hover:bg-white/[0.04] dark:hover:text-slate-300"
+                    >
+                      <Icon name={expandedBillRows.size === BILL_COMPARE_ROWS.length ? "unfold_less" : "unfold_more"} size={14} />
+                      {expandedBillRows.size === BILL_COMPARE_ROWS.length ? "Collapse all" : "Expand all"}
+                    </button>
+                  </div>
+                  <div className="divide-y divide-gray-100 dark:divide-white/[0.06]">
+                    {BILL_COMPARE_ROWS.map((row) => {
+                      const isExpanded = expandedBillRows.has(row.label);
+                      return (
+                        <div key={row.label}>
+                          <button
+                            type="button"
+                            onClick={() => toggleBillRow(row.label)}
+                            className="flex w-full items-center gap-2 px-4 py-2.5 text-left transition-colors hover:bg-gray-50/60 dark:hover:bg-white/[0.02]"
+                          >
+                            <span className="flex-1 text-xs font-medium text-gray-500 dark:text-slate-400">{row.label}</span>
+                            <Icon name={isExpanded ? "expand_less" : "expand_more"} size={18} className="shrink-0 text-gray-400 dark:text-slate-500" />
+                          </button>
+                          {isExpanded && (
+                            <div className="grid grid-cols-3 gap-px border-t border-gray-50 bg-gray-50/50 px-4 py-3 dark:border-white/[0.03] dark:bg-white/[0.02]">
+                              {row.values.map((val, i) => (
+                                <div key={i}>
+                                  <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">{val}</p>
+                                  {row.detail && i === 0 && (
+                                    <p className="mt-1 text-[10px] leading-relaxed text-gray-500 dark:text-slate-500">{row.detail}</p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
             <TabsContent value="history" className="mt-0">
               <div className="rounded-density-lg border border-border bg-card p-8 text-center text-muted-foreground shadow-sm">
