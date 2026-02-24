@@ -327,10 +327,10 @@ const GLASS_CARD_LIGHT =
 /* ========== Dark mode ========== */
 const PANE_DARK = "dark:bg-gray-900";
 const GLASS_PANEL_DARK =
-  "dark:bg-white/[0.06] dark:backdrop-blur-xl dark:border-white/[0.08] dark:shadow-[0_8px_32px_rgba(0,0,0,0.24)]";
+  "dark:bg-white/[0.06] dark:backdrop-blur-xl dark:border-white/[0.08] dark:shadow-none";
 const GLASS_CARD_DARK =
-  "dark:bg-white/[0.08] dark:backdrop-blur-xl dark:border-white/[0.12] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]";
-const GLOW_ACCENT_DARK = "dark:shadow-[0_0_24px_rgba(0,210,162,0.15)]";
+  "dark:bg-white/[0.08] dark:backdrop-blur-xl dark:border-white/[0.12] dark:shadow-none";
+const GLOW_ACCENT_DARK = "";
 
 /* ========== NAV (Glass Vision: collapsed, style-guide hover, turquoise active) ========== */
 const GLASS_NAV_ITEMS = [
@@ -864,23 +864,23 @@ export default function GlassVisionPage() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <div className="mb-6 flex justify-center">
               <TabsList className="h-10 flex-nowrap gap-1 rounded-xl bg-gray-100/90 p-1 backdrop-blur-md border border-gray-200/80 dark:bg-white/[0.06] dark:border-white/[0.08]">
-                <TabsTrigger value="overview" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2] dark:data-[state=active]:shadow-[0_0_20px_rgba(0,210,162,0.2)]">
+                <TabsTrigger value="overview" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
                   Overview
                 </TabsTrigger>
-                <TabsTrigger value="insights" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2] dark:data-[state=active]:shadow-[0_0_20px_rgba(0,210,162,0.2)]">
+                <TabsTrigger value="insights" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
                   Insights
                 </TabsTrigger>
-                <TabsTrigger value="bill-compare" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2] dark:data-[state=active]:shadow-[0_0_20px_rgba(0,210,162,0.2)]">
+                <TabsTrigger value="bill-compare" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
                   Bill Compare
                 </TabsTrigger>
-                <TabsTrigger value="history" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2] dark:data-[state=active]:shadow-[0_0_20px_rgba(0,210,162,0.2)]">
+                <TabsTrigger value="history" className="rounded-lg px-3 py-1.5 text-sm text-gray-400 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-500 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
                   History
                 </TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="overview" className="mt-0">
           {/* Adora Customer Summary — progressive typing animation */}
-          <Card className={cn("mb-8 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
+          <Card className={cn("mb-8 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)]")}>
             <CardContent className="p-6 pt-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5">
@@ -953,8 +953,8 @@ export default function GlassVisionPage() {
                         "scroll-mt-4 cursor-pointer overflow-hidden border-0 transition-all duration-200",
                         GLASS_CARD_LIGHT,
                         GLASS_CARD_DARK,
-                        "hover:shadow-lg hover:shadow-[#00D2A2]/10 dark:hover:shadow-[0_0_28px_rgba(0,210,162,0.12)]",
-                        isSelected && "ring-1 ring-[#00D2A2]/25 shadow-[0_0_20px_rgba(0,210,162,0.12)] dark:ring-[#00D2A2]/20 dark:shadow-[0_0_24px_rgba(0,210,162,0.15)]"
+                        "hover:shadow-lg hover:shadow-[#00D2A2]/10",
+                        isSelected && "ring-1 ring-[#00D2A2]/25 shadow-[0_0_20px_rgba(0,210,162,0.12)] dark:ring-[#00D2A2]/20"
                       )}
                       onClick={() => handleAccountClick(acc.address)}
                     >
@@ -1375,7 +1375,7 @@ export default function GlassVisionPage() {
               </div>
 
               {/* Adora Customer Summary — static (already seen on Overview) */}
-              <Card className={cn("mb-3 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
+              <Card className={cn("mb-3 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)]")}>
                 <CardContent className="p-4 pt-4">
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
