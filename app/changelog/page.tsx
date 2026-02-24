@@ -4,6 +4,15 @@ import { DESIGN_SYSTEM_VERSION } from "@/lib/version";
 
 const CHANGELOG: { version: string; date: string; changes: string[] }[] = [
   {
+    version: "1.5.6",
+    date: "2026-02-24",
+    changes: [
+      "Glass Vision (Template): new call centre page at /pages/glass-vision with customer account panels, Adora AI summary, expandable billing/usage details, Insights tab with charts, and glassmorphism UI.",
+      "Full-screen toggle: expand/contract button on Glass Vision nav hides the design system sidebar for distraction-free viewing.",
+      "Sidebar navigation: removed Tally Glass and Glass Energy Dashboard; replaced with Glass Vision.",
+    ],
+  },
+  {
     version: "1.5.5",
     date: "2026-02-23",
     changes: [

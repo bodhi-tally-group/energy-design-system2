@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.5.6] - 2026-02-24
+
+### Added
+
+- **Glass Vision (Template)** – New call centre page at `/pages/glass-vision` with customer account panels, Adora AI summary, service address cards with expandable billing/usage/load disaggregation details, Insights tab with charts (usage trend, cost breakdown, daily pattern, customer health radar, payment history, channel mix, bill forecast), and glassmorphism dark/light UI.
+- **Full-screen toggle** – Expand/contract button on the Glass Vision left nav hides the design system sidebar for distraction-free viewing; contract restores it.
+
+### Changed
+
+- **Sidebar navigation (Templates)** – Removed "Tally Glass" and "Glass Energy Dashboard" entries; replaced with "Glass Vision".
+- **Pages index** – Removed Tally Glass and Glass Energy Dashboard cards; added Glass Vision card.
+
 ## [1.5.5] - 2026-02-23
 
 ### Changed

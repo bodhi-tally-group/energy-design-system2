@@ -42,11 +42,11 @@ const pages = [
     tags: ["Inputs", "Validation", "Layout"],
   },
   {
-    title: "Tally Glass",
-    description: "Tally Glass page within the Energy Design System",
-    href: "/pages/tally-glass",
-    icon: "precision_manufacturing",
-    tags: ["Tally Glass"],
+    title: "Glass Vision",
+    description: "Tally Glass Vision call centre interface with customer account panels and real-time data",
+    href: "/pages/glass-vision",
+    icon: "visibility",
+    tags: ["Call Centre", "Glass", "Dashboard"],
   },
   {
     title: "Tally Orion",
@@ -61,13 +61,6 @@ const pages = [
     href: "/pages/tally-acquire",
     icon: "admin_panel_settings",
     tags: ["Dashboard", "Admin", "Tiles"],
-  },
-  {
-    title: "Glass Energy Dashboard",
-    description: "Density-adaptive energy dashboard with charts, KPIs, alerts, and grid status — Tally Glass branding",
-    href: "/pages/glass-energy-dashboard",
-    icon: "energy_savings_leaf",
-    tags: ["Dashboard", "Charts", "Density", "Glass", "KPI"],
   },
   {
     title: "S&A Beta",
