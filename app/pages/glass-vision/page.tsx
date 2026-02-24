@@ -160,6 +160,19 @@ const COMBINED_FORECAST = [
   { month: "Jun", actual: null, forecast: 78, low: 60, high: 95 },
 ];
 
+const PANEL_TABS = ["Adora", "Control Panel", "X-Sell"] as const;
+
+const TASK_CATEGORIES = [
+  { name: "Account Tasks", count: null, icon: "group" as const, hot: false },
+  { name: "Financial Tasks", count: 26, icon: "attach_money" as const, hot: true },
+  { name: "Supply Tasks", count: 3, icon: "bolt" as const, hot: false },
+  { name: "Interaction Tasks", count: 5, icon: "chat_bubble_outline" as const, hot: false },
+  { name: "Utility Tasks", count: 17, icon: "monitoring" as const, hot: false },
+  { name: "Credit Tasks", count: 29, icon: "credit_card" as const, hot: true },
+  { name: "Customer Tasks", count: 15, icon: "group" as const, hot: false },
+  { name: "No Contact Tasks", count: 6, icon: "power_settings_new" as const, hot: false },
+];
+
 const CHART_TEAL = "#00D2A2";
 
 function ChartTooltip({
@@ -380,6 +393,8 @@ export default function GlassVisionPage() {
   const [activeNavId, setActiveNavId] = useState("customers");
   const [selectedAccountAddress, setSelectedAccountAddress] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [controlPanelOpen, setControlPanelOpen] = useState(true);
+  const [activePanelTab, setActivePanelTab] = useState<(typeof PANEL_TABS)[number]>("Control Panel");
 
   React.useEffect(() => {
     const root = document.querySelector(".flex.h-screen.overflow-hidden");
@@ -394,8 +409,8 @@ export default function GlassVisionPage() {
 
   return (
     <div
-      className="flex min-h-screen flex-col overflow-hidden"
-      style={{ backgroundColor: DARKEST_NAVY }}
+      className="flex h-full flex-col overflow-hidden"
+      style={{ backgroundColor: DARKEST_NAVY, "--tally-radius-lg": "24px" } as React.CSSProperties}
     >
       {/* Seamless chrome: header + nav as one dark block (no border between them) */}
       <div className="flex min-h-0 flex-1 flex-col">
@@ -456,8 +471,8 @@ export default function GlassVisionPage() {
 
         <div className="flex flex-1 min-h-0">
           {/* Collapsed nav — same dark block as header, no seam */}
-          <aside className="flex w-16 shrink-0 flex-col items-center py-4 transition-[width] duration-300">
-          <nav className="flex flex-1 flex-col items-center gap-0.5 p-2">
+          <aside className="flex w-16 shrink-0 flex-col items-center min-h-0 py-4 transition-[width] duration-300">
+          <nav className="flex flex-1 flex-col items-center gap-0.5 p-2 min-h-0 overflow-y-auto">
             {GLASS_NAV_ITEMS.map((item) => {
               const isActive = activeNavId === item.id;
               return (
@@ -517,16 +532,16 @@ export default function GlassVisionPage() {
           {/* Main content — light (default) / dark pane with glass panels */}
           <main
             className={cn(
-              "flex min-w-0 flex-1 overflow-hidden rounded-tl-[2.5rem]",
+              "flex min-w-0 flex-1 overflow-hidden rounded-tl-[1.5rem]",
               PANE_LIGHT,
               PANE_DARK
             )}
           >
             {/* Details panel — same background as main content */}
-            <aside className={cn("flex w-80 shrink-0 flex-col overflow-y-auto px-4 py-6", PANE_LIGHT, PANE_DARK)}>
-              <div className="space-y-4">
+            <aside className={cn("flex w-80 shrink-0 flex-col overflow-y-auto px-3 py-4", PANE_LIGHT, PANE_DARK)}>
+              <div className="space-y-2">
                 {/* Profile header card */}
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
                     <div className="flex items-start gap-4">
                       <div className="relative shrink-0">
@@ -552,7 +567,7 @@ export default function GlassVisionPage() {
                 </Card>
 
                 {/* Personal details card */}
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
                     <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Personal details</p>
                     <div className="space-y-2.5 text-sm text-gray-700 dark:text-slate-300">
@@ -574,7 +589,7 @@ export default function GlassVisionPage() {
                 </Card>
 
                 {/* Contact history card */}
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
                     <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Contact history</p>
                     <div className="space-y-2.5 text-sm text-gray-700 dark:text-slate-300">
@@ -597,8 +612,8 @@ export default function GlassVisionPage() {
                 </Card>
 
                 {/* Payer rating card */}
-                <Card className={cn("overflow-hidden rounded-2xl border-0 border-emerald-200 dark:border-emerald-500/20", GLASS_CARD_LIGHT, GLASS_CARD_DARK, GLOW_ACCENT_DARK)}>
-                  <CardContent className="flex items-center justify-between p-4 pt-4">
+                <Card className={cn("overflow-hidden border border-emerald-200 bg-emerald-50 dark:border-emerald-500/20 dark:bg-emerald-500/10")}>
+                  <CardContent className="flex items-center justify-between px-4 py-3">
                     <div className="flex items-center gap-2">
                       <Icon name="star" size={20} className="text-emerald-600 dark:text-emerald-400" />
                       <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Payer Rating</span>
@@ -608,25 +623,31 @@ export default function GlassVisionPage() {
                 </Card>
 
                 {/* Payment methods card */}
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-4 pt-4">
                     <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Payment methods</p>
                     <div className="space-y-3 text-sm text-gray-700 dark:text-slate-300">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-14 items-center justify-center rounded-lg bg-indigo-600 text-xs font-bold text-white">VISA</div>
-                        <div className="min-w-0 flex-1">.... 1234</div>
-                        <span className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</span>
+                        <div className="flex h-7 w-10 shrink-0 items-center justify-center rounded bg-indigo-600 text-[10px] font-bold text-white">VISA</div>
+                        <div className="min-w-0 flex-1">
+                          <div>.... 1234</div>
+                          <div className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</div>
+                        </div>
                         <Badge variant="secondary" className="border-emerald-200 bg-emerald-50 text-xs text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300">Default</Badge>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-14 items-center justify-center rounded-lg bg-red-600 text-xs font-bold text-white">MC</div>
-                        <div className="min-w-0 flex-1">.... 1234</div>
-                        <span className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</span>
+                        <div className="flex h-7 w-10 shrink-0 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white">MC</div>
+                        <div className="min-w-0 flex-1">
+                          <div>.... 1234</div>
+                          <div className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</div>
+                        </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-14 items-center justify-center rounded-lg bg-violet-600 text-xs font-bold text-white">DD</div>
-                        <div className="min-w-0 flex-1">Direct Debit</div>
-                        <span className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</span>
+                        <div className="flex h-7 w-10 shrink-0 items-center justify-center rounded bg-violet-600 text-[10px] font-bold text-white">DD</div>
+                        <div className="min-w-0 flex-1">
+                          <div>Direct Debit</div>
+                          <div className="text-xs text-gray-500 dark:text-slate-500">Exp 06/2025</div>
+                        </div>
                       </div>
                       <button type="button" className="flex w-full items-center gap-2 pt-1 text-sm font-medium text-gray-600 transition-colors hover:text-[#00D2A2] dark:text-slate-400 dark:hover:text-[#00D2A2]">
                         <Icon name="add" size={18} />
@@ -639,8 +660,19 @@ export default function GlassVisionPage() {
             </aside>
 
             {/* Scrollable content — glass background */}
-            <div className="min-w-0 flex-1 overflow-y-auto bg-transparent">
-        <div className="min-h-full w-full px-6 py-8">
+            <div className="relative min-w-0 flex-1 overflow-y-auto bg-transparent">
+              {/* Control panel toggle (collapsed state) */}
+              {!controlPanelOpen && (
+                <button
+                  type="button"
+                  onClick={() => setControlPanelOpen(true)}
+                  className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-xl bg-white/80 shadow-lg backdrop-blur-xl border border-gray-200/80 text-gray-600 transition-all hover:bg-white hover:text-[#2C365D] hover:shadow-xl dark:bg-white/[0.08] dark:border-white/[0.12] dark:text-slate-400 dark:hover:bg-white/[0.12] dark:hover:text-[#00D2A2]"
+                  aria-label="Open control panel"
+                >
+                  <Icon name="left_panel_open" size={20} />
+                </button>
+              )}
+        <div className="min-h-full w-full px-6 py-4">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="mb-6 h-10 flex-nowrap justify-start gap-1 rounded-xl bg-gray-100/90 p-1 backdrop-blur-md border border-gray-200/80 dark:bg-white/[0.06] dark:border-white/[0.08]">
               <TabsTrigger value="overview" className="rounded-lg px-3 py-1.5 text-sm text-gray-600 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] data-[state=active]:shadow-md dark:text-slate-400 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2] dark:data-[state=active]:shadow-[0_0_20px_rgba(0,210,162,0.2)]">
@@ -658,7 +690,7 @@ export default function GlassVisionPage() {
             </TabsList>
             <TabsContent value="overview" className="mt-0">
           {/* Adora Customer Summary — light: warm tint; dark: turquoise glow */}
-          <Card className={cn("mb-8 overflow-hidden rounded-2xl border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
+          <Card className={cn("mb-8 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
             <CardContent className="p-6 pt-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
@@ -701,7 +733,7 @@ export default function GlassVisionPage() {
                   <React.Fragment key={acc.address}>
                     <Card
                       className={cn(
-                        "cursor-pointer overflow-hidden rounded-2xl border-0 transition-all duration-200",
+                        "cursor-pointer overflow-hidden border-0 transition-all duration-200",
                         GLASS_CARD_LIGHT,
                         GLASS_CARD_DARK,
                         "hover:shadow-lg hover:shadow-[#00D2A2]/10 dark:hover:shadow-[0_0_28px_rgba(0,210,162,0.12)]",
@@ -777,27 +809,27 @@ export default function GlassVisionPage() {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <Card className="overflow-hidden rounded-xl border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                    <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
                       <CardContent className="p-5 pt-5 pb-5">
                         <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Plan</p>
                         <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.plan ?? "—"}</p>
                         {acc.planRef && <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">{acc.planRef}</p>}
                       </CardContent>
                     </Card>
-                    <Card className="overflow-hidden rounded-xl border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                    <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
                       <CardContent className="p-5 pt-5 pb-5">
                         <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Best offer</p>
                         <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.bestOffer ?? "—"}</p>
                       </CardContent>
                     </Card>
-                    <Card className="overflow-hidden rounded-xl border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                    <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
                       <CardContent className="p-5 pt-5 pb-5">
                         <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Billing</p>
                         <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.billing ?? "—"}</p>
                         {acc.billingTo && <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">{acc.billingTo}</p>}
                       </CardContent>
                     </Card>
-                    <Card className="overflow-hidden rounded-xl border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                    <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
                       <CardContent className="p-5 pt-5 pb-5">
                         <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Commenced</p>
                         <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.commenced ?? "—"}</p>
@@ -806,7 +838,7 @@ export default function GlassVisionPage() {
                   </div>
 
                   <div className="grid gap-6 lg:grid-cols-2">
-                    <Card className="overflow-hidden rounded-xl border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                    <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
                       <CardContent className="p-5 pt-5 pb-5">
                         <h3 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-slate-100">Bill Information</h3>
                         <Tabs defaultValue="overview" className="mt-4">
@@ -978,7 +1010,7 @@ export default function GlassVisionPage() {
                       </CardContent>
                     </Card>
 
-                    <Card className="overflow-hidden rounded-xl border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                    <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
                       <CardContent className="p-5 pt-5 pb-5">
                         <div className="flex items-center justify-between gap-2">
                           <h3 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-slate-100">Bill vs Previous</h3>
@@ -1101,14 +1133,14 @@ export default function GlassVisionPage() {
             </TabsContent>
             <TabsContent value="insights" className="mt-0">
               {/* KPI Badges */}
-              <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <div className="mb-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
                 {[
                   { icon: "trending_down" as const, label: "Usage Trend", value: "↓ 63% over 12 months", color: "#3BB89A" },
                   { icon: "payments" as const, label: "Avg Bill", value: "$93.42/quarter", color: "#0091BF" },
                   { icon: "star" as const, label: "Payment Score", value: "95/100 — Excellent", color: "#F59E0B" },
                   { icon: "shield" as const, label: "Risk Level", value: "Low", color: "#864EAD" },
                 ].map((badge) => (
-                  <Card key={badge.label} className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                  <Card key={badge.label} className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                     <CardContent className="flex items-center gap-3 p-4 pt-4">
                       <div
                         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
@@ -1126,8 +1158,8 @@ export default function GlassVisionPage() {
               </div>
 
               {/* Adora Customer Summary */}
-              <Card className={cn("mb-8 overflow-hidden rounded-2xl border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
-                <CardContent className="p-6 pt-6">
+              <Card className={cn("mb-3 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)] dark:shadow-[0_0_40px_rgba(0,210,162,0.12)]")}>
+                <CardContent className="p-4 pt-4">
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#00D2A2] shadow-[0_0_10px_rgba(0,210,162,0.4)]" aria-hidden />
@@ -1142,8 +1174,8 @@ export default function GlassVisionPage() {
               </Card>
 
               {/* Row 1: Energy Usage Trend + Cost Breakdown */}
-              <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+              <div className="mb-3 grid gap-3 lg:grid-cols-[2fr_1fr]">
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <div className="mb-4 flex items-start justify-between gap-2">
                       <div>
@@ -1176,7 +1208,7 @@ export default function GlassVisionPage() {
                   </CardContent>
                 </Card>
 
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-slate-100">Cost Breakdown</h3>
                     <div className="flex items-center gap-2">
@@ -1207,8 +1239,8 @@ export default function GlassVisionPage() {
               </div>
 
               {/* Row 2: Daily Usage Pattern + Customer Health */}
-              <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+              <div className="mb-3 grid gap-3 lg:grid-cols-[2fr_1fr]">
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <div className="mb-4">
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-slate-100">Daily Usage Pattern</h3>
@@ -1230,7 +1262,7 @@ export default function GlassVisionPage() {
                   </CardContent>
                 </Card>
 
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-slate-100">Customer Health</h3>
                     <div className="h-52 w-full">
@@ -1248,8 +1280,8 @@ export default function GlassVisionPage() {
               </div>
 
               {/* Row 3: Payment History + Channel Mix */}
-              <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+              <div className="mb-3 grid gap-3 lg:grid-cols-[2fr_1fr]">
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <div className="mb-4 flex items-start justify-between gap-2">
                       <div>
@@ -1278,7 +1310,7 @@ export default function GlassVisionPage() {
                   </CardContent>
                 </Card>
 
-                <Card className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                <Card className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                   <CardContent className="p-5 pt-5">
                     <div className="mb-4">
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-slate-100">Channel Mix</h3>
@@ -1302,7 +1334,7 @@ export default function GlassVisionPage() {
               </div>
 
               {/* Bill Forecast — full width */}
-              <Card className={cn("mb-8 overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+              <Card className={cn("mb-3 overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                 <CardContent className="p-5 pt-5">
                   <div className="mb-4 flex items-start justify-between gap-2">
                     <div>
@@ -1341,14 +1373,14 @@ export default function GlassVisionPage() {
               </Card>
 
               {/* Bottom Summary Stats */}
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
                 {[
                   { num: "$1,121", label: "Total Billed (12mo)", change: "↓ 34% vs prior year", changeColor: "text-emerald-600 dark:text-emerald-400" },
                   { num: "2,988", label: "kWh Total Usage", change: "↓ 63% vs prior year", changeColor: "text-emerald-600 dark:text-emerald-400" },
                   { num: "4.2", label: "Avg Days Late", change: "↓ from 6.8 days", changeColor: "text-emerald-600 dark:text-emerald-400" },
                   { num: "16.8", label: "Years as Customer", change: "Since Apr 2008", changeColor: "text-[#0091BF] dark:text-[#00C1FF]" },
                 ].map((stat) => (
-                  <Card key={stat.label} className={cn("overflow-hidden rounded-2xl border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
+                  <Card key={stat.label} className={cn("overflow-hidden border-0", GLASS_CARD_LIGHT, GLASS_CARD_DARK)}>
                     <CardContent className="p-5 pt-5 text-center">
                       <p className="text-2xl font-bold text-gray-900 dark:text-slate-100">{stat.num}</p>
                       <p className="mt-1 text-xs text-gray-500 dark:text-slate-500">{stat.label}</p>
@@ -1359,18 +1391,122 @@ export default function GlassVisionPage() {
               </div>
             </TabsContent>
             <TabsContent value="bill-compare" className="mt-0">
-              <div className="rounded-lg border border-border bg-card p-8 text-center text-muted-foreground shadow-sm">
+              <div className="rounded-density-lg border border-border bg-card p-8 text-center text-muted-foreground shadow-sm">
                 <p>Bill Compare content would go here.</p>
               </div>
             </TabsContent>
             <TabsContent value="history" className="mt-0">
-              <div className="rounded-lg border border-border bg-card p-8 text-center text-muted-foreground shadow-sm">
+              <div className="rounded-density-lg border border-border bg-card p-8 text-center text-muted-foreground shadow-sm">
                 <p>History content would go here.</p>
               </div>
             </TabsContent>
           </Tabs>
         </div>
             </div>
+
+            {/* Right-hand control panel */}
+            <aside
+              className={cn(
+                "flex shrink-0 flex-col overflow-hidden border-l transition-[width] duration-300 ease-in-out",
+                "border-gray-200/80 bg-white/55 backdrop-blur-2xl",
+                "dark:border-white/[0.08] dark:bg-white/[0.04]",
+                controlPanelOpen ? "w-[290px]" : "w-0 border-l-0"
+              )}
+            >
+              <div className="flex min-w-[290px] flex-1 flex-col overflow-y-auto">
+                {/* Panel tabs */}
+                <div className="flex border-b border-gray-200/60 px-1 dark:border-white/[0.06]">
+                  {PANEL_TABS.map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setActivePanelTab(tab)}
+                      className={cn(
+                        "relative flex-1 whitespace-nowrap px-1.5 py-3 text-center text-xs font-medium transition-colors",
+                        activePanelTab === tab
+                          ? "font-semibold text-gray-900 dark:text-slate-100"
+                          : "text-gray-500 hover:text-gray-800 dark:text-slate-500 dark:hover:text-slate-300"
+                      )}
+                    >
+                      {tab}
+                      {activePanelTab === tab && (
+                        <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-t bg-gradient-to-r from-[#4EEECA] to-[#3BB89A]" />
+                      )}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setControlPanelOpen(false)}
+                    className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/[0.06] dark:hover:text-slate-300"
+                    aria-label="Close control panel"
+                  >
+                    <Icon name="right_panel_close" size={18} />
+                  </button>
+                </div>
+
+                {/* Quick action buttons */}
+                <div className="flex gap-2 border-b border-gray-100/60 p-3.5 dark:border-white/[0.04]">
+                  {([
+                    ["edit", "Edit"],
+                    ["download", "Export"],
+                    ["filter_list", "Filter"],
+                    ["settings", "Config"],
+                  ] as const).map(([icon, label]) => (
+                    <button
+                      key={icon}
+                      type="button"
+                      className="flex flex-1 flex-col items-center gap-1.5 rounded-xl border border-gray-200/60 bg-white/60 px-1 py-2.5 text-gray-500 backdrop-blur-lg transition-all hover:-translate-y-0.5 hover:border-[#4EEECA]/30 hover:bg-[#4EEECA]/8 hover:text-[#298268] dark:border-white/[0.06] dark:bg-white/[0.04] dark:text-slate-500 dark:hover:border-[#4EEECA]/20 dark:hover:bg-[#4EEECA]/10 dark:hover:text-[#4EEECA]"
+                    >
+                      <Icon name={icon} size={17} />
+                      <span className="text-[10px] font-medium">{label}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Create new task */}
+                <div className="px-3.5 pt-3.5">
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-[#2C365D]/30 bg-[#2C365D]/4 px-3 py-2.5 text-[13px] font-semibold text-[#2C365D] transition-all hover:-translate-y-0.5 hover:border-[#2C365D] hover:bg-[#2C365D]/8 hover:shadow-md dark:border-white/20 dark:bg-white/[0.03] dark:text-slate-200 dark:hover:border-white/40 dark:hover:bg-white/[0.06]"
+                  >
+                    <Icon name="add" size={16} />
+                    Create new task
+                    <span className="rounded bg-[#2C365D] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white dark:bg-[#00D2A2] dark:text-gray-900">
+                      New
+                    </span>
+                  </button>
+                </div>
+
+                {/* Task categories */}
+                <div className="flex-1 px-2 py-1.5">
+                  {TASK_CATEGORIES.map((tc) => (
+                    <button
+                      key={tc.name}
+                      type="button"
+                      className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-gray-100/60 dark:hover:bg-white/[0.04]"
+                    >
+                      <Icon name={tc.icon} size={17} className="shrink-0 text-gray-400 dark:text-slate-500" />
+                      <span className="flex-1 text-left text-[13px] font-medium text-gray-700 dark:text-slate-300">
+                        {tc.name}
+                      </span>
+                      <span
+                        className={cn(
+                          "min-w-[28px] rounded-full px-2 py-0.5 text-center font-mono text-[11.5px] font-medium",
+                          tc.count === null
+                            ? "bg-gray-100/60 text-gray-400 dark:bg-white/[0.04] dark:text-slate-600"
+                            : tc.hot
+                              ? "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400"
+                              : "bg-gray-100/60 text-gray-500 dark:bg-white/[0.06] dark:text-slate-400"
+                        )}
+                      >
+                        {tc.count ?? "—"}
+                      </span>
+                      <Icon name="chevron_right" size={15} className="shrink-0 text-gray-300 dark:text-slate-600" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </aside>
           </main>
         </div>
       </div>
