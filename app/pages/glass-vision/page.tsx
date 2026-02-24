@@ -816,7 +816,7 @@ export default function GlassVisionPage() {
                     <p className="mb-3 text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-600">Payment methods</p>
                     <div className="space-y-3 text-xs">
                       <div className="flex items-center gap-2.5">
-                        <div className="flex h-6 w-9 shrink-0 items-center justify-center rounded bg-indigo-600 text-[8px] font-bold text-white">VISA</div>
+                        <Image src="/VISA.svg" alt="Visa" width={36} height={24} className="h-6 w-9 shrink-0 rounded" />
                         <div className="min-w-0 flex-1">
                           <div className="font-medium text-gray-800 dark:text-slate-200">.... 1234</div>
                           <div className="text-[10px] text-gray-400 dark:text-slate-600">Exp 06/2025</div>
@@ -824,7 +824,7 @@ export default function GlassVisionPage() {
                         <Badge variant="secondary" className="border-emerald-200 bg-emerald-50 text-[10px] text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300">Default</Badge>
                       </div>
                       <div className="flex items-center gap-2.5">
-                        <div className="flex h-6 w-9 shrink-0 items-center justify-center rounded bg-red-600 text-[8px] font-bold text-white">MC</div>
+                        <Image src="/MC.svg" alt="Mastercard" width={36} height={24} className="h-6 w-9 shrink-0 rounded" />
                         <div className="min-w-0 flex-1">
                           <div className="font-medium text-gray-800 dark:text-slate-200">.... 1234</div>
                           <div className="text-[10px] text-gray-400 dark:text-slate-600">Exp 06/2025</div>
