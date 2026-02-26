@@ -148,10 +148,10 @@ const INITIAL_CARD_OPEN: Record<string, boolean> = Object.fromEntries(
 );
 
 const INTERACTIONS = [
-  { id: 1, title: "Billing configuration changed", category: "Billing", user: "Pooja Ahuja", time: "3 hours ago" },
-  { id: 2, title: "Billing Hold Reason Removed", category: "Billing", user: "Pooja Ahuja", time: "3 hours ago" },
-  { id: 3, title: "Account set to Billing as of 29/03/2024 as per TSD-35353.", category: "Billing", user: "Pooja Ahuja", time: "3 hours ago" },
-  { id: 4, title: "Missing Start/End Dates", category: "Billing", user: "Pooja Ahuja", time: "3 hours ago" },
+  { id: 1, title: "Billing configuration changed", category: "Billing", user: "Alan Stones", time: "3 hours ago" },
+  { id: 2, title: "Billing Hold Reason Removed", category: "Billing", user: "Alan Stones", time: "3 hours ago" },
+  { id: 3, title: "Account set to Billing as of 29/03/2024 as per TSD-35353.", category: "Billing", user: "Alan Stones", time: "3 hours ago" },
+  { id: 4, title: "Missing Start/End Dates", category: "Billing", user: "Alan Stones", time: "3 hours ago" },
 ];
 
 const CONTACTS_DATA = [

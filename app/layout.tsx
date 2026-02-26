@@ -14,12 +14,18 @@ export const metadata: Metadata = {
 
 const navigationSections = [
   {
-    title: "Elements",
+    title: "Introduction",
     items: [
+      { label: "Purpose and Plan", href: "/introduction/purpose-and-plan" },
       { label: "How the TDS is Set Up", href: "/foundation/tds-setup" },
       { label: "Implementation Guide", href: "/foundation/implementation" },
-      { label: "Colours", href: "/foundation/colour" },
       { label: "Cursor Rules", href: "/foundation/cursor-rules" },
+    ],
+  },
+  {
+    title: "Elements",
+    items: [
+      { label: "Colours", href: "/foundation/colour" },
       { label: "Dark Mode", href: "/foundation/dark-mode" },
       { label: "Density", href: "/foundation/density" },
       { label: "Icons", href: "/foundation/icons" },
