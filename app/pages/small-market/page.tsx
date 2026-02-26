@@ -30,16 +30,56 @@ import {
   TableCell,
 } from "@/components/Table/Table";
 import { surfaceColours } from "@/lib/tokens/surface-colours";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import AccountContextPanel from "@/components/crm/AccountContextPanel";
+import type { Account } from "@/types/crm";
 
-const LEFT_NAV_ITEMS = [
-  { id: "dashboard", label: "Dashboard", icon: "home" },
-  { id: "tasks", label: "Tasks & Exceptions", icon: "notifications" },
-  { id: "market", label: "Market", icon: "store" },
-  { id: "adjustments", label: "Adjustments", icon: "tune" },
-  { id: "metering", label: "Metering Services Registry", icon: "table_chart" },
-  { id: "reports", label: "Reports", icon: "assessment" },
-  { id: "products", label: "Products", icon: "inventory_2" },
-  { id: "maintenance", label: "Maintenance", icon: "build" },
+interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  children?: { id: string; label: string }[];
+}
+
+const LEFT_NAV_ITEMS: NavItem[] = [
+  {
+    id: "dashboard", label: "Dashboard", icon: "home",
+    children: [
+      { id: "dashboard-overview", label: "Overview" },
+      { id: "dashboard-exceptions", label: "Exceptions" },
+    ],
+  },
+  {
+    id: "tasks", label: "Tasks & Exceptions", icon: "notifications",
+    children: [
+      { id: "tasks-queue", label: "Task Queue" },
+      { id: "tasks-exceptions", label: "Exceptions" },
+    ],
+  },
+  {
+    id: "market", label: "Market", icon: "store",
+    children: [
+      { id: "market-change-requests", label: "Change Requests" },
+      { id: "market-transactions", label: "Transactions" },
+    ],
+  },
+  { id: "adjustments", label: "Adjustments", icon: "tune", children: [] },
+  {
+    id: "metering", label: "Metering Services Registry", icon: "table_chart",
+    children: [
+      { id: "metering-meters", label: "Meters" },
+      { id: "metering-reads", label: "Meter Reads" },
+    ],
+  },
+  {
+    id: "reports", label: "Reports", icon: "assessment",
+    children: [
+      { id: "reports-standard", label: "Standard Reports" },
+      { id: "reports-scheduled", label: "Scheduled Reports" },
+    ],
+  },
+  { id: "products", label: "Products", icon: "inventory_2", children: [] },
+  { id: "maintenance", label: "Maintenance", icon: "build", children: [] },
 ];
 
 const TAB_CONFIG = [
@@ -63,13 +103,6 @@ const INITIAL_CARD_OPEN: Record<string, boolean> = Object.fromEntries(
   DETAILS_CARD_TITLES.map((title) => [title, true])
 );
 
-const ACCOUNT_EVENTS = [
-  { id: 1, date: "16 May 2025", event: "Portal Registration Completed", performer: "Tally+" },
-  { id: 2, date: "12 May 2025", event: "Account Status Changed to Open", performer: "Tally+" },
-  { id: 3, date: "30 Apr 2025", event: "Move In Completed", performer: "System" },
-  { id: 4, date: "28 Apr 2025", event: "Contractual Actions - 12 Month", performer: "Tally+" },
-  { id: 5, date: "15 Apr 2025", event: "Account Created", performer: "Admin User" },
-];
 
 const RECENT_BILLS = [
   { id: "INV-2025-05", date: "27 Apr 2025", amount: "$142.50", status: "paid", dueDate: "12 May 2025" },
@@ -83,6 +116,64 @@ const USAGE_DATA = [
   { period: "Apr 2025", electricity: "268 kWh", gas: "42 GJ", cost: "$138.20" },
   { period: "Mar 2025", electricity: "312 kWh", gas: "48 GJ", cost: "$156.80" },
   { period: "Feb 2025", electricity: "290 kWh", gas: "44 GJ", cost: "$145.30" },
+];
+
+const SM_ACCOUNT: Account = {
+  id: "sm-001",
+  name: "Ronald Thomas",
+  accountNumber: "104063774",
+  type: "Commercial",
+  status: "Active",
+  nmis: ["6305194250"],
+  energyType: "Electricity",
+  primaryContact: {
+    id: "sm-con-001",
+    name: "Ronald Thomas",
+    role: "Account Holder",
+    email: "ronald.thomas@email.com",
+    phone: "0464 464 646",
+    isPrimary: true,
+  },
+  contacts: [
+    {
+      id: "sm-con-001",
+      name: "Ronald Thomas",
+      role: "Account Holder",
+      email: "shirley.anderson@email.com",
+      phone: "0491 579 760",
+      isPrimary: true,
+    },
+  ],
+  address: "1 Lee Walk, Cranbourne, VIC 3977",
+  annualConsumption: "3,420 kWh",
+  accountBalance: "$0.00",
+  lastPaymentDate: "27/04/2025",
+  lastPaymentAmount: "$142.50",
+  contractEndDate: "15/04/2026",
+  orgId: "org-sm-001",
+  legalBusinessName: "Ronald Thomas",
+  customerType: "Residential",
+  accountStatus: "Open",
+  isClosed: false,
+  accountSyncStatus: true,
+  consolidateToParent: false,
+  isDirectDebit: true,
+  terms: "Standard",
+  serviceReferenceNumber: "SR-104063774",
+  lifeSupport: false,
+};
+
+const PANEL_TABS = ["Control Panel", "X-Sell"] as const;
+
+const TASK_CATEGORIES = [
+  { name: "Account Tasks", count: null, icon: "group" as const, hot: false },
+  { name: "Financial Tasks", count: 26, icon: "attach_money" as const, hot: true },
+  { name: "Supply Tasks", count: 3, icon: "bolt" as const, hot: false },
+  { name: "Interaction Tasks", count: 5, icon: "chat_bubble_outline" as const, hot: false },
+  { name: "Utility Tasks", count: 17, icon: "monitoring" as const, hot: false },
+  { name: "Credit Tasks", count: 29, icon: "credit_card" as const, hot: true },
+  { name: "Customer Tasks", count: 15, icon: "group" as const, hot: false },
+  { name: "No Contact Tasks", count: 6, icon: "power_settings_new" as const, hot: false },
 ];
 
 function DataCell({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
@@ -125,21 +216,76 @@ function StatusCard({ label, value, icon, variant = "default" }: { label: string
 export default function SmallMarketPage() {
   const [tabValue, setTabValue] = useState("details");
   const [cardOpenState, setCardOpenState] = useState<Record<string, boolean>>(INITIAL_CARD_OPEN);
-  const [activeNavId, setActiveNavId] = useState("dashboard");
+  const [activeNavId, setActiveNavId] = useState("dashboard-overview");
+  const [openParentId, setOpenParentId] = useState<string | null>("dashboard");
+  const isLg = useMediaQuery("(min-width: 1024px)");
+  const [navCollapsed, setNavCollapsed] = useState(!isLg);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [controlPanelOpen, setControlPanelOpen] = useState(true);
+  const [activePanelTab, setActivePanelTab] = useState<(typeof PANEL_TABS)[number]>("Control Panel");
+
+  React.useEffect(() => {
+    setNavCollapsed(!isLg);
+  }, [isLg]);
+
+  const [flyoutParentId, setFlyoutParentId] = useState<string | null>(null);
+  const [flyoutPos, setFlyoutPos] = useState<{ top: number; left: number } | null>(null);
+  const flyoutTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showFlyout = (e: React.MouseEvent, itemId: string) => {
+    if (!navCollapsed) return;
+    if (flyoutTimeout.current) clearTimeout(flyoutTimeout.current);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setFlyoutPos({ top: rect.top, left: rect.right + 8 });
+    setFlyoutParentId(itemId);
+  };
+  const hideFlyout = () => {
+    flyoutTimeout.current = setTimeout(() => {
+      setFlyoutPos(null);
+      setFlyoutParentId(null);
+    }, 100);
+  };
+  const cancelHideFlyout = () => {
+    if (flyoutTimeout.current) clearTimeout(flyoutTimeout.current);
+  };
+
+  const handleParentClick = (item: NavItem) => {
+    if (item.children && item.children.length > 0) {
+      setOpenParentId((prev) => (prev === item.id ? null : item.id));
+    } else {
+      setActiveNavId(item.id);
+    }
+  };
+
+  const isParentActive = (item: NavItem) => {
+    if (activeNavId === item.id) return true;
+    return item.children?.some((c) => c.id === activeNavId) ?? false;
+  };
 
   const allCardsOpen = DETAILS_CARD_TITLES.every((t) => cardOpenState[t]);
   const expandAll = () => setCardOpenState(() => Object.fromEntries(DETAILS_CARD_TITLES.map((t) => [t, true])));
   const collapseAll = () => setCardOpenState(() => Object.fromEntries(DETAILS_CARD_TITLES.map((t) => [t, false])));
 
-  // Tally+ Small Market brand palette (from foundation/brands/tally-plus-small-market)
-  const BRAND_GREEN = "#C1EE41";
+  React.useEffect(() => {
+    const root = document.querySelector(".flex.h-screen.overflow-hidden");
+    const sidebar = root?.querySelector(":scope > aside");
+    if (sidebar instanceof HTMLElement) {
+      sidebar.style.display = isExpanded ? "none" : "";
+    }
+    return () => {
+      if (sidebar instanceof HTMLElement) sidebar.style.display = "";
+    };
+  }, [isExpanded]);
+
+  // Tally CRM brand palette
+  const BRAND_PRIMARY = "#006180";
 
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* 4px Tally+ Small Market brand bar */}
+    <div className="flex h-screen flex-col overflow-hidden">
+      {/* 4px brand bar */}
       <div
         className="h-1 shrink-0"
-        style={{ backgroundColor: BRAND_GREEN }}
+        style={{ backgroundColor: BRAND_PRIMARY }}
         aria-hidden
       />
       {/* App Bar */}
@@ -178,7 +324,7 @@ export default function SmallMarketPage() {
             <input
               type="search"
               placeholder="Search"
-              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#C1EE41] focus:outline-none focus:ring-1 focus:ring-[#C1EE41] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+              className="h-10 w-full rounded-lg border border-border bg-gray-50 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-500 focus:border-[#006180] focus:outline-none focus:ring-1 focus:ring-[#006180] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
             />
           </div>
         </div>
@@ -192,8 +338,8 @@ export default function SmallMarketPage() {
             <Icon name="grid_view" size={20} />
           </button>
           <div
-            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium text-gray-900"
-            style={{ backgroundColor: BRAND_GREEN }}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium text-white"
+            style={{ backgroundColor: BRAND_PRIMARY }}
           >
             SA
           </div>
@@ -202,102 +348,291 @@ export default function SmallMarketPage() {
 
       <div className="flex min-w-0 flex-1 overflow-hidden">
       {/* Left Navigation Bar */}
-      <aside className="flex w-64 shrink-0 flex-col overflow-hidden border-r border-border bg-white dark:border-gray-800 dark:bg-gray-950">
-        <div className="min-h-0 flex-1 overflow-y-auto">
-        <nav className="flex flex-col p-2">
-          {LEFT_NAV_ITEMS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveNavId(item.id)}
-              className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
-                activeNavId === item.id
-                  ? "bg-[#F5FCEB] text-[#91B231] dark:bg-[#F5FCEB]/15 dark:text-[#E0F5A0]"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-              )}
-            >
-              <Icon
-                name={item.icon as "home"}
-                size={20}
-                className={cn(
-                  "font-extralight transition-colors",
-                  activeNavId === item.id
-                    ? "text-[#91B231] dark:text-[#E0F5A0]"
-                    : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
-                )}
-              />
-              <span className="leading-tight">{item.label}</span>
-            </button>
-          ))}
-        </nav>
+      <aside
+        className={cn(
+          "flex shrink-0 flex-col overflow-hidden border-r border-border bg-white transition-[width] duration-300 dark:border-gray-800 dark:bg-gray-950",
+          navCollapsed ? "w-16" : "w-64"
+        )}
+      >
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible">
+          <nav className={cn("flex flex-col", navCollapsed ? "items-center p-2" : "p-2")}>
+            {LEFT_NAV_ITEMS.map((item) => {
+              const hasChildren = (item.children?.length ?? 0) > 0;
+              const isOpen = openParentId === item.id;
+              const parentActive = isParentActive(item);
+
+              if (navCollapsed) {
+                return (
+                  <div
+                    key={item.id}
+                    role="button"
+                    tabIndex={0}
+                    onMouseEnter={(e) => {
+                      if (hasChildren) { cancelHideFlyout(); showFlyout(e, item.id); }
+                    }}
+                    onMouseLeave={() => { if (hasChildren) hideFlyout(); }}
+                    onClick={() => { if (!hasChildren) setActiveNavId(item.id); }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        if (hasChildren) setFlyoutParentId(item.id);
+                        else setActiveNavId(item.id);
+                      }
+                    }}
+                    title={!hasChildren ? item.label : undefined}
+                    className={cn(
+                      "group flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors",
+                      parentActive
+                        ? "bg-[#E6F7FF] text-[#006180] dark:bg-[#006180]/20 dark:text-[#80E0FF]"
+                        : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                    )}
+                  >
+                    <Icon
+                      name={item.icon as "home"}
+                      size={20}
+                      className={cn(
+                        "shrink-0 font-extralight",
+                        parentActive
+                          ? "text-[#006180] dark:text-[#80E0FF]"
+                          : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
+                      )}
+                    />
+                  </div>
+                );
+              }
+
+              return (
+                <div key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => handleParentClick(item)}
+                    className={cn(
+                      "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-normal transition-colors",
+                      parentActive || isOpen
+                        ? "bg-[#E6F7FF] text-[#006180] dark:bg-[#006180]/20 dark:text-[#80E0FF]"
+                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                    )}
+                  >
+                    <Icon
+                      name={item.icon as "home"}
+                      size={20}
+                      className={cn(
+                        "shrink-0 font-extralight",
+                        parentActive || isOpen
+                          ? "text-[#006180] dark:text-[#80E0FF]"
+                          : "text-gray-600 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
+                      )}
+                    />
+                    <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                    {hasChildren && (
+                      <Icon
+                        name={isOpen ? "expand_less" : "expand_more"}
+                        size={20}
+                        className="shrink-0 text-gray-500 dark:text-gray-400"
+                      />
+                    )}
+                  </button>
+                  {hasChildren && isOpen && (
+                    <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-border pl-2 dark:border-gray-600">
+                      {item.children!.map((child) => (
+                        <li key={child.id}>
+                          <button
+                            type="button"
+                            onClick={() => setActiveNavId(child.id)}
+                            className={cn(
+                              "flex w-full items-center rounded-lg py-2 pl-2 pr-3 text-left text-sm font-normal transition-colors",
+                              activeNavId === child.id
+                                ? "bg-[#E6F7FF] text-[#006180] dark:bg-[#006180]/20 dark:text-[#80E0FF]"
+                                : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                            )}
+                          >
+                            {child.label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
         </div>
-        <div className="shrink-0 border-t border-border p-3 dark:border-gray-800">
-          <Image src="/PoweredByTallyBadge.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto dark:hidden" />
-          <Image src="/PoweredByTallyBadgeREV.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto hidden dark:block" />
+        <div className="shrink-0 border-t border-border dark:border-gray-800">
+          {navCollapsed ? (
+            <div className="flex flex-col items-center gap-1 p-2">
+              <button
+                type="button"
+                onClick={() => setIsExpanded((v) => !v)}
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                aria-label={isExpanded ? "Exit full screen" : "Enter full screen"}
+              >
+                <Icon name={isExpanded ? "close_fullscreen" : "open_in_full"} size={20} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setNavCollapsed(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                aria-label="Expand navigation"
+              >
+                <Icon name="chevron_right" size={20} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between px-3 py-3">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded((v) => !v)}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                  aria-label={isExpanded ? "Exit full screen" : "Enter full screen"}
+                >
+                  <Icon name={isExpanded ? "close_fullscreen" : "open_in_full"} size={18} />
+                </button>
+                <Image src="/PoweredByTallyBadge.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto dark:hidden" />
+                <Image src="/PoweredByTallyBadgeREV.svg" alt="Powered by Tally" width={120} height={29} className="hidden w-[120px] h-auto dark:block" />
+              </div>
+              <button
+                type="button"
+                onClick={() => setNavCollapsed(true)}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                aria-label="Collapse navigation"
+              >
+                <Icon name="chevron_left" size={20} />
+              </button>
+            </div>
+          )}
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className={`min-w-0 flex-1 overflow-y-auto ${surfaceColours["tally-plus-small-market"]}`}>
-        <div className="mx-auto max-w-[1600px] px-6 py-6">
-        {/* Breadcrumb */}
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  href="/"
-                  className="flex items-center text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+      {/* Collapsed flyout for parent items with children */}
+      {navCollapsed && flyoutParentId && flyoutPos && (() => {
+        const parentItem = LEFT_NAV_ITEMS.find((i) => i.id === flyoutParentId);
+        if (!parentItem?.children?.length) return null;
+        return (
+          <div
+            className="fixed z-[100] min-w-[180px] rounded-md border border-gray-200 bg-white py-2 dark:border-gray-600 dark:bg-gray-800"
+            style={{
+              top: flyoutPos.top,
+              left: flyoutPos.left,
+              boxShadow: "0 2px 2px -1px rgba(10,13,18,0.04), 0 4px 6px -2px rgba(10,13,18,0.03), 0 12px 16px -4px rgba(10,13,18,0.08)",
+            }}
+            onMouseEnter={() => cancelHideFlyout()}
+            onMouseLeave={() => hideFlyout()}
+          >
+            <div className="px-4 pb-1 pt-1.5 text-sm font-normal text-gray-600 dark:text-gray-300">
+              {parentItem.label}
+            </div>
+            <div className="relative ml-4 border-l border-gray-200 dark:border-gray-600">
+              {parentItem.children.map((child) => (
+                <button
+                  key={child.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveNavId(child.id);
+                    setOpenParentId(parentItem.id);
+                    hideFlyout();
+                  }}
+                  className={cn(
+                    "flex w-full items-center py-2 pl-3 pr-4 text-left text-sm font-normal transition-colors",
+                    activeNavId === child.id
+                      ? "mx-2 rounded-lg bg-[#E6F7FF] font-medium text-[#006180] dark:bg-[#006180]/20 dark:text-[#80E0FF]"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                  )}
                 >
-                  <Icon name="home" size={18} className="text-gray-600 dark:text-gray-400" />
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  href="/pages"
-                  className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                >
-                  Customers
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  href="/pages/small-market"
-                  className="text-gray-700 transition-colors hover:text-[#91B231] dark:text-gray-300 dark:hover:text-[#E0F5A0]"
-                >
-                  Tally+ Small Market Accounts
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="rounded bg-[#F5FCEB] px-2.5 py-1 font-normal text-[#91B231] dark:bg-[#F5FCEB]/15 dark:text-[#E0F5A0]">
-                104063774 - Shirley Anderson
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+                  {child.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Account Context Panel + Main Content share the surface gradient */}
+      <div className={`flex min-w-0 flex-1 overflow-hidden ${surfaceColours["tally-crm"]}`}>
+        <AccountContextPanel account={SM_ACCOUNT} />
+
+        {/* Main Content */}
+        <div className="min-w-0 flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-[1600px] px-4 py-4 xl:px-6 xl:py-6">
+        {/* Breadcrumb + Glass logo */}
+        <div className="mb-4 flex items-center justify-between">
+          <Breadcrumb>
+            <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    href="/"
+                    className="flex items-center text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                  >
+                    <Icon name="home" size={18} className="text-gray-600 dark:text-gray-400" />
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    href="/pages"
+                    className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                  >
+                    Customers
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    href="/pages/small-market"
+                    className="text-gray-700 transition-colors hover:text-[#006180] dark:text-gray-300 dark:hover:text-[#80E0FF]"
+                  >
+                    Tally+ Small Market Accounts
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="rounded bg-[#E6F7FF] px-2.5 py-1 font-normal text-[#006180] dark:bg-[#006180]/20 dark:text-[#80E0FF]">
+                  104063774 - Ronald Thomas
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <Link
+                href="/pages/glass-vision?expanded=true"
+            className="flex shrink-0 items-center rounded-lg border border-border bg-white p-1.5 transition-colors hover:bg-[#E6F7FF] dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-[#006180]/20"
+            title="Open Tally Glass Vision"
+          >
+            <Image
+              src="/GlassLogoTest.svg"
+              alt="Tally Glass"
+              width={80}
+              height={24}
+              className="h-5 w-auto dark:hidden"
+            />
+            <Image
+              src="/GlassLogoTest_darkmode.svg"
+              alt="Tally Glass"
+              width={80}
+              height={24}
+              className="hidden h-5 w-auto dark:block"
+            />
+          </Link>
+        </div>
 
         {/* Page Header */}
         <div className="mb-4">
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-                104063774 - Shirley Anderson
+                104063774 - Ronald Thomas
               </h1>
               <p className="mt-1 text-sm text-muted-foreground">
                 1 Lee Walk, Cranbourne, VIC 3977
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline">Tally+ Small Market</Badge>
+              <Badge variant="outline">Tally CRM</Badge>
               <Badge variant="success">Active</Badge>
             </div>
           </div>
@@ -336,7 +671,7 @@ export default function SmallMarketPage() {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="text-gray-700 data-[state=active]:bg-[#F5FCEB] data-[state=active]:text-[#91B231] dark:text-gray-200 dark:data-[state=active]:bg-[#F5FCEB]/15 dark:data-[state=active]:text-[#E0F5A0]"
+                className="text-gray-700 data-[state=active]:bg-[#E6F7FF] data-[state=active]:text-[#006180] dark:text-gray-200 dark:data-[state=active]:bg-[#006180]/20 dark:data-[state=active]:text-[#80E0FF]"
               >
                 {tab.label}
               </TabsTrigger>
@@ -367,9 +702,8 @@ export default function SmallMarketPage() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-              {/* Main Content */}
-              <div className="space-y-6 lg:col-span-8">
+            <div>
+              <div className="space-y-6">
                 <CollapsibleCard
                   title="Account Summary"
                   open={cardOpenState["Account Summary"]}
@@ -414,7 +748,7 @@ export default function SmallMarketPage() {
                         Custom Invoice Message
                       </label>
                       <textarea
-                        className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C1EE41] focus-visible:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                        className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006180] focus-visible:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                         rows={3}
                         defaultValue="The Australian Government and your State Government require us to provide you with information about energy rebates and concessions."
                       />
@@ -450,7 +784,7 @@ export default function SmallMarketPage() {
                 >
                   <div className="mb-4 flex items-center justify-between rounded-lg border border-border bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900/40">
                     <div>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Mr Shirley Anderson</p>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Ronald Thomas</p>
                       <p className="mt-1 text-xs text-muted-foreground">Primary Contact since 14 Apr 2025</p>
                     </div>
                     <Badge variant="info">Primary</Badge>
@@ -458,11 +792,11 @@ export default function SmallMarketPage() {
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <div className="flex items-center gap-2">
                       <Icon name="phone" size={18} className="text-gray-500 dark:text-gray-400" />
-                      <span className="text-sm text-gray-900 dark:text-gray-100">0491 579 760</span>
+                      <span className="text-sm text-gray-900 dark:text-gray-100">0464 464 646</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="email" size={18} className="text-gray-500 dark:text-gray-400" />
-                      <span className="text-sm text-gray-900 dark:text-gray-100">shirley.anderson@email.com</span>
+                      <span className="text-sm text-gray-900 dark:text-gray-100">ronald.thomas@email.com</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="badge" size={18} className="text-gray-500 dark:text-gray-400" />
@@ -484,7 +818,7 @@ export default function SmallMarketPage() {
                           <p className="mt-1 text-sm font-medium text-gray-900 dark:text-gray-100">1 Lee Walk</p>
                           <p className="text-sm text-gray-900 dark:text-gray-100">Cranbourne, VIC 3977</p>
                         </div>
-                        <button className="text-[#91B231] hover:text-[#617721] dark:text-[#E0F5A0] dark:hover:text-[#C1EE41]">
+                        <button className="text-[#006180] hover:text-[#004D66] dark:text-[#80E0FF] dark:hover:text-[#B3EDFF]">
                           <Icon name="edit" size={18} />
                         </button>
                       </div>
@@ -496,7 +830,7 @@ export default function SmallMarketPage() {
                           <p className="mt-1 text-sm font-medium text-gray-900 dark:text-gray-100">666-678 Lygon Street</p>
                           <p className="text-sm text-gray-900 dark:text-gray-100">Carlton North, VIC 3054</p>
                         </div>
-                        <button className="text-[#91B231] hover:text-[#617721] dark:text-[#E0F5A0] dark:hover:text-[#C1EE41]">
+                        <button className="text-[#006180] hover:text-[#004D66] dark:text-[#80E0FF] dark:hover:text-[#B3EDFF]">
                           <Icon name="edit" size={18} />
                         </button>
                       </div>
@@ -506,43 +840,15 @@ export default function SmallMarketPage() {
                 </CollapsibleCard>
 
                 <div className="flex items-center justify-end gap-3">
-                  <Button variant="outline" className="border-[#91B231] text-[#91B231] hover:bg-[#91B231]/10 focus:ring-[#91B231] dark:border-[#E0F5A0] dark:text-[#E0F5A0] dark:hover:bg-[#E0F5A0]/10">
+                  <Button variant="outline" className="border-[#006180] text-[#006180] hover:bg-[#006180]/10 focus:ring-[#006180] dark:border-[#80E0FF] dark:text-[#80E0FF] dark:hover:bg-[#80E0FF]/10">
                     Cancel
                   </Button>
                   <Button
-                    className="!bg-[#C1EE41] text-gray-900 hover:!bg-[#91B231] focus:ring-[#C1EE41] dark:!bg-[#C1EE41] dark:text-gray-900 dark:hover:!bg-[#91B231]"
+                    className="!bg-[#006180] text-white hover:!bg-[#004D66] focus:ring-[#006180] dark:!bg-[#006180] dark:text-white dark:hover:!bg-[#004D66]"
                   >
                     Save Changes
                   </Button>
                 </div>
-              </div>
-
-              {/* Sidebar - Account Events */}
-              <div className="lg:col-span-4">
-                <Card className="shadow-none">
-                  <CardHeader className="border-b border-border pb-4 dark:border-gray-700">
-                    <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">Account Events</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="divide-y divide-border dark:divide-gray-700">
-                      {ACCOUNT_EVENTS.map((event) => (
-                        <div key={event.id} className="p-4">
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F5FCEB] dark:bg-[#F5FCEB]/15">
-                              <Icon name="event" size={16} className="text-[#91B231] dark:text-[#E0F5A0]" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{event.event}</p>
-                              <p className="mt-1 text-xs text-muted-foreground">
-                                {event.date} • Performed by {event.performer}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             </div>
           </TabsContent>
@@ -635,6 +941,156 @@ export default function SmallMarketPage() {
           ))}
         </Tabs>
         </div>
+        </div>
+
+        {/* Right Control Panel */}
+        {controlPanelOpen && (
+        <aside className="my-3 mr-3 flex w-[290px] shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-white dark:border-gray-800 dark:bg-gray-950">
+          <div className="flex h-full min-w-0 flex-col">
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              {/* Panel tabs */}
+              <div className="flex items-center gap-1 px-3 pb-2 pt-3">
+                <div className="flex flex-1 gap-1">
+                  {PANEL_TABS.map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setActivePanelTab(tab)}
+                      className={cn(
+                        "whitespace-nowrap rounded-md px-2 py-1 text-[11px] font-medium transition-all",
+                        activePanelTab === tab
+                          ? "bg-[#E6F7FF] text-[#006180] dark:bg-[#006180]/20 dark:text-[#80E0FF]"
+                          : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400"
+                      )}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setControlPanelOpen(false)}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                  aria-label="Close control panel"
+                >
+                  <Icon name="right_panel_close" size={16} />
+                </button>
+              </div>
+
+              {activePanelTab === "Control Panel" && (
+                <>
+                  {/* Quick action buttons */}
+                  <div className="flex gap-2 border-b border-gray-100 p-3.5 dark:border-gray-800">
+                    {([
+                      ["check_box", "Tasks", true],
+                      ["add_comment", "New Interaction", false],
+                      ["filter_alt", "Filter", false],
+                      ["layers", "Work Items", false],
+                    ] as const).map(([icon, label, active]) => (
+                      <button
+                        key={icon}
+                        type="button"
+                        aria-label={label}
+                        className={cn(
+                          "flex flex-1 items-center justify-center rounded-xl border px-1 py-2 transition-all hover:-translate-y-0.5",
+                          active
+                            ? "border-[#006180]/40 bg-[#E6F7FF] text-[#006180] dark:border-[#80E0FF]/30 dark:bg-[#006180]/20 dark:text-[#80E0FF]"
+                            : "border-gray-200 bg-white text-gray-500 hover:border-[#006180]/30 hover:bg-[#E6F7FF]/50 hover:text-[#006180] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-500 dark:hover:border-[#80E0FF]/20 dark:hover:bg-[#006180]/10 dark:hover:text-[#80E0FF]"
+                        )}
+                      >
+                        <Icon name={icon} size={17} />
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Create new task */}
+                  <div className="px-3.5 pt-3.5">
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-[#006180]/30 bg-[#006180]/5 px-3 py-2.5 text-[13px] font-semibold text-[#006180] transition-all hover:-translate-y-0.5 hover:border-[#006180] hover:bg-[#006180]/10 hover:shadow-md dark:border-[#80E0FF]/20 dark:bg-[#006180]/5 dark:text-[#80E0FF] dark:hover:border-[#80E0FF]/40 dark:hover:bg-[#006180]/10"
+                    >
+                      <Icon name="add" size={16} />
+                      Create new task
+                      <span className="rounded bg-[#006180] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white dark:bg-[#80E0FF] dark:text-gray-900">
+                        New
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Account context + search */}
+                  <div className="space-y-3 px-3.5 pt-3.5">
+                    <div>
+                      <p className="text-xs font-medium text-[#006180] dark:text-[#80E0FF]">
+                        What Account Is The Task For?
+                      </p>
+                      <p className="mt-1.5 border-b border-gray-200 pb-2 text-sm text-gray-900 dark:border-gray-700 dark:text-gray-100">
+                        104063774 The Occupier
+                      </p>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Search for a specific task"
+                        className="w-full border-b-2 border-[#006180] bg-transparent pb-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:border-[#80E0FF] dark:text-gray-100 dark:placeholder:text-gray-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Task categories */}
+                  <div className="flex-1 px-2 py-1.5">
+                    {TASK_CATEGORIES.map((tc) => (
+                      <button
+                        key={tc.name}
+                        type="button"
+                        className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-[#E6F7FF]/50 dark:hover:bg-[#006180]/10"
+                      >
+                        <Icon name={tc.icon} size={17} className="shrink-0 text-gray-400 dark:text-gray-500" />
+                        <span className="flex-1 text-left text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                          {tc.name}
+                        </span>
+                        <span
+                          className={cn(
+                            "min-w-[28px] rounded-full px-2 py-0.5 text-center font-mono text-[11.5px] font-medium",
+                            tc.count === null
+                              ? "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600"
+                              : tc.hot
+                                ? "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400"
+                                : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                          )}
+                        >
+                          {tc.count ?? "—"}
+                        </span>
+                        <Icon name="chevron_right" size={15} className="shrink-0 text-gray-300 dark:text-gray-600" />
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {activePanelTab === "X-Sell" && (
+                <div className="flex-1 px-3.5 py-3.5">
+                  <p className="text-sm text-muted-foreground">X-Sell content would go here.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </aside>
+        )}
+
+        {/* Panel re-open button (when collapsed) */}
+        {!controlPanelOpen && (
+          <button
+            type="button"
+            onClick={() => setControlPanelOpen(true)}
+            className="my-3 mr-3 flex w-11 shrink-0 flex-col items-center gap-2 rounded-xl border border-border bg-white py-4 text-gray-500 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-400 dark:hover:text-gray-100"
+            aria-label="Open control panel"
+          >
+            <Icon name="right_panel_open" size={18} />
+            <span className="text-[10px] font-semibold tracking-wide [writing-mode:vertical-lr]">
+              Control Panel
+            </span>
+          </button>
+        )}
       </div>
       </div>
     </div>

@@ -44,14 +44,13 @@ const navigationSections = [
     ],
   },
   {
-    title: "Components",
+    title: "Atoms",
     items: [
       { label: "Alert", href: "/components/alert" },
       { label: "Aspect Ratio", href: "/components/aspect-ratio" },
       { label: "Avatar", href: "/components/avatar" },
       { label: "Badge", href: "/components/badge" },
       { label: "Button", href: "/components/button" },
-      { label: "Calendar", href: "/components/calendar" },
       { label: "Checkbox", href: "/components/checkbox" },
       { label: "Input", href: "/components/input" },
       { label: "Progress", href: "/components/progress" },
@@ -70,6 +69,7 @@ const navigationSections = [
       { label: "Alert Dialog", href: "/components/alert-dialog" },
       { label: "Breadcrumb", href: "/components/breadcrumb" },
       { label: "Button Group", href: "/components/button-group" },
+      { label: "Calendar", href: "/components/calendar" },
       { label: "Collapsible", href: "/components/collapsible" },
       { label: "Dropdown Menu", href: "/components/dropdown-menu" },
       { label: "Popover", href: "/components/popover" },

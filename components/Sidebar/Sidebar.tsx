@@ -25,7 +25,7 @@ interface SidebarProps {
 const SECTION_LINKS: Record<string, string | undefined> = {
   Elements: "/foundation",
   Brands: "/foundation/brands",
-  Components: "/components",
+  Atoms: "/components",
   Molecules: "/components",
   Organisms: "/components",
   Templates: "/pages",
@@ -35,7 +35,7 @@ const SECTION_LINKS: Record<string, string | undefined> = {
 const SECTION_ICONS: Record<string, string> = {
   Elements: "palette",
   Brands: "filter_vintage",
-  Components: "deployed_code",
+  Atoms: "deployed_code",
   Molecules: "hub",
   Organisms: "widgets",
   Templates: "grid_view",

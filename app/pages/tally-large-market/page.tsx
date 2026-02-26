@@ -298,7 +298,7 @@ const LM_ACCOUNT: Account = {
       isPrimary: true,
     },
   ],
-  address: "129 Springwood Rd, Springwood QLD 4127",
+  address: "155 Queen St, Melbourne, VIC 3000",
   annualConsumption: "4,500 kWh",
   accountBalance: "-$200.58",
   lastPaymentDate: "07/06/2023",
@@ -307,7 +307,7 @@ const LM_ACCOUNT: Account = {
   orgId: "org-lm-001",
   legalBusinessName: "AMPOL FOODARY GUMLY GUMLY",
   parentAccountName: "Residential",
-  customerType: "Residential",
+  customerType: "Commercial",
   accountStatus: "Billing",
   isClosed: false,
   accountSyncStatus: true,
@@ -317,6 +317,19 @@ const LM_ACCOUNT: Account = {
   serviceReferenceNumber: "SR-QB00171824",
   lifeSupport: false,
 };
+
+const PANEL_TABS = ["Actions", "Exceptions", "Tasks"] as const;
+
+const TASK_CATEGORIES = [
+  { name: "Account Tasks", count: null, icon: "group" as const, hot: false },
+  { name: "Financial Tasks", count: 26, icon: "attach_money" as const, hot: true },
+  { name: "Supply Tasks", count: 3, icon: "bolt" as const, hot: false },
+  { name: "Interaction Tasks", count: 5, icon: "chat_bubble_outline" as const, hot: false },
+  { name: "Utility Tasks", count: 17, icon: "monitoring" as const, hot: false },
+  { name: "Credit Tasks", count: 29, icon: "credit_card" as const, hot: true },
+  { name: "Customer Tasks", count: 15, icon: "group" as const, hot: false },
+  { name: "No Contact Tasks", count: 6, icon: "power_settings_new" as const, hot: false },
+];
 
 const CARD_GRID_CLASS = "grid grid-cols-1 gap-x-4 gap-y-4 2xl:grid-cols-2";
 
@@ -350,6 +363,8 @@ export default function TallyLargeMarketPage() {
   const isLg = useMediaQuery("(min-width: 1024px)");
   const [navCollapsed, setNavCollapsed] = React.useState(!isLg);
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const [controlPanelOpen, setControlPanelOpen] = React.useState(true);
+  const [activePanelTab, setActivePanelTab] = React.useState<(typeof PANEL_TABS)[number]>("Tasks");
 
   React.useEffect(() => {
     setNavCollapsed(!isLg);
@@ -605,7 +620,8 @@ export default function TallyLargeMarketPage() {
                   >
                     <Icon name={isExpanded ? "close_fullscreen" : "open_in_full"} size={18} />
                   </button>
-                  <Image src="/PoweredByTallyBadgeREV.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto" />
+                  <Image src="/PoweredByTallyBadge.svg" alt="Powered by Tally" width={120} height={29} className="w-[120px] h-auto dark:hidden" />
+                  <Image src="/PoweredByTallyBadgeREV.svg" alt="Powered by Tally" width={120} height={29} className="hidden w-[120px] h-auto dark:block" />
                 </div>
                 <button
                   type="button"
@@ -671,44 +687,66 @@ export default function TallyLargeMarketPage() {
           {/* Main Content */}
           <div className="relative min-w-0 flex-1 overflow-y-auto">
           <div className="mx-auto max-w-[1600px] px-4 py-4 xl:px-6 xl:py-6">
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList className="flex-nowrap items-center gap-1.5 overflow-hidden text-sm text-gray-700 dark:text-gray-200">
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  href="/"
-                  className="flex items-center text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                >
-                  <Icon name="home" size={18} className="text-gray-600 dark:text-gray-400" />
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
+        <div className="mb-4 flex items-center justify-between">
+          <Breadcrumb>
+            <BreadcrumbList className="flex-nowrap items-center gap-1.5 overflow-hidden text-sm text-gray-700 dark:text-gray-200">
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
                   <Link
-                  href="/pages"
-                  className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
-                >Customers</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                  <Link
-                  href="/pages/tally-large-market"
-                  className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
-                >Accounts</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="truncate rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900 dark:bg-gray-800 dark:text-gray-100">
-                QB00171824 - Masked_Name_44D550D62
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+                    href="/"
+                    className="flex items-center text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                  >
+                    <Icon name="home" size={18} className="text-gray-600 dark:text-gray-400" />
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                    <Link
+                    href="/pages"
+                    className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
+                  >Customers</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                    <Link
+                    href="/pages/tally-large-market"
+                    className="text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-100"
+                  >Accounts</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="truncate rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+                  QB00171824 - Masked_Name_44D550D62
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <Link
+            href="/pages/glass-vision?expanded=true"
+            className="flex shrink-0 items-center rounded-lg border border-border bg-white p-1.5 transition-colors hover:bg-[#FFF3E6] dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-[#802F00]/20"
+            title="Open Tally Glass Vision"
+          >
+            <Image
+              src="/GlassLogoTest.svg"
+              alt="Tally Glass"
+              width={80}
+              height={24}
+              className="h-5 w-auto dark:hidden"
+            />
+            <Image
+              src="/GlassLogoTest_darkmode.svg"
+              alt="Tally Glass"
+              width={80}
+              height={24}
+              className="hidden h-5 w-auto dark:block"
+            />
+          </Link>
+        </div>
 
         <h1 className="mb-6 truncate text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
           QB00171824 - Masked_Name_44D550D62
@@ -835,12 +873,12 @@ export default function TallyLargeMarketPage() {
                   onOpenChange={(open) => setCardOpenState((prev) => ({ ...prev, "Account details": open }))}
                 >
                   <div className={CARD_GRID_CLASS}>
-                    <DataCell label="Account type" value="Residential" />
+                    <DataCell label="Account type" value="Commercial" />
                     <DataCell label="Account status" value="Billing" />
                     <DataCell label="Parent account" value="Residential" />
                     <DataCell label="Site nickname" value="Residential" />
-                    <DataCell label="Supply address" value="129 Springwood Rd, Springwood QLD 4127" />
-                    <DataCell label="NMI - National Meter ID" value="Residential" />
+                    <DataCell label="Supply address" value="155 Queen St, Melbourne, VIC 3000" />
+                    <DataCell label="NMI - National Meter ID" value="Commercial" />
                     <Checkbox label="Hardship" defaultChecked />
                     <Checkbox label="Ombudsman" defaultChecked />
                     <Checkbox label="CDR eligible" defaultChecked />
@@ -874,7 +912,7 @@ export default function TallyLargeMarketPage() {
                   <div className={CARD_GRID_CLASS}>
                     <DataCell label="Contact type" value="Primary" />
                     <DataCell label="Full name" value="Justine Masked_Name_32BB 8EED194" />
-                    <DataCell label="Supply address" value="129 Springwood Rd, Springwood QLD 4127" />
+                    <DataCell label="Supply address" value="155 Queen St, Melbourne, VIC 3000" />
                   </div>
                 </CollapsibleCard>
 
@@ -1136,32 +1174,162 @@ export default function TallyLargeMarketPage() {
         </Tabs>
           </div>
           </div>
-        </div>
 
-        {/* Right Action Sidebar */}
-        <aside className="flex w-16 shrink-0 flex-col items-center gap-1 overflow-y-auto border-l border-border bg-white pt-4 dark:border-gray-800 dark:bg-gray-950">
-          <button
-            type="button"
-            className="flex flex-col items-center gap-1 rounded-lg px-2 py-2.5 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-          >
-            <Icon name="bolt" size={22} />
-            <span className="text-[10px] font-medium leading-tight">Actions</span>
-          </button>
-          <button
-            type="button"
-            className="flex flex-col items-center gap-1 rounded-lg px-2 py-2.5 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-          >
-            <Icon name="diamond" size={22} />
-            <span className="text-[10px] font-medium leading-tight">Exceptions</span>
-          </button>
-          <button
-            type="button"
-            className="flex flex-col items-center gap-1 rounded-lg px-2 py-2.5 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-          >
-            <Icon name="task" size={22} />
-            <span className="text-[10px] font-medium leading-tight">Tasks</span>
-          </button>
+        {/* Right Control Panel */}
+        {controlPanelOpen && (
+        <aside className="my-3 mr-3 flex w-[290px] shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-white dark:border-gray-800 dark:bg-gray-950">
+          <div className="flex h-full min-w-0 flex-col">
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              {/* Panel tabs */}
+              <div className="flex items-center gap-1 px-3 pb-2 pt-3">
+                <div className="flex flex-1 gap-1">
+                  {PANEL_TABS.map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setActivePanelTab(tab)}
+                      className={cn(
+                        "whitespace-nowrap rounded-md px-2 py-1 text-[11px] font-medium transition-all",
+                        activePanelTab === tab
+                          ? "bg-[#FFF3E6] text-[#802F00] dark:bg-[#802F00]/20 dark:text-[#FFCF99]"
+                          : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400"
+                      )}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setControlPanelOpen(false)}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                  aria-label="Close control panel"
+                >
+                  <Icon name="right_panel_close" size={16} />
+                </button>
+              </div>
+
+              {activePanelTab === "Tasks" && (
+                <>
+                  {/* Quick action buttons */}
+                  <div className="flex gap-2 border-b border-gray-100 p-3.5 dark:border-gray-800">
+                    {([
+                      ["check_box", "Tasks", true],
+                      ["add_comment", "New Interaction", false],
+                      ["filter_alt", "Filter", false],
+                      ["layers", "Work Items", false],
+                    ] as const).map(([icon, label, active]) => (
+                      <button
+                        key={icon}
+                        type="button"
+                        aria-label={label}
+                        className={cn(
+                          "flex flex-1 items-center justify-center rounded-xl border px-1 py-2 transition-all hover:-translate-y-0.5",
+                          active
+                            ? "border-[#802F00]/40 bg-[#FFF3E6] text-[#802F00] dark:border-[#FFCF99]/30 dark:bg-[#802F00]/20 dark:text-[#FFCF99]"
+                            : "border-gray-200 bg-white text-gray-500 hover:border-[#802F00]/30 hover:bg-[#FFF3E6]/50 hover:text-[#802F00] dark:border-gray-700 dark:bg-gray-900 dark:text-gray-500 dark:hover:border-[#FFCF99]/20 dark:hover:bg-[#802F00]/10 dark:hover:text-[#FFCF99]"
+                        )}
+                      >
+                        <Icon name={icon} size={17} />
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Create new task */}
+                  <div className="px-3.5 pt-3.5">
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-[#802F00]/30 bg-[#802F00]/5 px-3 py-2.5 text-[13px] font-semibold text-[#802F00] transition-all hover:-translate-y-0.5 hover:border-[#802F00] hover:bg-[#802F00]/10 hover:shadow-md dark:border-[#FFCF99]/20 dark:bg-[#802F00]/5 dark:text-[#FFCF99] dark:hover:border-[#FFCF99]/40 dark:hover:bg-[#802F00]/10"
+                    >
+                      <Icon name="add" size={16} />
+                      Create new task
+                      <span className="rounded bg-[#802F00] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white dark:bg-[#FFCF99] dark:text-gray-900">
+                        New
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Account context + search */}
+                  <div className="space-y-3 px-3.5 pt-3.5">
+                    <div>
+                      <p className="text-xs font-medium text-[#802F00] dark:text-[#FFCF99]">
+                        What Account Is The Task For?
+                      </p>
+                      <p className="mt-1.5 border-b border-gray-200 pb-2 text-sm text-gray-900 dark:border-gray-700 dark:text-gray-100">
+                        QB00171824 The Occupier
+                      </p>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Search for a specific task"
+                        className="w-full border-b-2 border-[#802F00] bg-transparent pb-1.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:border-[#FFCF99] dark:text-gray-100 dark:placeholder:text-gray-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Task categories */}
+                  <div className="flex-1 px-2 py-1.5">
+                    {TASK_CATEGORIES.map((tc) => (
+                      <button
+                        key={tc.name}
+                        type="button"
+                        className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-[#FFF3E6]/50 dark:hover:bg-[#802F00]/10"
+                      >
+                        <Icon name={tc.icon} size={17} className="shrink-0 text-gray-400 dark:text-gray-500" />
+                        <span className="flex-1 text-left text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                          {tc.name}
+                        </span>
+                        <span
+                          className={cn(
+                            "min-w-[28px] rounded-full px-2 py-0.5 text-center font-mono text-[11.5px] font-medium",
+                            tc.count === null
+                              ? "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600"
+                              : tc.hot
+                                ? "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400"
+                                : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                          )}
+                        >
+                          {tc.count ?? "—"}
+                        </span>
+                        <Icon name="chevron_right" size={15} className="shrink-0 text-gray-300 dark:text-gray-600" />
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {activePanelTab === "Actions" && (
+                <div className="flex-1 px-3.5 py-3.5">
+                  <p className="text-sm text-muted-foreground">Actions content would go here.</p>
+                </div>
+              )}
+
+              {activePanelTab === "Exceptions" && (
+                <div className="flex-1 px-3.5 py-3.5">
+                  <p className="text-sm text-muted-foreground">Exceptions content would go here.</p>
+                </div>
+              )}
+            </div>
+          </div>
         </aside>
+        )}
+
+        {/* Panel re-open button (when collapsed) */}
+        {!controlPanelOpen && (
+          <button
+            type="button"
+            onClick={() => setControlPanelOpen(true)}
+            className="my-3 mr-3 flex w-11 shrink-0 flex-col items-center gap-2 rounded-xl border border-border bg-white py-4 text-gray-500 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-400 dark:hover:text-gray-100"
+            aria-label="Open control panel"
+          >
+            <Icon name="right_panel_open" size={18} />
+            <span className="text-[10px] font-semibold tracking-wide [writing-mode:vertical-lr]">
+              Control Panel
+            </span>
+          </button>
+        )}
+        </div>
       </div>
     </div>
   );

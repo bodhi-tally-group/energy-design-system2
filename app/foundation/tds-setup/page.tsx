@@ -118,7 +118,7 @@ const TDS_LAYERS = [
     ],
   },
   {
-    name: "Components",
+    name: "Atoms",
     icon: "deployed_code",
     color: "#00D2A2",
     atomicMapping: "Atoms",
@@ -130,7 +130,6 @@ const TDS_LAYERS = [
       "Avatar",
       "Badge",
       "Button",
-      "Calendar",
       "Checkbox",
       "Input",
       "Progress",
@@ -154,6 +153,7 @@ const TDS_LAYERS = [
       "Alert Dialog",
       "Breadcrumb",
       "Button Group",
+      "Calendar",
       "Collapsible",
       "Dropdown Menu",
       "Popover",
@@ -231,9 +231,9 @@ const DESIGN_DECISIONS = [
   },
   {
     icon: "deployed_code",
-    title: "Components are truly atomic",
+    title: "Atoms are truly atomic",
     description:
-      "The Components section only contains indivisible elements — Button, Input, Checkbox, Badge. Components that internally compose multiple atoms (like Select, Accordion, Radio Group) are correctly placed in Molecules.",
+      "The Atoms section only contains indivisible elements — Button, Input, Checkbox, Badge. Items that internally compose multiple atoms (like Select, Accordion, Radio Group) are correctly placed in Molecules.",
   },
   {
     icon: "palette",
@@ -744,13 +744,13 @@ function DesignTab() {
             },
             {
               step: "2",
-              title: "Find existing Components",
-              body: "Browse the Components section in the sidebar. Most UI needs are already covered by Button, Input, Badge, Select, and others.",
+              title: "Find existing Atoms",
+              body: "Browse the Atoms section in the sidebar. Most UI needs are already covered by Button, Input, Badge, and others.",
             },
             {
               step: "3",
-              title: "Compose with Patterns",
-              body: "Assemble components into the section-level blocks your page needs — a Card, a Table, a Navigation Bar, a Dialog.",
+              title: "Compose with Molecules and Organisms",
+              body: "Assemble atoms into molecules (Select, Tabs, Accordion) and organisms (Card, Table, Navigation Bar, Dialog) for your page.",
             },
             {
               step: "4",
@@ -838,8 +838,8 @@ export default function TdsSetupPage() {
 │   └── mock-data/           # Sample data for pages
 │
 ├── components/
-│   ├── ui/                  # Components (atoms): icon, badge primitives
-│   ├── Button/              # Components (atoms): Button, Input, Toggle…
+│   ├── ui/                  # Atoms: icon, badge primitives
+│   ├── Button/              # Atoms: Button, Input, Toggle…
 │   ├── Select/              # Molecules: Select, Accordion, Tabs…
 │   ├── Card/                # Organisms: Card (Header + Content + Footer)
 │   ├── NavigationBar/       # Organisms: full navigation bar
@@ -872,7 +872,7 @@ export default function TdsSetupPage() {
 import { colors } from "@/lib/tokens/colors";
 import { surfaceColours } from "@/lib/tokens/surface-colours";
 
-// ── Components (atoms) ───────────────────────────
+// ── Atoms ────────────────────────────────────────
 import Button from "@/components/Button/Button";
 import { Icon } from "@/components/ui/icon";
 import Badge from "@/components/Badge/Badge";
@@ -914,7 +914,7 @@ import { Dialog } from "@/components/Dialog/Dialog";
 //    app/components/my-component/page.tsx
 
 // 3. Add to the sidebar navigation in app/layout.tsx
-//    → "Components" if it's an atom (single-purpose, indivisible)
+//    → "Atoms" if it's single-purpose and indivisible
 //    → "Molecules" if it composes 2-3 atoms into a unit
 //    → "Organisms" if it's a complex, multi-part section
 

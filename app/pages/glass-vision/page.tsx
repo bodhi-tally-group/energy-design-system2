@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import {
   ComposedChart,
   BarChart,
@@ -510,10 +511,11 @@ const ADORA_OVERVIEW_SEGMENTS = [
 const ADORA_TOTAL_CHARS = ADORA_OVERVIEW_SEGMENTS.reduce((sum, s) => sum + s.text.length, 0);
 
 export default function GlassVisionPage() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("overview");
   const [activeNavId, setActiveNavId] = useState("customers");
   const [selectedAccountAddress, setSelectedAccountAddress] = useState<string | null>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(searchParams.get("expanded") === "true");
   const [controlPanelOpen, setControlPanelOpen] = useState(true);
   const [activePanelTab, setActivePanelTab] = useState<(typeof PANEL_TABS)[number]>("Control Panel");
   const [adoraPhase, setAdoraPhase] = useState<"idle" | "thinking" | "typing" | "done">("idle");
