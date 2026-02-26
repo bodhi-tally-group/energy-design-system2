@@ -4,10 +4,17 @@ import NavigationBar from "@/components/NavigationBar/NavigationBar";
 import PageBanner from "@/components/PageBanner/PageBanner";
 import TabNavigation from "@/components/TabNavigation/TabNavigation";
 import { Icon } from "@/components/ui/icon";
-import { useState } from "react";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { useState, useEffect } from "react";
 
 export default function NavigationBarPage() {
   const [activeTab, setActiveTab] = useState("design");
+  const isLg = useMediaQuery("(min-width: 1024px)");
+  const [responsiveCollapsed, setResponsiveCollapsed] = useState(!isLg);
+
+  useEffect(() => {
+    setResponsiveCollapsed(!isLg);
+  }, [isLg]);
 
   const tabs = [
     { id: "design", label: "Design" },
@@ -557,6 +564,75 @@ export default function NavigationBarPage() {
                 </div>
               </section>
 
+              {/* Responsive Auto-Collapsing */}
+              <section className="mb-16 border-t border-border pt-16 dark:border-gray-700">
+                <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+                  Responsive Auto-Collapsing
+                </h2>
+                <p className="mb-6 max-w-3xl text-base leading-6 text-gray-600 dark:text-gray-400">
+                  Navigation bars should auto-collapse based on viewport width.
+                  Below the <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm font-mono dark:bg-gray-800">lg</code> breakpoint
+                  (1024px), the sidebar collapses to an icon-only strip. At or above 1024px, it expands
+                  to full width. The user can still manually override with the chevron toggle.
+                </p>
+
+                <div className="space-y-8">
+                  <div>
+                    <h3 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+                      Rules
+                    </h3>
+                    <div className="rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
+                      <ul className="list-inside list-disc space-y-1.5 text-gray-300">
+                        <li><strong className="text-gray-100">Breakpoint:</strong> 1024px (<code className="text-xs">min-width: 1024px</code> / Tailwind <code className="text-xs">lg</code>)</li>
+                        <li><strong className="text-gray-100">Below 1024px:</strong> Auto-collapse to icon-only (<code className="text-xs">w-16</code>). Tooltips on hover; flyout submenus for parent items.</li>
+                        <li><strong className="text-gray-100">At or above 1024px:</strong> Auto-expand to full width (<code className="text-xs">w-64</code>). Inline accordion for parent items with children.</li>
+                        <li><strong className="text-gray-100">Auto-sync:</strong> Listens to <code className="text-xs">matchMedia</code> change events for real-time response to browser resizing.</li>
+                        <li><strong className="text-gray-100">Manual override:</strong> Chevron toggle at the bottom always allows manual collapse/expand.</li>
+                        <li><strong className="text-gray-100">Smooth transition:</strong> <code className="text-xs">transition-[width] duration-300</code></li>
+                        <li><strong className="text-gray-100">SSR safety:</strong> Hook returns <code className="text-xs">false</code> during SSR/hydration, syncs on mount.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+                      Live Demo
+                    </h3>
+                    <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                      This demo is wired to the <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm font-mono dark:bg-gray-800">useMediaQuery</code> hook.
+                      Resize your browser below 1024px to see the nav auto-collapse, or use the chevron to override.
+                      Current viewport: <strong className="text-gray-900 dark:text-gray-100">{isLg ? "≥ 1024px (expanded)" : "< 1024px (collapsed)"}</strong>
+                    </p>
+                    <div className="rounded-md border border-border bg-white dark:border-gray-700 dark:bg-gray-800">
+                      <div className="flex">
+                        <NavigationBar
+                          topSection={sampleTopSection}
+                          items={sampleNavItems}
+                          bottomItems={sampleBottomItems}
+                          defaultActiveId="search"
+                          collapsed={responsiveCollapsed}
+                          onCollapsedChange={setResponsiveCollapsed}
+                          compact
+                        />
+                        <div className="flex-1 border-l border-border bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900/40">
+                          <div className="flex items-center gap-2 mb-4">
+                            <Icon name={isLg ? "desktop_windows" : "smartphone"} size={20} className="text-gray-500" />
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                              {isLg ? "Desktop viewport" : "Narrow viewport"} — Nav is {responsiveCollapsed ? "collapsed" : "expanded"}
+                            </span>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="h-20 rounded-md border border-border bg-white dark:border-gray-700 dark:bg-gray-800" />
+                            <div className="h-20 rounded-md border border-border bg-white dark:border-gray-700 dark:bg-gray-800" />
+                            <div className="h-20 rounded-md border border-border bg-white dark:border-gray-700 dark:bg-gray-800" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
               {/* Spacing and Layout */}
               <section className="mb-16 border-t border-border pt-16 dark:border-gray-700">
                 <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
@@ -730,6 +806,66 @@ export default function Layout() {
       onCollapsedChange={setCollapsed}
     />
   );
+}`}</code>
+                  </pre>
+                </div>
+
+                <div>
+                  <h3 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Responsive auto-collapsing with useMediaQuery
+                  </h3>
+                  <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
+                    <code>{`"use client";
+
+import { useState, useEffect } from "react";
+import NavigationBar from "@/components/NavigationBar/NavigationBar";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+
+export default function Layout() {
+  const isLg = useMediaQuery("(min-width: 1024px)");
+  const [navCollapsed, setNavCollapsed] = useState(!isLg);
+
+  // Auto-sync when viewport crosses the 1024px boundary
+  useEffect(() => {
+    setNavCollapsed(!isLg);
+  }, [isLg]);
+
+  return (
+    <NavigationBar
+      topSection={topSection}
+      items={items}
+      bottomItems={bottomItems}
+      collapsed={navCollapsed}
+      onCollapsedChange={setNavCollapsed}
+    />
+  );
+}`}</code>
+                  </pre>
+                </div>
+
+                <div>
+                  <h3 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+                    useMediaQuery hook
+                  </h3>
+                  <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">
+                    SSR-safe hook that listens to a CSS media query. Returns <code className="rounded bg-gray-800 px-1.5 py-0.5 text-xs font-mono">false</code> during
+                    SSR/hydration and syncs with the real value on mount. Located at <code className="rounded bg-gray-800 px-1.5 py-0.5 text-xs font-mono">lib/hooks/useMediaQuery.ts</code>.
+                  </p>
+                  <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
+                    <code>{`"use client";
+
+import { useState, useEffect } from "react";
+
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [query]);
+  return matches;
 }`}</code>
                   </pre>
                 </div>

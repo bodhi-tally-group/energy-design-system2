@@ -526,6 +526,10 @@ export function getCaseById(id: string): CaseItem | undefined {
   return mockCases.find((c) => c.id === id);
 }
 
+export function getCaseByCaseNumber(caseNumber: string): CaseItem | undefined {
+  return mockCases.find((c) => c.caseNumber === caseNumber);
+}
+
 export function getCasesBySLA(status: string): CaseItem[] {
   return mockCases.filter((c) => c.slaStatus === status);
 }

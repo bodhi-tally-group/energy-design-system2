@@ -28,22 +28,91 @@ import Input from "@/components/Input/Input";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import { cn } from "@/lib/utils";
 import { surfaceColours } from "@/lib/tokens/surface-colours";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import AccountContextPanel from "@/components/crm/AccountContextPanel";
 import type { Account } from "@/types/crm";
 
-const LEFT_NAV_ITEMS = [
-  { id: "home", label: "Home", icon: "dashboard" },
-  { id: "sales", label: "Sales", icon: "trending_up" },
-  { id: "customers", label: "Customers", icon: "group" },
-  { id: "billing", label: "Billing", icon: "receipt" },
-  { id: "payments", label: "Payments", icon: "credit_card" },
-  { id: "market", label: "Market", icon: "store" },
-  { id: "reporting", label: "Reporting", icon: "insights" },
-  { id: "onboarding", label: "Onboarding", icon: "headset_mic" },
-  { id: "audit", label: "Audit", icon: "fact_check" },
-  { id: "products", label: "Products", icon: "inventory_2" },
-  { id: "settings", label: "Settings", icon: "settings" },
-  { id: "file-upload", label: "File Upload", icon: "upload_file" },
+interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  children?: { id: string; label: string }[];
+}
+
+const LEFT_NAV_ITEMS: NavItem[] = [
+  {
+    id: "home", label: "Home", icon: "dashboard",
+    children: [
+      { id: "home-dashboard", label: "Dashboard" },
+      { id: "home-exceptions", label: "Exceptions" },
+    ],
+  },
+  {
+    id: "sales", label: "Sales", icon: "trending_up",
+    children: [
+      { id: "sales-discovery", label: "Discovery" },
+      { id: "sales-bulk-discovery", label: "Bulk Discovery" },
+      { id: "sales-quotes", label: "Quotes" },
+    ],
+  },
+  {
+    id: "customers", label: "Customers", icon: "group",
+    children: [
+      { id: "customers-accounts", label: "Accounts" },
+      { id: "customers-manual-creation", label: "Manual Account Creation" },
+      { id: "customers-add-new", label: "Add New Accounts" },
+      { id: "customers-import-results", label: "View Import Results" },
+    ],
+  },
+  {
+    id: "billing", label: "Billing", icon: "receipt",
+    children: [
+      { id: "billing-dashboard", label: "Dashboard" },
+      { id: "billing-batch", label: "Batch" },
+      { id: "billing-review", label: "Review" },
+      { id: "billing-invoices", label: "Invoices" },
+      { id: "billing-invoice-revisions", label: "Invoice Revisions" },
+      { id: "billing-schedule", label: "Schedule" },
+      { id: "billing-nuos", label: "NUOS" },
+      { id: "billing-statements", label: "Statements" },
+      { id: "billing-ad-charges", label: "Ad. Charges" },
+      { id: "billing-bill-messages", label: "Bill Messages" },
+    ],
+  },
+  {
+    id: "payments", label: "Payments", icon: "credit_card",
+    children: [
+      { id: "payments-suspense", label: "Suspense Account" },
+    ],
+  },
+  {
+    id: "market", label: "Market", icon: "store",
+    children: [
+      { id: "market-change-requests", label: "Change Requests" },
+      { id: "market-change-request-dashboard", label: "Change Request Dashboard" },
+      { id: "market-transactions-dashboard", label: "Transactions Dashboard" },
+      { id: "market-bulk-life-support", label: "Bulk Life Support Reconciliation" },
+      { id: "market-life-support-notif", label: "Life Support Notification (No Account)" },
+    ],
+  },
+  {
+    id: "reporting", label: "Reporting", icon: "insights",
+    children: [
+      { id: "reporting-reports", label: "Reports" },
+      { id: "reporting-scheduled", label: "Scheduled Reports" },
+    ],
+  },
+  {
+    id: "onboarding", label: "Onboarding", icon: "headset_mic",
+    children: [
+      { id: "onboarding-queue", label: "Onboarding Queue" },
+      { id: "onboarding-templates", label: "Templates" },
+    ],
+  },
+  { id: "audit", label: "Audit", icon: "fact_check", children: [] },
+  { id: "products", label: "Products", icon: "inventory_2", children: [] },
+  { id: "settings", label: "Settings", icon: "settings", children: [] },
+  { id: "file-upload", label: "File Upload", icon: "upload_file", children: [] },
 ];
 
 const TAB_CONFIG = [
@@ -249,7 +318,7 @@ const LM_ACCOUNT: Account = {
   lifeSupport: false,
 };
 
-const CARD_GRID_CLASS = "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3";
+const CARD_GRID_CLASS = "grid grid-cols-1 gap-x-4 gap-y-4 2xl:grid-cols-2";
 
 function DataCell({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -273,10 +342,51 @@ function SnapshotDataCell({ label, primaryValue, secondaryDetail, className }: {
 export default function TallyLargeMarketPage() {
   const [tabValue, setTabValue] = React.useState("overview");
   const [cardOpenState, setCardOpenState] = React.useState<Record<string, boolean>>(INITIAL_CARD_OPEN);
-  const [activeNavId, setActiveNavId] = React.useState("customers");
+  const [activeNavId, setActiveNavId] = React.useState("customers-accounts");
+  const [openParentId, setOpenParentId] = React.useState<string | null>("customers");
+  const [interactionsOpen, setInteractionsOpen] = React.useState(false);
+  const showInteractionsInline = useMediaQuery("(min-width: 1280px)");
   const [selectedContactId, setSelectedContactId] = React.useState(1);
-  const [navCollapsed, setNavCollapsed] = React.useState(false);
+  const isLg = useMediaQuery("(min-width: 1024px)");
+  const [navCollapsed, setNavCollapsed] = React.useState(!isLg);
   const [isExpanded, setIsExpanded] = React.useState(false);
+
+  React.useEffect(() => {
+    setNavCollapsed(!isLg);
+  }, [isLg]);
+  const [flyoutParentId, setFlyoutParentId] = React.useState<string | null>(null);
+  const [flyoutPos, setFlyoutPos] = React.useState<{ top: number; left: number } | null>(null);
+  const flyoutTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showFlyout = (e: React.MouseEvent, itemId: string) => {
+    if (!navCollapsed) return;
+    if (flyoutTimeout.current) clearTimeout(flyoutTimeout.current);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setFlyoutPos({ top: rect.top, left: rect.right + 8 });
+    setFlyoutParentId(itemId);
+  };
+  const hideFlyout = () => {
+    flyoutTimeout.current = setTimeout(() => {
+      setFlyoutPos(null);
+      setFlyoutParentId(null);
+    }, 100);
+  };
+  const cancelHideFlyout = () => {
+    if (flyoutTimeout.current) clearTimeout(flyoutTimeout.current);
+  };
+
+  const handleParentClick = (item: NavItem) => {
+    if (item.children && item.children.length > 0) {
+      setOpenParentId((prev) => (prev === item.id ? null : item.id));
+    } else {
+      setActiveNavId(item.id);
+    }
+  };
+
+  const isParentActive = (item: NavItem) => {
+    if (activeNavId === item.id) return true;
+    return item.children?.some((c) => c.id === activeNavId) ?? false;
+  };
   const currentTabLabel = TAB_CONFIG.find((t) => t.value === tabValue)?.label ?? "Overview";
   const selectedContact = CONTACTS_DATA.find((c) => c.id === selectedContactId) ?? CONTACTS_DATA[0];
 
@@ -297,6 +407,9 @@ export default function TallyLargeMarketPage() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
+      {/* Brand strip */}
+      <div className="h-1 shrink-0 bg-[#FF5E00]" />
+
       {/* App Bar */}
       <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-white px-6 dark:border-gray-800 dark:bg-gray-950/90">
         {/* Left: Logo */}
@@ -351,51 +464,114 @@ export default function TallyLargeMarketPage() {
             navCollapsed ? "w-16" : "w-64"
           )}
         >
-          <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible">
             <nav className={cn("flex flex-col", navCollapsed ? "items-center p-2" : "p-2")}>
-              {LEFT_NAV_ITEMS.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveNavId(item.id)}
-                  title={navCollapsed ? item.label : undefined}
-                  className={cn(
-                    "group flex items-center rounded-lg text-left text-sm font-medium transition-colors",
-                    navCollapsed
-                      ? "h-10 w-10 justify-center"
-                      : "w-full justify-between gap-3 px-3 py-2.5",
-                    activeNavId === item.id
-                      ? "bg-gray-100 text-gray-900 dark:bg-[#7c8cb8]/20 dark:text-[#7c8cb8]"
-                      : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-                  )}
-                >
-                  <div className={cn("flex items-center", navCollapsed ? "" : "min-w-0 flex-1 gap-3")}>
-                    <Icon
-                      name={item.icon as "dashboard"}
-                      size={20}
+              {LEFT_NAV_ITEMS.map((item) => {
+                const hasChildren = (item.children?.length ?? 0) > 0;
+                const isOpen = openParentId === item.id;
+                const parentActive = isParentActive(item);
+
+                if (navCollapsed) {
+                  return (
+                    <div
+                      key={item.id}
+                      role="button"
+                      tabIndex={0}
+                      onMouseEnter={(e) => {
+                        if (hasChildren) {
+                          cancelHideFlyout();
+                          showFlyout(e, item.id);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (hasChildren) hideFlyout();
+                      }}
+                      onClick={() => {
+                        if (!hasChildren) setActiveNavId(item.id);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          if (hasChildren) setFlyoutParentId(item.id);
+                          else setActiveNavId(item.id);
+                        }
+                      }}
+                      title={!hasChildren ? item.label : undefined}
                       className={cn(
-                        "shrink-0 font-extralight transition-colors",
-                        activeNavId === item.id
-                          ? "text-gray-900 dark:text-[#7c8cb8]"
-                          : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
+                        "group flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors",
+                        parentActive
+                          ? "bg-[#FFF3E6] text-[#802F00] dark:bg-[#802F00]/20 dark:text-[#FFCF99]"
+                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
                       )}
-                    />
-                    {!navCollapsed && <span className="truncate">{item.label}</span>}
+                    >
+                      <Icon
+                        name={item.icon as "dashboard"}
+                        size={20}
+                        className={cn(
+                          "shrink-0 font-extralight",
+                          parentActive
+                            ? "text-[#802F00] dark:text-[#FFCF99]"
+                            : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
+                        )}
+                      />
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={item.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleParentClick(item)}
+                      className={cn(
+                        "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-normal transition-colors",
+                        parentActive || isOpen
+                          ? "bg-[#FFF3E6] text-[#802F00] dark:bg-[#802F00]/20 dark:text-[#FFCF99]"
+                          : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                      )}
+                    >
+                      <Icon
+                        name={item.icon as "dashboard"}
+                        size={20}
+                        className={cn(
+                          "shrink-0 font-extralight",
+                          parentActive || isOpen
+                            ? "text-[#802F00] dark:text-[#FFCF99]"
+                            : "text-gray-600 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
+                        )}
+                      />
+                      <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                      {hasChildren && (
+                        <Icon
+                          name={isOpen ? "expand_less" : "expand_more"}
+                          size={20}
+                          className="shrink-0 text-gray-500 dark:text-gray-400"
+                        />
+                      )}
+                    </button>
+                    {hasChildren && isOpen && (
+                      <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-border pl-2 dark:border-gray-600">
+                        {item.children!.map((child) => (
+                          <li key={child.id}>
+                            <button
+                              type="button"
+                              onClick={() => setActiveNavId(child.id)}
+                              className={cn(
+                                "flex w-full items-center rounded-lg py-2 pl-2 pr-3 text-left text-sm font-normal transition-colors",
+                                activeNavId === child.id
+                                  ? "bg-[#FFF3E6] text-[#802F00] dark:bg-[#802F00]/20 dark:text-[#FFCF99]"
+                                  : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                              )}
+                            >
+                              {child.label}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  {!navCollapsed && (
-                    <Icon
-                      name="expand_more"
-                      size={18}
-                      className={cn(
-                        "shrink-0 font-extralight transition-colors",
-                        activeNavId === item.id
-                          ? "text-gray-900 dark:text-[#7c8cb8]"
-                          : "text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-gray-100"
-                      )}
-                    />
-                  )}
-                </button>
-              ))}
+                );
+              })}
             </nav>
           </div>
           <div className="shrink-0 border-t border-border dark:border-gray-800">
@@ -444,15 +620,59 @@ export default function TallyLargeMarketPage() {
           </div>
         </aside>
 
+        {/* Collapsed flyout for parent items with children */}
+        {navCollapsed && flyoutParentId && flyoutPos && (() => {
+          const parentItem = LEFT_NAV_ITEMS.find((i) => i.id === flyoutParentId);
+          if (!parentItem?.children?.length) return null;
+          return (
+            <div
+              className="fixed z-[100] min-w-[180px] rounded-md border border-gray-200 bg-white py-2 dark:border-gray-600 dark:bg-gray-800"
+              style={{
+                top: flyoutPos.top,
+                left: flyoutPos.left,
+                boxShadow:
+                  "0 2px 2px -1px rgba(10,13,18,0.04), 0 4px 6px -2px rgba(10,13,18,0.03), 0 12px 16px -4px rgba(10,13,18,0.08)",
+              }}
+              onMouseEnter={() => cancelHideFlyout()}
+              onMouseLeave={() => hideFlyout()}
+            >
+              <div className="px-4 pb-1 pt-1.5 text-sm font-normal text-gray-600 dark:text-gray-300">
+                {parentItem.label}
+              </div>
+              <div className="relative ml-4 border-l border-gray-200 dark:border-gray-600">
+                {parentItem.children.map((child) => (
+                  <button
+                    key={child.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveNavId(child.id);
+                      setOpenParentId(parentItem.id);
+                      hideFlyout();
+                    }}
+                    className={cn(
+                      "flex w-full items-center py-2 pl-3 pr-4 text-left text-sm font-normal transition-colors",
+                      activeNavId === child.id
+                        ? "mx-2 rounded-lg bg-[#FFF3E6] font-medium text-[#802F00] dark:bg-[#802F00]/20 dark:text-[#FFCF99]"
+                        : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                    )}
+                  >
+                    {child.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Account Context Panel + Main Content share the surface gradient */}
         <div className={`flex min-w-0 flex-1 overflow-hidden ${surfaceColours["tally-group"]}`}>
           <AccountContextPanel account={LM_ACCOUNT} />
 
           {/* Main Content */}
           <div className="relative min-w-0 flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-[1600px] px-6 py-6">
+          <div className="mx-auto max-w-[1600px] px-4 py-4 xl:px-6 xl:py-6">
         <Breadcrumb className="mb-4">
-          <BreadcrumbList className="items-center gap-1.5 text-sm text-gray-700 dark:text-gray-200">
+          <BreadcrumbList className="flex-nowrap items-center gap-1.5 overflow-hidden text-sm text-gray-700 dark:text-gray-200">
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link
@@ -483,14 +703,14 @@ export default function TallyLargeMarketPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator className="text-gray-400 [&>svg]:size-4" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+              <BreadcrumbPage className="truncate rounded bg-gray-100 px-2.5 py-1 font-normal text-gray-900 dark:bg-gray-800 dark:text-gray-100">
                 QB00171824 - Masked_Name_44D550D62
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
-        <h1 className="mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+        <h1 className="mb-6 truncate text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
           QB00171824 - Masked_Name_44D550D62
         </h1>
 
@@ -593,8 +813,8 @@ export default function TallyLargeMarketPage() {
                 )}
               </button>
             </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="min-w-0 space-y-6">
+            <div className="flex gap-6">
+              <div className="min-w-0 flex-1 space-y-6">
                 <CollapsibleCard
                   title="Snapshot"
                   open={cardOpenState["Snapshot"]}
@@ -675,68 +895,156 @@ export default function TallyLargeMarketPage() {
                 />
               </div>
 
-              <div className="flex min-w-0 flex-col">
-                <Card className="flex w-full min-w-0 flex-col shadow-none">
-                  <CardHeader className="w-full space-y-0 border-b border-border pb-4 dark:border-gray-800">
-                    <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">Interactions</CardTitle>
-                    <div className="mt-3 w-full">
-                      <div className="relative flex w-full min-w-0 items-center overflow-visible rounded-lg border border-border bg-white dark:border-gray-700 dark:bg-gray-900">
-                        <div className="flex shrink-0 items-center py-2 pl-3 pr-4">
-                          <Icon name="search" size={20} className="text-gray-500 dark:text-gray-400" />
+              {/* Interactions — half of content when space allows, collapsible bar when narrow */}
+              {showInteractionsInline ? (
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <Card className="flex w-full min-w-0 flex-col shadow-none">
+                    <CardHeader className="w-full space-y-0 border-b border-border pb-4 dark:border-gray-800">
+                      <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">Interactions</CardTitle>
+                      <div className="mt-3 w-full">
+                        <div className="relative flex w-full min-w-0 items-center overflow-visible rounded-lg border border-border bg-white dark:border-gray-700 dark:bg-gray-900">
+                          <div className="flex shrink-0 items-center py-2 pl-3 pr-4">
+                            <Icon name="search" size={20} className="text-gray-500 dark:text-gray-400" />
+                          </div>
+                          <Input
+                            placeholder="Search"
+                            className="h-10 min-w-0 flex-1 rounded-none border-0 bg-transparent pl-0 pr-12 text-sm !border-0 shadow-none outline-none focus-visible:ring-0"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                            title="Filter"
+                            aria-label="Filter"
+                          >
+                            <Icon name="tune" size={20} />
+                          </button>
                         </div>
-                        <Input
-                          placeholder="Search"
-                          className="h-10 min-w-0 flex-1 rounded-none border-0 bg-transparent pl-0 pr-12 text-sm !border-0 shadow-none outline-none focus-visible:ring-0"
-                        />
-                        <button
-                          type="button"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-                          title="Filter"
-                          aria-label="Filter"
-                        >
-                          <Icon name="tune" size={20} />
-                        </button>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex flex-col gap-3 pt-4">
-                    {INTERACTIONS.map((item) => (
-                      <div key={item.id} className="flex flex-col gap-3 rounded-lg bg-gray-100 p-4 dark:bg-gray-900/40">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0 flex-1">
-                            <p className="font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
-                            <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">{item.category}</p>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="mt-2 rounded-lg border-border bg-white font-normal text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800"
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-3 pt-4">
+                      {INTERACTIONS.map((item) => (
+                        <div key={item.id} className="flex flex-col gap-3 rounded-lg bg-gray-100 p-4 dark:bg-gray-900/40">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
+                              <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">{item.category}</p>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="mt-2 rounded-lg border-border bg-white font-normal text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800"
+                              >
+                                <Icon name="add" size={16} className="mr-1" /> Add
+                              </Button>
+                            </div>
+                            <div className="flex shrink-0 flex-col items-end text-right">
+                              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.user}</span>
+                              <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{item.time}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-end gap-2 border-t border-border pt-2 dark:border-gray-700">
+                            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">2 interactions</span>
+                            <span className="rounded bg-[#0074C4] px-2 py-0.5 text-xs font-medium text-white">11223344</span>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <div className="flex shrink-0 flex-col">
+                  <Card
+                    className={cn(
+                      "flex flex-col shadow-none transition-[width] duration-300 overflow-hidden",
+                      interactionsOpen ? "w-[320px]" : "w-11"
+                    )}
+                  >
+                    {interactionsOpen ? (
+                      <>
+                        <CardHeader className="w-full space-y-0 border-b border-border pb-4 dark:border-gray-800">
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-base font-bold text-gray-900 dark:text-gray-100">Interactions</CardTitle>
+                            <button
+                              type="button"
+                              onClick={() => setInteractionsOpen(false)}
+                              className="rounded p-1 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                              aria-label="Collapse interactions"
                             >
-                              <Icon name="add" size={16} className="mr-1" /> Add
-                            </Button>
+                              <Icon name="chevron_right" size={18} />
+                            </button>
                           </div>
-                          <div className="flex shrink-0 flex-col items-end text-right">
-                            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.user}</span>
-                            <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{item.time}</span>
+                          <div className="mt-3 w-full">
+                            <div className="relative flex w-full min-w-0 items-center overflow-visible rounded-lg border border-border bg-white dark:border-gray-700 dark:bg-gray-900">
+                              <div className="flex shrink-0 items-center py-2 pl-3 pr-4">
+                                <Icon name="search" size={20} className="text-gray-500 dark:text-gray-400" />
+                              </div>
+                              <Input
+                                placeholder="Search"
+                                className="h-10 min-w-0 flex-1 rounded-none border-0 bg-transparent pl-0 pr-12 text-sm !border-0 shadow-none outline-none focus-visible:ring-0"
+                              />
+                              <button
+                                type="button"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                                title="Filter"
+                                aria-label="Filter"
+                              >
+                                <Icon name="tune" size={20} />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center justify-end gap-2 border-t border-border pt-2 dark:border-gray-700">
-                          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">2 interactions</span>
-                          <span className="rounded bg-[#0074C4] px-2 py-0.5 text-xs font-medium text-white">11223344</span>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </div>
+                        </CardHeader>
+                        <CardContent className="flex flex-col gap-3 pt-4">
+                          {INTERACTIONS.map((item) => (
+                            <div key={item.id} className="flex flex-col gap-3 rounded-lg bg-gray-100 p-4 dark:bg-gray-900/40">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0 flex-1">
+                                  <p className="font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
+                                  <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">{item.category}</p>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="mt-2 rounded-lg border-border bg-white font-normal text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800"
+                                  >
+                                    <Icon name="add" size={16} className="mr-1" /> Add
+                                  </Button>
+                                </div>
+                                <div className="flex shrink-0 flex-col items-end text-right">
+                                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.user}</span>
+                                  <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{item.time}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-end gap-2 border-t border-border pt-2 dark:border-gray-700">
+                                <span className="text-sm font-medium text-gray-900 dark:text-gray-100">2 interactions</span>
+                                <span className="rounded bg-[#0074C4] px-2 py-0.5 text-xs font-medium text-white">11223344</span>
+                              </div>
+                            </div>
+                          ))}
+                        </CardContent>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setInteractionsOpen(true)}
+                        className="flex h-full w-11 flex-col items-center gap-2 py-4 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                        aria-label="Expand interactions"
+                      >
+                        <Icon name="chevron_left" size={18} />
+                        <span className="text-xs font-semibold tracking-wide [writing-mode:vertical-lr]">
+                          Interactions ({INTERACTIONS.length})
+                        </span>
+                      </button>
+                    )}
+                  </Card>
+                </div>
+              )}
             </div>
           </TabsContent>
 
           {/* Contacts Tab */}
           <TabsContent value="contacts" className="mt-0">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">Contacts</h2>
-            <div className="flex gap-6">
+            <div className="flex flex-col gap-6 2xl:flex-row">
               {/* Left: Contact list */}
-              <div className="w-[280px] shrink-0">
+              <div className="w-full shrink-0 2xl:w-[280px]">
                 <Card className="shadow-none">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b border-border px-4 pb-3 pt-3 dark:border-gray-800">
                     <CardTitle className="text-sm font-semibold text-gray-900 dark:text-gray-100">Contact Name</CardTitle>
@@ -790,7 +1098,7 @@ export default function TallyLargeMarketPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-6">
-                    <div className="grid grid-cols-3 gap-x-8 gap-y-6">
+                    <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 2xl:grid-cols-3">
                       <DataCell label="Contact Type" value={selectedContact.details.contactType} />
                       <DataCell label="Full name" value={selectedContact.details.fullName} />
                       <DataCell label="Date of birth" value={selectedContact.details.dateOfBirth} />
@@ -801,8 +1109,7 @@ export default function TallyLargeMarketPage() {
                       <DataCell label="Mobile Phone" value={selectedContact.details.mobilePhone} />
                       <DataCell label="Verification Passphrase" value={selectedContact.details.verificationPassphrase} />
                       <DataCell label="Email" value={selectedContact.details.email} />
-                      <div className="col-span-2" />
-                      <DataCell label="Address" value={selectedContact.details.address} className="col-span-3" />
+                      <DataCell label="Address" value={selectedContact.details.address} className="sm:col-span-2 2xl:col-span-3" />
                       <DataCell label="Customer Number" value={selectedContact.details.customerNumber} />
                       <DataCell label="CDN Contact" value={selectedContact.details.cdnContact} />
                       <DataCell label="External Ref" value={selectedContact.details.externalRef} />

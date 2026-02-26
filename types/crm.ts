@@ -43,6 +43,19 @@ export interface Account {
   lastPaymentDate: string;
   lastPaymentAmount: string;
   contractEndDate: string;
+  orgId?: string;
+  legalBusinessName?: string;
+  parentAccountId?: string;
+  parentAccountName?: string;
+  customerType?: string;
+  accountStatus?: string;
+  isClosed?: boolean;
+  accountSyncStatus?: boolean;
+  consolidateToParent?: boolean;
+  isDirectDebit?: boolean;
+  terms?: string;
+  serviceReferenceNumber?: string;
+  lifeSupport?: boolean;
 }
 
 // ── Contact ─────────────────────────────────────────────────────────────────

@@ -26,16 +26,20 @@ const SECTION_LINKS: Record<string, string | undefined> = {
   Elements: "/foundation",
   Brands: "/foundation/brands",
   Components: "/components",
-  Patterns: "/components",
+  Molecules: "/components",
+  Organisms: "/components",
   Templates: "/pages",
+  Pages: "/pages",
 };
 
 const SECTION_ICONS: Record<string, string> = {
   Elements: "palette",
   Brands: "filter_vintage",
   Components: "deployed_code",
-  Patterns: "widgets",
-  Templates: "newsmode",
+  Molecules: "hub",
+  Organisms: "widgets",
+  Templates: "grid_view",
+  Pages: "newsmode",
 };
 
 const STORAGE_KEY = "ds-sidebar-collapsed";
