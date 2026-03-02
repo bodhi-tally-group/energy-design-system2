@@ -492,6 +492,14 @@ const ACCOUNTS: AccountRecord[] = [
   },
 ];
 
+const ACCOUNT_USAGE_SPARKLINES: Record<string, number[]> = {
+  "1/123 Smith St, Fitzroy, VIC 3066": [412, 385, 448, 392, 305, 228, 165, 98],
+  "42 Collins St, Melbourne, VIC 3000": [1820, 1940, 2010, 2150, 2080, 2210, 2340, 2460],
+  "7/88 Chapel St, Windsor, VIC 3181": [310, 295, 320, 305, 285, 270, 290, 275],
+  "155 Queen St, Melbourne, VIC 3000": [680, 710, 695, 720, 740, 730, 750, 755],
+  "28 Acacia Ave, Kew, VIC 3101": [250, 240, 230, 210, 195, 180, 160, 0],
+};
+
 const CUSTOMER_SUMMARY =
   "Ronald is a long-standing customer since April 2008 with an excellent payment history (95th percentile). He holds 5 service accounts across residential, commercial, and small business premises. Energy usage has been declining steadily at his primary residence — down 63% over 12 months, likely due to solar. Commercial accounts at Collins St and Queen St show rising usage (+12.3% and +5.1%). Currently in net credit of $144.74 on the primary account. Multiple vulnerability flags are active. Recommended actions: Review commercial tariff rates, proactive hardship check-in, and solar feed-in review for residential.";
 
@@ -523,6 +531,8 @@ export default function GlassVisionPage() {
   const adoraStarted = useRef(false);
   const [xSellView, setXSellView] = useState<string | null>(null);
   const [billCompareView, setBillCompareView] = useState<"table" | "chart">("table");
+  const [serviceAddressView, setServiceAddressView] = useState<"list" | "card">("list");
+  const [adoraSummaryVisible, setAdoraSummaryVisible] = useState(true);
   const [expandedBillRows, setExpandedBillRows] = useState<Set<string>>(new Set());
 
   const toggleBillRow = useCallback((label: string) => {
@@ -629,7 +639,13 @@ export default function GlassVisionPage() {
         <div className="flex shrink-0 items-center gap-3">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-full bg-orange-400 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-orange-500"
+            onClick={() => setAdoraSummaryVisible((v) => !v)}
+            className={cn(
+              "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-white transition-all",
+              adoraSummaryVisible
+                ? "bg-orange-500 ring-2 ring-orange-300/40"
+                : "bg-orange-400 hover:bg-orange-500"
+            )}
           >
             <Image src="/AdoraDot.svg" alt="" width={16} height={16} className="h-4 w-4" />
             Adora
@@ -882,6 +898,7 @@ export default function GlassVisionPage() {
             </div>
             <TabsContent value="overview" className="mt-0">
           {/* Adora Customer Summary — progressive typing animation */}
+          {adoraSummaryVisible ? (
           <Card className={cn("mb-8 overflow-hidden border border-[#00D2A2]/20 dark:border-[#00D2A2]/15", GLASS_CARD_LIGHT, GLASS_CARD_DARK, "shadow-[0_0_30px_rgba(0,210,162,0.08)]")}>
             <CardContent className="p-6 pt-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -891,9 +908,18 @@ export default function GlassVisionPage() {
                     Customer Summary
                   </span>
                 </div>
-                <Badge className="border-[#00D2A2]/40 bg-[#00D2A2]/10 text-xs font-medium text-[#008f6f] dark:border-[#00D2A2]/30 dark:bg-[#00D2A2]/15 dark:text-[#00D2A2]">
-                  Auto-generated
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge className="border-[#00D2A2]/40 bg-[#00D2A2]/10 text-xs font-medium text-[#008f6f] dark:border-[#00D2A2]/30 dark:bg-[#00D2A2]/15 dark:text-[#00D2A2]">
+                    Auto-generated
+                  </Badge>
+                  <button
+                    type="button"
+                    onClick={() => setAdoraSummaryVisible(false)}
+                    className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:text-slate-500 dark:hover:bg-white/10 dark:hover:text-slate-300"
+                  >
+                    <Icon name="close" size={16} />
+                  </button>
+                </div>
               </div>
               <div className="rounded-lg border border-orange-300 p-3 dark:border-orange-500/40">
                 {(adoraPhase === "idle" || adoraPhase === "thinking") && (
@@ -926,16 +952,41 @@ export default function GlassVisionPage() {
               )}
             </CardContent>
           </Card>
+          ) : null}
 
           {/* Service Addresses */}
           <section>
-            <div className="mb-4 flex items-baseline justify-between gap-2">
-              <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-slate-100">
-                Service Addresses
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-slate-500">5 accounts</p>
+            <div className="mb-4 flex items-center justify-between gap-2">
+              <div className="flex items-baseline gap-3">
+                <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-slate-100">
+                  Service Addresses
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-slate-500">5 accounts</p>
+              </div>
+              <div className="flex h-8 items-center gap-0.5 rounded-lg border border-gray-200/80 bg-gray-100/90 p-0.5 backdrop-blur-md dark:border-white/[0.08] dark:bg-white/[0.06]">
+                {([
+                  { key: "list" as const, icon: "view_list", label: "List" },
+                  { key: "card" as const, icon: "grid_view", label: "Card" },
+                ] as const).map((opt) => (
+                  <button
+                    key={opt.key}
+                    type="button"
+                    onClick={() => setServiceAddressView(opt.key)}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all",
+                      serviceAddressView === opt.key
+                        ? "bg-white text-[#2C365D] shadow-sm dark:bg-[#00D2A2]/20 dark:text-[#00D2A2]"
+                        : "text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-300"
+                    )}
+                  >
+                    <Icon name={opt.icon} size={15} />
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
+            {serviceAddressView === "list" ? (
             <div className="space-y-3">
               {ACCOUNTS.map((acc) => {
                 const typeIcon = acc.type === "Residential" ? "home" : acc.type === "Commercial" ? "business" : "store";
@@ -1348,6 +1399,170 @@ export default function GlassVisionPage() {
                 );
               })}
             </div>
+            ) : (
+            /* ── Card View ── */
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {ACCOUNTS.map((acc) => {
+                const typeIcon = acc.type === "Residential" ? "home" : acc.type === "Commercial" ? "business" : "store";
+                const typeIconBg =
+                  acc.type === "Residential"
+                    ? "bg-sky-100 text-sky-700 dark:bg-sky-500/25 dark:text-sky-300"
+                    : acc.type === "Commercial"
+                      ? "bg-violet-100 text-violet-700 dark:bg-violet-500/25 dark:text-violet-300"
+                      : "bg-amber-100 text-amber-700 dark:bg-amber-500/25 dark:text-amber-300";
+                const balancePillGreen = acc.isCredit || acc.balance === "$0.00";
+                const sparkline = ACCOUNT_USAGE_SPARKLINES[acc.address] ?? [];
+                const trendPct = acc.billVsPrevious && acc.billVsPrevious !== "—" ? acc.billVsPrevious : null;
+
+                return (
+                  <Card
+                    key={acc.address}
+                    className={cn(
+                      "overflow-hidden border-0 transition-all duration-200",
+                      GLASS_CARD_LIGHT,
+                      GLASS_CARD_DARK,
+                      "hover:shadow-lg hover:shadow-[#00D2A2]/10",
+                      acc.isClosed && "opacity-70"
+                    )}
+                  >
+                    <CardContent className="p-0">
+                      {/* Header */}
+                      <div className="px-5 pt-5 pb-3">
+                        <div className="flex items-start justify-between mb-3">
+                          <div
+                            className={cn(
+                              "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+                              typeIconBg
+                            )}
+                          >
+                            <Icon name={typeIcon} size={20} />
+                          </div>
+                          <span
+                            className={cn(
+                              "shrink-0 rounded-lg px-2 py-0.5 text-xs font-medium",
+                              acc.status === "CLOSED"
+                                ? "bg-gray-50 text-gray-400 dark:bg-slate-700/30 dark:text-slate-500"
+                                : "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400"
+                            )}
+                          >
+                            {acc.status}
+                          </span>
+                        </div>
+                        <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
+                          {acc.address}
+                        </p>
+                        <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">
+                          NMI: {acc.nmi}
+                        </p>
+                      </div>
+
+                      {/* Badges */}
+                      <div className="flex flex-wrap items-center gap-1.5 px-5 pb-3">
+                        <span className={cn("rounded-lg px-2 py-0.5 text-[11px] font-medium", typeIconBg)}>
+                          {acc.type}
+                        </span>
+                        <span className="rounded-lg bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-slate-600/40 dark:text-slate-400">
+                          {acc.fuel}
+                        </span>
+                      </div>
+
+                      {/* Key metrics row */}
+                      <div className="grid grid-cols-3 gap-px border-t border-gray-100 bg-gray-100 dark:border-white/[0.06] dark:bg-white/[0.04]">
+                        <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
+                          <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Balance</p>
+                          <p className={cn(
+                            "mt-0.5 text-sm font-semibold",
+                            balancePillGreen
+                              ? "text-emerald-700 dark:text-emerald-300"
+                              : "text-red-700 dark:text-red-300"
+                          )}>
+                            {acc.balance}
+                          </p>
+                        </div>
+                        <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
+                          <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Plan</p>
+                          <p className="mt-0.5 truncate text-sm font-semibold text-gray-900 dark:text-slate-100">{acc.plan ?? "—"}</p>
+                        </div>
+                        <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
+                          <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Billing</p>
+                          <p className="mt-0.5 truncate text-sm font-semibold text-gray-900 dark:text-slate-100">{acc.billing ?? "—"}</p>
+                        </div>
+                      </div>
+
+                      {/* Sparkline + trend */}
+                      {sparkline.length > 0 && !acc.isClosed && (
+                        <div className="px-5 pt-4 pb-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Usage trend (kWh)</p>
+                            {trendPct && (
+                              <span className={cn(
+                                "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[11px] font-medium",
+                                acc.billVsPreviousUp
+                                  ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300"
+                                  : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
+                              )}>
+                                <Icon name={acc.billVsPreviousUp ? "trending_up" : "trending_down"} size={12} />
+                                {trendPct}
+                              </span>
+                            )}
+                          </div>
+                          <div className="h-16 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <AreaChart data={sparkline.map((v, i) => ({ i, v }))} margin={{ top: 4, right: 2, bottom: 0, left: 2 }}>
+                                <defs>
+                                  <linearGradient id={`sparkGrad-${acc.nmi.replace(/\s/g, "")}`} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor={CHART_TEAL} stopOpacity={0.3} />
+                                    <stop offset="100%" stopColor={CHART_TEAL} stopOpacity={0.02} />
+                                  </linearGradient>
+                                </defs>
+                                <Area
+                                  type="monotone"
+                                  dataKey="v"
+                                  stroke={CHART_TEAL}
+                                  strokeWidth={1.5}
+                                  fill={`url(#sparkGrad-${acc.nmi.replace(/\s/g, "")})`}
+                                  dot={false}
+                                  animationDuration={600}
+                                />
+                              </AreaChart>
+                            </ResponsiveContainer>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Footer details */}
+                      <div className="flex items-center justify-between gap-3 border-t border-gray-100 px-5 py-3 dark:border-white/[0.06]">
+                        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-slate-500">
+                          <span className="flex items-center gap-1">
+                            <Icon name="calendar_today" size={12} />
+                            {acc.commenced ?? "—"}
+                          </span>
+                          {acc.billingTo && (
+                            <span className="flex items-center gap-1">
+                              <Icon name="receipt_long" size={12} />
+                              {acc.billingTo}
+                            </span>
+                          )}
+                        </div>
+                        {acc.bestOffer && !acc.isClosed && (
+                          <span className={cn(
+                            "rounded-md px-2 py-0.5 text-[11px] font-medium",
+                            acc.bestOffer === "Currently on best"
+                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400"
+                              : acc.bestOffer === "Review recommended"
+                                ? "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400"
+                                : "bg-orange-50 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400"
+                          )}>
+                            {acc.bestOffer}
+                          </span>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+            )}
           </section>
             </TabsContent>
             <TabsContent value="insights" className="mt-0">
@@ -1635,14 +1850,7 @@ export default function GlassVisionPage() {
                             <Icon name="picture_as_pdf" size={16} />
                           </button>
                         </div>
-                        <p className="mb-3 text-xs text-gray-500 dark:text-slate-400">{bill.period}</p>
-                        <div className="rounded-lg border border-orange-300 p-2.5 dark:border-orange-500/40">
-                          <div className="mb-1.5 flex items-center gap-1.5">
-                            <Image src="/AdoraDot.svg" alt="" width={14} height={14} className="h-3.5 w-3.5" />
-                            <span className="text-[10px] font-semibold text-gray-700 dark:text-slate-300">Adora</span>
-                          </div>
-                          <p className="text-[11px] leading-relaxed text-gray-600 dark:text-slate-400">{bill.adoraSummary}</p>
-                        </div>
+                        <p className="text-xs text-gray-500 dark:text-slate-400">{bill.period}</p>
                       </div>
                     ))}
                   </div>
