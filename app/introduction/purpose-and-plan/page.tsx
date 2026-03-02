@@ -38,12 +38,12 @@ const SLIDES = [
 ];
 
 const PRODUCTS = [
-  { name: "CIS", logo: "/TallyCIS_Test.svg", href: "/pages/small-market" },
+  { name: "Billing", logo: "/tally-suite/TallyBilling.svg", href: "/pages/small-market" },
   { name: "Glass", logo: "/foundation/brands/tally-glass/TallyGlassLogo.svg", href: "/pages/glass-vision" },
-  { name: "CRM", logo: "/foundation/brands/tally-crm/TallyCRMLogo.svg", href: "/crm/dashboard" },
-  { name: "Acquire", logo: "/TallyAcquire.svg", href: "/pages/tally-acquire" },
-  { name: "Digital", logo: "/foundation/brands/tally-digital/TallyDigital.svg", href: "/pages/beta-test-dashboard" },
-  { name: "S&A", logo: "/foundation/brands/tally-sales-acquisition/TallySALogo.svg", href: "/pages/sales-acquisition-dashboard" },
+  { name: "Digital", logo: "/tally-suite/TallyDigital.svg", href: "/pages/beta-test-dashboard" },
+  { name: "Analytics", logo: "/tally-suite/TallyAnalytics.svg", href: "/pages/tally-acquire" },
+  { name: "Acquire", logo: "/tally-suite/TallyAcquire.svg", href: "/pages/tally-acquire" },
+  { name: "Customer", logo: "/tally-suite/TallyCustomer.svg", href: "/pages/sales-acquisition-dashboard" },
 ];
 
 function SlideOverview() {
@@ -129,11 +129,12 @@ function SlideChallenge() {
 
 function SlideEcosystem() {
   const inputProducts = [
-    { name: "CIS", logo: "/TallyCIS_Test.svg", dashed: false },
+    { name: "Billing", logo: "/tally-suite/TallyBilling.svg", dashed: false },
     { name: "Glass", logo: "/foundation/brands/tally-glass/TallyGlassLogo.svg", dashed: false },
-    { name: "CRM", logo: "/foundation/brands/tally-crm/TallyCRMLogo.svg", dashed: false },
-    { name: "Acquire", logo: "/TallyAcquire.svg", dashed: false },
-    { name: "Sales & Acquisition", logo: "/foundation/brands/tally-sales-acquisition/TallySALogo.svg", dashed: true },
+    { name: "Digital", logo: "/tally-suite/TallyDigital.svg", dashed: false },
+    { name: "Analytics", logo: "/tally-suite/TallyAnalytics.svg", dashed: false },
+    { name: "Acquire", logo: "/tally-suite/TallyAcquire.svg", dashed: false },
+    { name: "Customer", logo: "/tally-suite/TallyCustomer.svg", dashed: false },
   ];
 
   const v15Items = [

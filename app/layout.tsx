@@ -120,6 +120,7 @@ const navigationSections = [
       { label: "Beta Test Dashboard", href: "/pages/beta-test-dashboard" },
       { label: "S&A Beta", href: "/pages/sales-acquisition-dashboard" },
       { label: "Tally CRM", href: "/crm/dashboard" },
+      { label: "Tally Digital", href: "/pages/tally-digital" },
     ],
   },
 ];

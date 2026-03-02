@@ -1413,148 +1413,398 @@ export default function GlassVisionPage() {
                 const balancePillGreen = acc.isCredit || acc.balance === "$0.00";
                 const sparkline = ACCOUNT_USAGE_SPARKLINES[acc.address] ?? [];
                 const trendPct = acc.billVsPrevious && acc.billVsPrevious !== "—" ? acc.billVsPrevious : null;
+                const isSelected = selectedAccountAddress === acc.address;
 
                 return (
                   <Card
                     key={acc.address}
+                    id={`card-account-${acc.address.replace(/\W/g, "-")}`}
                     className={cn(
-                      "overflow-hidden border-0 transition-all duration-200",
+                      "cursor-pointer overflow-hidden border-0 transition-all duration-200",
                       GLASS_CARD_LIGHT,
                       GLASS_CARD_DARK,
                       "hover:shadow-lg hover:shadow-[#00D2A2]/10",
-                      acc.isClosed && "opacity-70"
+                      acc.isClosed && "opacity-70",
+                      isSelected && "col-span-full ring-1 ring-[#00D2A2]/25 shadow-[0_0_20px_rgba(0,210,162,0.12)] dark:ring-[#00D2A2]/20"
                     )}
+                    onClick={() => handleAccountClick(acc.address)}
                   >
                     <CardContent className="p-0">
-                      {/* Header */}
-                      <div className="px-5 pt-5 pb-3">
-                        <div className="flex items-start justify-between mb-3">
-                          <div
-                            className={cn(
-                              "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-                              typeIconBg
-                            )}
-                          >
-                            <Icon name={typeIcon} size={20} />
+                      <div className={cn(isSelected ? "flex gap-6" : "")}>
+                        {/* Card summary — keeps its column width when expanded */}
+                        <div className={cn(isSelected ? "w-72 shrink-0" : "")}>
+                          {/* Header */}
+                          <div className="px-5 pt-5 pb-3">
+                            <div className="flex items-start justify-between mb-3">
+                              <div
+                                className={cn(
+                                  "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+                                  typeIconBg
+                                )}
+                              >
+                                <Icon name={typeIcon} size={20} />
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={cn(
+                                    "shrink-0 rounded-lg px-2 py-0.5 text-xs font-medium",
+                                    acc.status === "CLOSED"
+                                      ? "bg-gray-50 text-gray-400 dark:bg-slate-700/30 dark:text-slate-500"
+                                      : "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400"
+                                  )}
+                                >
+                                  {acc.status}
+                                </span>
+                                {isSelected && (
+                                  <Icon name="expand_less" size={18} className="text-gray-400 dark:text-slate-500" />
+                                )}
+                              </div>
+                            </div>
+                            <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
+                              {acc.address}
+                            </p>
+                            <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">
+                              NMI: {acc.nmi}
+                            </p>
                           </div>
-                          <span
-                            className={cn(
-                              "shrink-0 rounded-lg px-2 py-0.5 text-xs font-medium",
-                              acc.status === "CLOSED"
-                                ? "bg-gray-50 text-gray-400 dark:bg-slate-700/30 dark:text-slate-500"
-                                : "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400"
-                            )}
-                          >
-                            {acc.status}
-                          </span>
-                        </div>
-                        <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
-                          {acc.address}
-                        </p>
-                        <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">
-                          NMI: {acc.nmi}
-                        </p>
-                      </div>
 
-                      {/* Badges */}
-                      <div className="flex flex-wrap items-center gap-1.5 px-5 pb-3">
-                        <span className={cn("rounded-lg px-2 py-0.5 text-[11px] font-medium", typeIconBg)}>
-                          {acc.type}
-                        </span>
-                        <span className="rounded-lg bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-slate-600/40 dark:text-slate-400">
-                          {acc.fuel}
-                        </span>
-                      </div>
+                          {/* Badges */}
+                          <div className="flex flex-wrap items-center gap-1.5 px-5 pb-3">
+                            <span className={cn("rounded-lg px-2 py-0.5 text-[11px] font-medium", typeIconBg)}>
+                              {acc.type}
+                            </span>
+                            <span className="rounded-lg bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600 dark:bg-slate-600/40 dark:text-slate-400">
+                              {acc.fuel}
+                            </span>
+                          </div>
 
-                      {/* Key metrics row */}
-                      <div className="grid grid-cols-3 gap-px border-t border-gray-100 bg-gray-100 dark:border-white/[0.06] dark:bg-white/[0.04]">
-                        <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
-                          <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Balance</p>
-                          <p className={cn(
-                            "mt-0.5 text-sm font-semibold",
-                            balancePillGreen
-                              ? "text-emerald-700 dark:text-emerald-300"
-                              : "text-red-700 dark:text-red-300"
-                          )}>
-                            {acc.balance}
-                          </p>
-                        </div>
-                        <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
-                          <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Plan</p>
-                          <p className="mt-0.5 truncate text-sm font-semibold text-gray-900 dark:text-slate-100">{acc.plan ?? "—"}</p>
-                        </div>
-                        <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
-                          <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Billing</p>
-                          <p className="mt-0.5 truncate text-sm font-semibold text-gray-900 dark:text-slate-100">{acc.billing ?? "—"}</p>
-                        </div>
-                      </div>
-
-                      {/* Sparkline + trend */}
-                      {sparkline.length > 0 && !acc.isClosed && (
-                        <div className="px-5 pt-4 pb-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Usage trend (kWh)</p>
-                            {trendPct && (
-                              <span className={cn(
-                                "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[11px] font-medium",
-                                acc.billVsPreviousUp
-                                  ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300"
-                                  : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
+                          {/* Key metrics row */}
+                          <div className="grid grid-cols-3 gap-px border-t border-gray-100 bg-gray-100 dark:border-white/[0.06] dark:bg-white/[0.04]">
+                            <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
+                              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Balance</p>
+                              <p className={cn(
+                                "mt-0.5 text-sm font-semibold",
+                                balancePillGreen
+                                  ? "text-emerald-700 dark:text-emerald-300"
+                                  : "text-red-700 dark:text-red-300"
                               )}>
-                                <Icon name={acc.billVsPreviousUp ? "trending_up" : "trending_down"} size={12} />
-                                {trendPct}
+                                {acc.balance}
+                              </p>
+                            </div>
+                            <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
+                              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Plan</p>
+                              <p className="mt-0.5 truncate text-sm font-semibold text-gray-900 dark:text-slate-100">{acc.plan ?? "—"}</p>
+                            </div>
+                            <div className="bg-white/90 px-4 py-3 dark:bg-white/[0.06]">
+                              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Billing</p>
+                              <p className="mt-0.5 truncate text-sm font-semibold text-gray-900 dark:text-slate-100">{acc.billing ?? "—"}</p>
+                            </div>
+                          </div>
+
+                          {/* Sparkline + trend */}
+                          {sparkline.length > 0 && !acc.isClosed && (
+                            <div className="px-5 pt-4 pb-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-slate-500">Usage trend (kWh)</p>
+                                {trendPct && (
+                                  <span className={cn(
+                                    "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[11px] font-medium",
+                                    acc.billVsPreviousUp
+                                      ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300"
+                                      : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
+                                  )}>
+                                    <Icon name={acc.billVsPreviousUp ? "trending_up" : "trending_down"} size={12} />
+                                    {trendPct}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="h-16 w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                  <AreaChart data={sparkline.map((v, i) => ({ i, v }))} margin={{ top: 4, right: 2, bottom: 0, left: 2 }}>
+                                    <defs>
+                                      <linearGradient id={`sparkGrad-${acc.nmi.replace(/\s/g, "")}`} x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor={CHART_TEAL} stopOpacity={0.3} />
+                                        <stop offset="100%" stopColor={CHART_TEAL} stopOpacity={0.02} />
+                                      </linearGradient>
+                                    </defs>
+                                    <Area
+                                      type="monotone"
+                                      dataKey="v"
+                                      stroke={CHART_TEAL}
+                                      strokeWidth={1.5}
+                                      fill={`url(#sparkGrad-${acc.nmi.replace(/\s/g, "")})`}
+                                      dot={false}
+                                      animationDuration={600}
+                                    />
+                                  </AreaChart>
+                                </ResponsiveContainer>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Footer details */}
+                          <div className="flex items-center justify-between gap-3 border-t border-gray-100 px-5 py-3 dark:border-white/[0.06]">
+                            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-slate-500">
+                              <span className="flex items-center gap-1">
+                                <Icon name="calendar_today" size={12} />
+                                {acc.commenced ?? "—"}
+                              </span>
+                              {acc.billingTo && (
+                                <span className="flex items-center gap-1">
+                                  <Icon name="receipt_long" size={12} />
+                                  {acc.billingTo}
+                                </span>
+                              )}
+                            </div>
+                            {acc.bestOffer && !acc.isClosed && (
+                              <span className={cn(
+                                "rounded-md px-2 py-0.5 text-[11px] font-medium",
+                                acc.bestOffer === "Currently on best"
+                                  ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400"
+                                  : acc.bestOffer === "Review recommended"
+                                    ? "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400"
+                                    : "bg-orange-50 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400"
+                              )}>
+                                {acc.bestOffer}
                               </span>
                             )}
                           </div>
-                          <div className="h-16 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <AreaChart data={sparkline.map((v, i) => ({ i, v }))} margin={{ top: 4, right: 2, bottom: 0, left: 2 }}>
-                                <defs>
-                                  <linearGradient id={`sparkGrad-${acc.nmi.replace(/\s/g, "")}`} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor={CHART_TEAL} stopOpacity={0.3} />
-                                    <stop offset="100%" stopColor={CHART_TEAL} stopOpacity={0.02} />
-                                  </linearGradient>
-                                </defs>
-                                <Area
-                                  type="monotone"
-                                  dataKey="v"
-                                  stroke={CHART_TEAL}
-                                  strokeWidth={1.5}
-                                  fill={`url(#sparkGrad-${acc.nmi.replace(/\s/g, "")})`}
-                                  dot={false}
-                                  animationDuration={600}
-                                />
-                              </AreaChart>
-                            </ResponsiveContainer>
-                          </div>
                         </div>
-                      )}
 
-                      {/* Footer details */}
-                      <div className="flex items-center justify-between gap-3 border-t border-gray-100 px-5 py-3 dark:border-white/[0.06]">
-                        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-slate-500">
-                          <span className="flex items-center gap-1">
-                            <Icon name="calendar_today" size={12} />
-                            {acc.commenced ?? "—"}
-                          </span>
-                          {acc.billingTo && (
-                            <span className="flex items-center gap-1">
-                              <Icon name="receipt_long" size={12} />
-                              {acc.billingTo}
-                            </span>
-                          )}
-                        </div>
-                        {acc.bestOffer && !acc.isClosed && (
-                          <span className={cn(
-                            "rounded-md px-2 py-0.5 text-[11px] font-medium",
-                            acc.bestOffer === "Currently on best"
-                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400"
-                              : acc.bestOffer === "Review recommended"
-                                ? "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400"
-                                : "bg-orange-50 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400"
-                          )}>
-                            {acc.bestOffer}
-                          </span>
+                        {/* Expanded detail panel */}
+                        {isSelected && (
+                          <div
+                            className="flex-1 space-y-6 border-l border-gray-200/80 px-5 py-5 dark:border-white/10"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                              <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                                <CardContent className="p-5 pt-5 pb-5">
+                                  <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Plan</p>
+                                  <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.plan ?? "—"}</p>
+                                  {acc.planRef && <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">{acc.planRef}</p>}
+                                </CardContent>
+                              </Card>
+                              <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                                <CardContent className="p-5 pt-5 pb-5">
+                                  <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Best offer</p>
+                                  <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.bestOffer ?? "—"}</p>
+                                </CardContent>
+                              </Card>
+                              <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                                <CardContent className="p-5 pt-5 pb-5">
+                                  <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Billing</p>
+                                  <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.billing ?? "—"}</p>
+                                  {acc.billingTo && <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-500">{acc.billingTo}</p>}
+                                </CardContent>
+                              </Card>
+                              <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                                <CardContent className="p-5 pt-5 pb-5">
+                                  <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-500">Commenced</p>
+                                  <p className="mt-1 font-semibold text-gray-900 dark:text-slate-100">{acc.commenced ?? "—"}</p>
+                                </CardContent>
+                              </Card>
+                            </div>
+
+                            <div className="grid gap-6 lg:grid-cols-2">
+                              <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                                <CardContent className="p-5 pt-5 pb-5">
+                                  <h3 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-slate-100">Bill Information</h3>
+                                  <Tabs defaultValue="overview" className="mt-4">
+                                    <TabsList className="mb-4 h-10 gap-1 rounded-lg bg-gray-100/90 p-1 backdrop-blur-md border border-gray-200/80 dark:bg-white/[0.06] dark:border-white/[0.08]">
+                                      <TabsTrigger value="overview" className="rounded-md px-3 py-1.5 text-sm text-gray-600 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] dark:text-slate-400 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
+                                        Overview
+                                      </TabsTrigger>
+                                      <TabsTrigger value="load" className="rounded-md px-3 py-1.5 text-sm text-gray-600 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] dark:text-slate-400 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
+                                        Load Disagg
+                                      </TabsTrigger>
+                                      <TabsTrigger value="usage" className="rounded-md px-3 py-1.5 text-sm text-gray-600 data-[state=active]:bg-white data-[state=active]:text-[#2C365D] dark:text-slate-400 dark:data-[state=active]:bg-[#00D2A2]/20 dark:data-[state=active]:text-[#00D2A2]">
+                                        Usage
+                                      </TabsTrigger>
+                                    </TabsList>
+                                    <TabsContent value="overview" className="mt-0">
+                                      <div className="space-y-3 text-sm text-gray-700 dark:text-slate-300">
+                                        {acc.isClosed ? (
+                                          <>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Final invoice</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.finalInvoice ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Allocated</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.allocated ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Posted</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.posted ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Closed on</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.closedOn ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Final read</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.finalRead ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Washup</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.washup ?? "—"}</span>
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Invoice amount</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.invoiceAmount ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Allocated</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.allocated ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Posted</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.posted ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Due</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.due ?? "—"}</span>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Charges</span>
+                                              <span className={cn(
+                                                "font-medium",
+                                                (acc.charges?.includes("−") || acc.charges?.includes("-")) && acc.charges?.includes("CR")
+                                                  ? "text-emerald-600 dark:text-emerald-400"
+                                                  : "text-gray-900 dark:text-slate-100"
+                                              )}>
+                                                {acc.charges ?? "—"}
+                                              </span>
+                                            </div>
+                                            {acc.demandCharge && (
+                                              <div className="flex justify-between gap-4">
+                                                <span className="text-gray-500 dark:text-slate-500">Demand charge</span>
+                                                <span className="font-medium text-gray-900 dark:text-slate-100">{acc.demandCharge}</span>
+                                              </div>
+                                            )}
+                                            <div className="flex justify-between gap-4">
+                                              <span className="text-gray-500 dark:text-slate-500">Washup</span>
+                                              <span className="font-medium text-gray-900 dark:text-slate-100">{acc.washup ?? "—"}</span>
+                                            </div>
+                                          </>
+                                        )}
+                                      </div>
+                                    </TabsContent>
+                                    <TabsContent value="load" className="mt-0">
+                                      <p className="mb-3 text-xs text-gray-500 dark:text-slate-400">
+                                        Estimated breakdown by equipment category (kWh)
+                                      </p>
+                                      <div className="space-y-2.5">
+                                        {LOAD_DISAGG_DATA.map((item) => {
+                                          const maxKWh = LOAD_DISAGG_DATA[0].kWh;
+                                          const pct = Math.round((item.kWh / maxKWh) * 100);
+                                          return (
+                                            <div key={item.category} className="group">
+                                              <div className="mb-1 flex items-center justify-between text-xs">
+                                                <span className="flex items-center gap-1.5 font-medium text-gray-700 dark:text-slate-300">
+                                                  <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: item.fill }} />
+                                                  {item.category}
+                                                </span>
+                                                <span className="tabular-nums text-gray-500 dark:text-slate-400">{item.kWh} kWh</span>
+                                              </div>
+                                              <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-white/[0.06]">
+                                                <div
+                                                  className="h-full rounded-full transition-all duration-700 ease-out group-hover:opacity-80"
+                                                  style={{ width: `${pct}%`, backgroundColor: item.fill }}
+                                                />
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                      <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2 dark:border-white/[0.06]">
+                                        <span className="text-xs font-medium text-gray-700 dark:text-slate-300">Total estimated</span>
+                                        <span className="text-xs font-semibold tabular-nums text-gray-900 dark:text-slate-100">
+                                          {LOAD_DISAGG_DATA.reduce((s, d) => s + d.kWh, 0)} kWh
+                                        </span>
+                                      </div>
+                                    </TabsContent>
+                                    <TabsContent value="usage" className="mt-0">
+                                      <div className="mb-3 flex items-center gap-1.5 text-xs text-gray-500 dark:text-slate-400">
+                                        <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: CHART_TEAL }} />
+                                        Monthly kWh
+                                      </div>
+                                      <div className="h-48 w-full">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                          <BarChart data={USAGE_DATA} margin={{ top: 8, right: 12, bottom: 4, left: -8 }} barCategoryGap="25%">
+                                            <defs>
+                                              <linearGradient id={`cardGradUsage-${acc.nmi.replace(/\s/g, "")}`} x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stopColor={CHART_TEAL} stopOpacity={0.85} />
+                                                <stop offset="100%" stopColor={CHART_TEAL} stopOpacity={0.4} />
+                                              </linearGradient>
+                                            </defs>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" strokeOpacity={0.5} vertical={false} />
+                                            <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} dy={6} />
+                                            <YAxis tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} width={32} />
+                                            <Tooltip content={<ChartTooltip />} cursor={{ fill: "rgba(0,210,162,0.06)", radius: 6 }} />
+                                            <Bar dataKey="usage" name="Usage (kWh)" fill={`url(#cardGradUsage-${acc.nmi.replace(/\s/g, "")})`} radius={[4, 4, 0, 0]} animationDuration={800} animationEasing="ease-out" />
+                                          </BarChart>
+                                        </ResponsiveContainer>
+                                      </div>
+                                    </TabsContent>
+                                  </Tabs>
+                                </CardContent>
+                              </Card>
+
+                              <Card className="overflow-hidden border-0 !bg-gray-50 shadow-none dark:!bg-slate-800/40">
+                                <CardContent className="p-5 pt-5 pb-5">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <h3 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-slate-100">Bill vs Previous</h3>
+                                  </div>
+                                  {acc.billVsPrevious && acc.billVsPrevious !== "—" ? (
+                                    <div
+                                      className={cn(
+                                        "mt-4 inline-flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-medium",
+                                        acc.billVsPreviousUp
+                                          ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300"
+                                          : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
+                                      )}
+                                    >
+                                      <Icon name={acc.billVsPreviousUp ? "trending_up" : "trending_down"} size={18} />
+                                      {acc.billVsPrevious}
+                                    </div>
+                                  ) : null}
+                                  <div className="mt-4 flex items-center gap-4">
+                                    <span className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-slate-400">
+                                      <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: CHART_TEAL }} />
+                                      Current
+                                    </span>
+                                    <span className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-slate-400">
+                                      <span className="inline-block h-2 w-2 rounded-full bg-gray-300 dark:bg-slate-500" />
+                                      Previous
+                                    </span>
+                                  </div>
+                                  <div className="mt-2 h-52 w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                      <ComposedChart data={BILL_VS_PREVIOUS_DATA} margin={{ top: 12, right: 12, bottom: 4, left: -8 }}>
+                                        <defs>
+                                          <linearGradient id={`card-bill-area-${acc.nmi.replace(/\s/g, "")}`} x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stopColor={CHART_TEAL} stopOpacity={0.25} />
+                                            <stop offset="100%" stopColor={CHART_TEAL} stopOpacity={0.02} />
+                                          </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" strokeOpacity={0.5} vertical={false} />
+                                        <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} dy={6} />
+                                        <YAxis domain={[0, 160]} ticks={[0, 80, 160]} tick={{ fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} width={32} />
+                                        <Tooltip content={<ChartTooltip />} cursor={{ stroke: "#00D2A2", strokeWidth: 1, strokeDasharray: "4 4", strokeOpacity: 0.4 }} />
+                                        <Area type="natural" dataKey="current" name="Current" stroke={CHART_TEAL} strokeWidth={2.5} fill={`url(#card-bill-area-${acc.nmi.replace(/\s/g, "")})`} dot={false} activeDot={{ r: 5, fill: CHART_TEAL, stroke: "#fff", strokeWidth: 2 }} animationDuration={800} animationEasing="ease-out" />
+                                        <Line type="natural" dataKey="previous" name="Previous" stroke="#D1D5DB" strokeWidth={1.5} strokeDasharray="6 3" dot={false} activeDot={{ r: 4, fill: "#D1D5DB", stroke: "#fff", strokeWidth: 2 }} animationDuration={800} animationEasing="ease-out" />
+                                      </ComposedChart>
+                                    </ResponsiveContainer>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          </div>
                         )}
                       </div>
                     </CardContent>
