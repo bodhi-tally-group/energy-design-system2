@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -519,6 +519,14 @@ const ADORA_OVERVIEW_SEGMENTS = [
 const ADORA_TOTAL_CHARS = ADORA_OVERVIEW_SEGMENTS.reduce((sum, s) => sum + s.text.length, 0);
 
 export default function GlassVisionPage() {
+  return (
+    <Suspense>
+      <GlassVisionContent />
+    </Suspense>
+  );
+}
+
+function GlassVisionContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("overview");
   const [activeNavId, setActiveNavId] = useState("customers");
